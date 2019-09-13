@@ -25,10 +25,12 @@ public class InitialPresenter implements InitialContract.Presenter {
         Log.d(TAG, "start: hasVisited = " + hasVisited);
         view.showProgress();
 
-        if (hasVisited) {
-            view.openActivity(BudgetActivity.class);
-        } else {
+        if (!hasVisited) {
             view.openActivity(LoginActivity.class);
+        } else {
+            //TODO authorization
+
+            view.openActivity(BudgetActivity.class);
         }
     }
 }

@@ -13,10 +13,12 @@
             android:name=".ui.view.BudgetActivity"
             android:label="@string/title_activity_budget"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.view.LoginActivity" />
+        <activity android:name=".ui.view.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.view.InitialActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
