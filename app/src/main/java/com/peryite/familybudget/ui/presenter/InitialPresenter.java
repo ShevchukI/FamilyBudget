@@ -8,7 +8,7 @@ import com.peryite.familybudget.ui.view.BudgetActivity;
 import com.peryite.familybudget.ui.view.LoginActivity;
 
 public class InitialPresenter implements InitialContract.Presenter {
-    private String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     private InitialContract.View view;
     private boolean hasVisited;

@@ -9,10 +9,20 @@ public interface LoginContract {
     }
 
     interface View extends BaseView {
+        void doSignIn();
 
+        void disableElements();
+
+        void enableElements();
     }
 
     interface Presenter extends BasePresenter {
+        void onForgotPassword();
 
+        void onSignIn(String email, String password);
+
+        void onSignInWithGoogle(String email, String password);
+
+         void onCreateNewAccount();
     }
 }
