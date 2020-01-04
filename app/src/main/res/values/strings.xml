@@ -2,7 +2,10 @@
     <string name="app_name">Family Budget</string>
     <string name="placeholder">{PLACEHOLDER}</string>
 
+
     <string name="title_activity_budget">BudgetActivity</string>
+
+    <!--Navigation elements-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -16,7 +19,8 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    
+
+    <!--Elements-->
     <string name="email_address_text">Email Address</string>
     <string name="email_text">Email</string>
     <string name="password_text">Password</string>
@@ -26,6 +30,10 @@
     <string name="sign_out">Sign Out</string>
     <string name="create_new_account">Create New Account</string>
     <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="first_name_text">First Name</string>
+    <string name="last_name_text">Last Name</string>
+    <string name="login_text">Login</string>
+    <string name="registration_text">Registration</string>
 
 
     <!--String format-->
@@ -33,5 +41,5 @@
 
     <!--Preferences name-->
     <string name="visitedPreferences" translatable="false">hasVisited</string>
-    
+
 </resources>

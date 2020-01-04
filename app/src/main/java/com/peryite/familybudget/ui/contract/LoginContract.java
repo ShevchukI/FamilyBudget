@@ -14,6 +14,8 @@ public interface LoginContract {
         void disableElements();
 
         void enableElements();
+
+        void doCreateAccount();
     }
 
     interface Presenter extends BasePresenter {
@@ -23,6 +25,6 @@ public interface LoginContract {
 
         void onSignInWithGoogle(String email, String password);
 
-         void onCreateNewAccount();
+        void onCreateNewAccount();
     }
 }

@@ -1,8 +1,10 @@
 package com.peryite.familybudget.ui.presenter;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.peryite.familybudget.ui.contract.LoginContract;
+import com.peryite.familybudget.ui.view.RegistrationActivity;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
@@ -40,5 +42,6 @@ public class LoginPresenter implements LoginContract.Presenter {
         Log.d(TAG, "onCreateNewAccount: ");
         //TODO create new account
         view.showMessage("onCreateNewAccount: placeholder");
+        view.doCreateAccount();
     }
 }

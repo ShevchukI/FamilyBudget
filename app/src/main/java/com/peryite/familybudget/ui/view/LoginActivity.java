@@ -1,5 +1,6 @@
 package com.peryite.familybudget.ui.view;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.peryite.familybudget.ui.presenter.LoginPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
@@ -32,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     AppCompatCheckBox rememberMe;
     @BindView(R.id.login_forgot_password)
     AppCompatTextView forgotPassword;
-    @BindView(R.id.login_progress_bar)
+    @BindView(R.id.progress_bar)
     ProgressBar progressBar;
     @BindView(R.id.login_sign_in)
     AppCompatButton signIn;
@@ -116,5 +118,16 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         signInWithGoogle.setEnabled(true);
     }
 
+    @Override
+    public void doCreateAccount() {
+        Log.d(TAG, "doCreateAccount: ");
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.login_create_new_account)
+    public void clickOnCreateNewAccount(){
+        presenter.onCreateNewAccount();
+    }
 
 }
