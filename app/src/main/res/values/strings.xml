@@ -24,6 +24,7 @@
     <string name="email_address_text">Email Address</string>
     <string name="email_text">Email</string>
     <string name="password_text">Password</string>
+    <string name="password_confirm_text">Confirm password</string>
     <string name="remember_me">Remember me</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="sign_in">Sign In</string>
@@ -32,12 +33,14 @@
     <string name="sign_in_with_google">Sign In with Google</string>
     <string name="first_name_text">First Name</string>
     <string name="last_name_text">Last Name</string>
-    <string name="login_text">Login</string>
+    <string name="username_text">Username</string>
     <string name="registration_text">Registration</string>
 
 
     <!--String format-->
     <string name="open_activity" translatable="false">openActivity: %s</string>
+    <string name="format_empty_field">%s cannot be empty!</string>
+    <string name="format_incorrect_value">%s is incorrect!</string>
 
     <!--Preferences name-->
     <string name="visitedPreferences" translatable="false">hasVisited</string>

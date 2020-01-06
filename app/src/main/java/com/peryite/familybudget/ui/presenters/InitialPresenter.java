@@ -1,11 +1,10 @@
-package com.peryite.familybudget.ui.presenter;
+package com.peryite.familybudget.ui.presenters;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.peryite.familybudget.ui.contract.InitialContract;
-import com.peryite.familybudget.ui.view.BudgetActivity;
-import com.peryite.familybudget.ui.view.LoginActivity;
+import com.peryite.familybudget.ui.contracts.InitialContract;
+import com.peryite.familybudget.ui.views.BudgetActivity;
+import com.peryite.familybudget.ui.views.LoginActivity;
 
 public class InitialPresenter implements InitialContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();

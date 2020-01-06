@@ -12,17 +12,17 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.view.RegistrationActivity"
+            android:name=".ui.views.RegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.view.BudgetActivity"
+            android:name=".ui.views.BudgetActivity"
             android:label="@string/title_activity_budget"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.view.LoginActivity"
+            android:name=".ui.views.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.view.InitialActivity"
+            android:name=".ui.views.InitialActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

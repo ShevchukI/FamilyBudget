@@ -1,8 +1,7 @@
-package com.peryite.familybudget.ui.view;
+package com.peryite.familybudget.ui.views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -11,18 +10,20 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.peryite.familybudget.R;
-import com.peryite.familybudget.ui.contract.LoginContract;
-import com.peryite.familybudget.ui.presenter.LoginPresenter;
+import com.peryite.familybudget.ui.contracts.LoginContract;
+import com.peryite.familybudget.ui.presenters.LoginPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -43,7 +44,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @BindView(R.id.login_sign_in_with_google)
     AppCompatButton signInWithGoogle;
 
-
     private Unbinder unbinder;
 
     private LoginContract.Presenter presenter;
@@ -58,26 +58,28 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         unbinder = ButterKnife.bind(this);
 
         presenter = new LoginPresenter(this);
+
+        elements = fillElementList();
     }
 
-    @Override
-    public void showProgress() {
-        Log.d(TAG, "showProgress: ");
-        progressBar.setVisibility(View.VISIBLE);
-        disableElements();
-    }
+//    @Override
+//    public void showProgress() {
+//        Log.d(TAG, "showProgress: ");
+//        progressBar.setVisibility(View.VISIBLE);
+//        disableElements();
+//    }
 
-    @Override
-    public void hideProgress() {
-        Log.d(TAG, "hideProgress: ");
-        progressBar.setVisibility(View.GONE);
-    }
+//    @Override
+//    public void hideProgress() {
+//        Log.d(TAG, "hideProgress: ");
+//        progressBar.setVisibility(View.GONE);
+//    }
 
-    @Override
-    public void showMessage(String message) {
-        Log.d(TAG, "showMessage: ");
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
+//    @Override
+//    public void showMessage(String message) {
+//        Log.d(TAG, "showMessage: ");
+//        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+//    }
 
     @Override
     protected void onDestroy() {
@@ -96,27 +98,27 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         //TODO sign in
     }
 
-    @Override
-    public void disableElements() {
-        email.setEnabled(false);
-        password.setEnabled(false);
-        rememberMe.setEnabled(false);
-        forgotPassword.setEnabled(false);
-        signIn.setEnabled(false);
-        createNewAccount.setEnabled(false);
-        signInWithGoogle.setEnabled(false);
-    }
-
-    @Override
-    public void enableElements() {
-        email.setEnabled(true);
-        password.setEnabled(true);
-        rememberMe.setEnabled(true);
-        forgotPassword.setEnabled(true);
-        signIn.setEnabled(true);
-        createNewAccount.setEnabled(true);
-        signInWithGoogle.setEnabled(true);
-    }
+//    @Override
+//    public void disableElements() {
+//        email.setEnabled(false);
+//        password.setEnabled(false);
+//        rememberMe.setEnabled(false);
+//        forgotPassword.setEnabled(false);
+//        signIn.setEnabled(false);
+//        createNewAccount.setEnabled(false);
+//        signInWithGoogle.setEnabled(false);
+//    }
+//
+//    @Override
+//    public void enableElements() {
+//        email.setEnabled(true);
+//        password.setEnabled(true);
+//        rememberMe.setEnabled(true);
+//        forgotPassword.setEnabled(true);
+//        signIn.setEnabled(true);
+//        createNewAccount.setEnabled(true);
+//        signInWithGoogle.setEnabled(true);
+//    }
 
     @Override
     public void doCreateAccount() {
@@ -127,7 +129,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @OnClick(R.id.login_create_new_account)
     public void clickOnCreateNewAccount(){
-        presenter.onCreateNewAccount();
+        presenter.onClickCreateNewAccount();
     }
 
+    private List<View> fillElementList(){
+        List<View> views = new ArrayList<>();
+        views.add(email);
+        views.add(password);
+        views.add(rememberMe);
+        views.add(signIn);
+        views.add(createNewAccount);
+
+        return views;
+    }
 }

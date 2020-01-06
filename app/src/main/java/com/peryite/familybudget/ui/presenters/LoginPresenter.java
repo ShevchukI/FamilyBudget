@@ -1,10 +1,8 @@
-package com.peryite.familybudget.ui.presenter;
+package com.peryite.familybudget.ui.presenters;
 
-import android.content.Intent;
 import android.util.Log;
 
-import com.peryite.familybudget.ui.contract.LoginContract;
-import com.peryite.familybudget.ui.view.RegistrationActivity;
+import com.peryite.familybudget.ui.contracts.LoginContract;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
@@ -27,21 +25,15 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void onSignIn(String email, String password) {
         Log.d(TAG, "onSignIn: ");
         //TODO sign in
+        view.doSignIn();
         view.showMessage("onSignIn: placeholder");
     }
 
     @Override
-    public void onSignInWithGoogle(String email, String password) {
-        Log.d(TAG, "onSignInWithGoogle: ");
-        //TODO sign in with Google
-        view.showMessage("onSignInWithGoogle: placeholder");
-    }
-
-    @Override
-    public void onCreateNewAccount() {
-        Log.d(TAG, "onCreateNewAccount: ");
+    public void onClickCreateNewAccount() {
+        Log.d(TAG, "onClickCreateNewAccount: ");
         //TODO create new account
-        view.showMessage("onCreateNewAccount: placeholder");
+        view.showMessage("onClickCreateNewAccount: placeholder");
         view.doCreateAccount();
     }
 }

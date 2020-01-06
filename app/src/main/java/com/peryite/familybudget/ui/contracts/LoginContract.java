@@ -1,4 +1,4 @@
-package com.peryite.familybudget.ui.contract;
+package com.peryite.familybudget.ui.contracts;
 
 import com.peryite.familybudget.ui.BasePresenter;
 import com.peryite.familybudget.ui.BaseView;
@@ -11,10 +11,6 @@ public interface LoginContract {
     interface View extends BaseView {
         void doSignIn();
 
-        void disableElements();
-
-        void enableElements();
-
         void doCreateAccount();
     }
 
@@ -23,8 +19,6 @@ public interface LoginContract {
 
         void onSignIn(String email, String password);
 
-        void onSignInWithGoogle(String email, String password);
-
-        void onCreateNewAccount();
+        void onClickCreateNewAccount();
     }
 }

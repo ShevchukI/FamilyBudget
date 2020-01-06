@@ -1,4 +1,4 @@
-package com.peryite.familybudget.ui.view;
+package com.peryite.familybudget.ui.views;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
