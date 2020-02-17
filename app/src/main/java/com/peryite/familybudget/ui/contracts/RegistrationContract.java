@@ -22,6 +22,8 @@ public interface RegistrationContract {
         boolean isFieldsValid();
 
         Map<String, Object> getFieldsValue();
+
+        boolean registerNewUser(User user);
     }
 
     interface Presenter extends BasePresenter {

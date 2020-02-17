@@ -170,6 +170,34 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         return values;
     }
 
+    @Override
+    public boolean registerNewUser(User user) {
+
+        return false;
+    }
+
+    @Override
+    public void disableElements() {
+        firstNameError.setEnabled(false);
+        usernameError.setEnabled(false);
+        lastNameError.setEnabled(false);
+        emailError.setEnabled(false);
+        passwordError.setEnabled(false);
+        passwordConfirmError.setEnabled(false);
+        registration.setEnabled(false);
+    }
+
+    @Override
+    public void enableElements() {
+        firstNameError.setEnabled(true);
+        usernameError.setEnabled(true);
+        lastNameError.setEnabled(true);
+        emailError.setEnabled(true);
+        passwordError.setEnabled(true);
+        passwordConfirmError.setEnabled(true);
+        registration.setEnabled(true);
+    }
+
     private boolean isFieldNotEmpty(AppCompatEditText editText, AppCompatTextView errorTextView) {
         if (editText.getText().toString().equals("")) {
             errorTextView.setVisibility(View.VISIBLE);
@@ -228,4 +256,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
     private boolean isPasswordValid(String password, String confirmPassword) {
         return password.matches(RegEx.WITHOUT_SPACE.getFullName()) && password.equals(confirmPassword);
     }
+
+
 }

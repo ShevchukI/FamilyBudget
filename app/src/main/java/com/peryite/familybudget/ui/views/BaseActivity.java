@@ -48,10 +48,20 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
+    public void disableElements() {
+
+    }
+
+    @Override
     public void enableElements(List<View> elements) {
         for (View element : elements) {
             element.setEnabled(true);
         }
+    }
+
+    @Override
+    public void enableElements() {
+
     }
 
 }

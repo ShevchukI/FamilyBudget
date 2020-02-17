@@ -15,5 +15,9 @@ public interface BaseView {
 
     void disableElements(List<View> elements);
 
+    void disableElements();
+
     void enableElements(List<View> elements);
+
+    void enableElements();
 }

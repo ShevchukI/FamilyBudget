@@ -100,7 +100,7 @@
                     android:id="@+id/et_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/first_name_text"
+                    android:hint="@string/last_name_text"
                     android:inputType="textPersonName" />
 
                 <android.support.v7.widget.AppCompatTextView
