@@ -16,7 +16,7 @@
         android:gravity="center"
         android:text="@string/create_new_account"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/large_text"
+        android:textSize="@dimen/medium_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,11 +31,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/sv_create_new_account"
         android:layout_width="match_parent"
-        android:layout_height="436dp"
+        android:layout_height="340dp"
         android:layout_marginTop="@dimen/element_vertical_margin"
+        android:fillViewport="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/registration_title">
@@ -54,12 +55,24 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.v7.widget.AppCompatTextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/first_name_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/medium_text" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/first_name_text"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/medium_text" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/optional_text"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/medium_text" />
+                </LinearLayout>
+
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_first_name"
@@ -89,12 +102,25 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/first_name_linear_layout">
 
-                <android.support.v7.widget.AppCompatTextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/last_name_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/medium_text" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_name_text"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/medium_text" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/optional_text"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/medium_text" />
+                </LinearLayout>
+
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_last_name"
@@ -254,8 +280,7 @@
 
         </android.support.constraint.ConstraintLayout>
 
-
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/registration_create"

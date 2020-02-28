@@ -24,9 +24,14 @@ public interface RegistrationContract {
         Map<String, Object> getFieldsValue();
 
         boolean registerNewUser(User user);
+
     }
 
     interface Presenter extends BasePresenter {
         void onClickRegistration();
+
+        void registrationSuccessful();
+
+        void registrationFailure();
     }
 }

@@ -1,13 +1,30 @@
 package com.peryite.familybudget.ui.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
+    @SerializedName("id")
+    private Long id;
+    @SerializedName("firstName")
     private String firstName;
+    @SerializedName("lastName")
     private String lastName;
+    @SerializedName("username")
     private String username;
+    @SerializedName("email")
     private String email;
+    @SerializedName("password")
     private String password;
 
     public User() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -53,7 +70,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +

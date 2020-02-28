@@ -32,8 +32,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void onClickCreateNewAccount() {
         Log.d(TAG, "onClickCreateNewAccount: ");
-        //TODO create new account
-        view.showMessage("onClickCreateNewAccount: placeholder");
+
         view.doCreateAccount();
     }
 }

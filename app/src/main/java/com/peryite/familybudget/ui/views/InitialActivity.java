@@ -24,8 +24,10 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
     private Unbinder unbinder;
 
     private InitialContract.Presenter presenter;
-    private SharedPreferences preferences;
+    private SharedPreferences preferencesVisited;
+    private SharedPreferences preferencesCredential;
     private boolean hasVisited;
+    private String credential;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +37,17 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
 
         unbinder = ButterKnife.bind(this);
 
-        preferences = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
-        hasVisited = preferences.getBoolean(getResources().getString(R.string.visitedPreferences), false);
+        preferencesVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
+        hasVisited = preferencesVisited.getBoolean(getResources().getString(R.string.visitedPreferences), false);
 
-        presenter = new InitialPresenter(this, hasVisited);
+        preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
+        credential = preferencesCredential.getString("credential", "empty");
+
+        presenter = new InitialPresenter.Builder().withView(this)
+                .withVisited(hasVisited)
+                .withCredential(credential)
+                .build();
+//        presenter = new InitialPresenter(this, hasVisited);
         presenter.start();
     }
 
@@ -65,4 +74,5 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         Log.d(TAG, "onDestroy: ");
         unbinder.unbind();
     }
+
 }

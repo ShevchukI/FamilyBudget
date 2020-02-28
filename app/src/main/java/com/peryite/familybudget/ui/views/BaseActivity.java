@@ -64,4 +64,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     }
 
+    @Override
+    public void enableElements(boolean enabled) {
+
+    }
+
+    @Override
+    public void closeActivity() {
+        this.finish();
+    }
+
 }

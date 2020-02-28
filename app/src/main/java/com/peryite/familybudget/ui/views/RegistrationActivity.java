@@ -8,13 +8,17 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.peryite.familybudget.R;
+import com.peryite.familybudget.api.RestClient;
+import com.peryite.familybudget.api.repository.UserRepository;
 import com.peryite.familybudget.ui.contracts.RegistrationContract;
 import com.peryite.familybudget.ui.models.User;
 import com.peryite.familybudget.ui.presenters.RegistrationPresenter;
 import com.peryite.familybudget.utils.RegEx;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +28,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrationActivity extends BaseActivity implements RegistrationContract.View {
 
@@ -69,7 +76,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     private RegistrationContract.Presenter presenter;
 
-    private User user;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +96,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
         elements = fillElementList();
 
-        user = new User();
+        userRepository = RestClient.getClient().create(UserRepository.class);
     }
 
     @Override
@@ -139,12 +146,12 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     public boolean isFieldsValid() {
         boolean isValid = true;
-        if (!isFieldNotEmpty(firstName, firstNameError)) {
-            isValid = false;
-        }
-        if (!isFieldNotEmpty(lastName, lastNameError)) {
-            isValid = false;
-        }
+//        if (!isFieldNotEmpty(firstName, firstNameError)) {
+//            isValid = false;
+//        }
+//        if (!isFieldNotEmpty(lastName, lastNameError)) {
+//            isValid = false;
+//        }
         if (!isFieldNotEmpty(username, usernameError)) {
             isValid = false;
         }
@@ -172,30 +179,87 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     @Override
     public boolean registerNewUser(User user) {
+        Call<User> userCall = userRepository.create(user);
+        userCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+                    User user = response.body();
 
-        return false;
+                    Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_SHORT).show();
+
+                    presenter.registrationSuccessful();
+                } else {
+                    try {
+                        Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_LONG).show();
+
+                        presenter.registrationFailure();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                presenter.registrationFailure();
+
+                call.cancel();
+            }
+        });
+
+        return true;
     }
 
     @Override
     public void disableElements() {
+        firstName.setEnabled(false);
         firstNameError.setEnabled(false);
-        usernameError.setEnabled(false);
+        lastName.setEnabled(false);
         lastNameError.setEnabled(false);
+        username.setEnabled(false);
+        usernameError.setEnabled(false);
+        email.setEnabled(false);
         emailError.setEnabled(false);
+        password.setEnabled(false);
         passwordError.setEnabled(false);
+        passwordConfirm.setEnabled(false);
         passwordConfirmError.setEnabled(false);
         registration.setEnabled(false);
     }
 
     @Override
     public void enableElements() {
+        firstName.setEnabled(true);
         firstNameError.setEnabled(true);
-        usernameError.setEnabled(true);
+        lastName.setEnabled(true);
         lastNameError.setEnabled(true);
+        username.setEnabled(true);
+        usernameError.setEnabled(true);
+        email.setEnabled(true);
         emailError.setEnabled(true);
+        password.setEnabled(true);
         passwordError.setEnabled(true);
+        passwordConfirm.setEnabled(true);
         passwordConfirmError.setEnabled(true);
         registration.setEnabled(true);
+    }
+
+    @Override
+    public void enableElements(boolean enabled) {
+        firstName.setEnabled(enabled);
+        firstNameError.setEnabled(enabled);
+        lastName.setEnabled(enabled);
+        lastNameError.setEnabled(enabled);
+        username.setEnabled(enabled);
+        usernameError.setEnabled(enabled);
+        email.setEnabled(enabled);
+        emailError.setEnabled(enabled);
+        password.setEnabled(enabled);
+        passwordError.setEnabled(enabled);
+        passwordConfirm.setEnabled(enabled);
+        passwordConfirmError.setEnabled(enabled);
+        registration.setEnabled(enabled);
     }
 
     private boolean isFieldNotEmpty(AppCompatEditText editText, AppCompatTextView errorTextView) {

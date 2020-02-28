@@ -32,6 +32,7 @@
     <string name="create_new_account">Create New Account</string>
     <string name="sign_in_with_google">Sign In with Google</string>
     <string name="first_name_text">First Name</string>
+    <string name="optional_text">(*optional)</string>
     <string name="last_name_text">Last Name</string>
     <string name="username_text">Username</string>
     <string name="registration_text">Registration</string>

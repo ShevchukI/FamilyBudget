@@ -19,11 +19,29 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
         if (view.isFieldsValid()) {
             User user = fillUserFromFields(view.getFieldsValue());
 
-            view.disableElements();
+            view.enableElements(false);
             view.showProgress();
 
             view.registerNewUser(user);
         }
+    }
+
+    @Override
+    public void registrationSuccessful() {
+        view.hideProgress();
+        view.enableElements(true);
+
+        view.showMessage("Successful");
+
+        view.closeActivity();
+    }
+
+    @Override
+    public void registrationFailure() {
+        view.hideProgress();
+        view.enableElements(true);
+
+        view.showMessage("Failure");
     }
 
     private User fillUserFromFields(Map<String, Object> values) {

@@ -91,11 +91,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void doSignIn() {
         Log.d(TAG, "doSignIn: ");
-        preferences = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
-        preferences.edit()
-                .putBoolean(getResources().getString(R.string.visitedPreferences), rememberMe.isChecked())
-                .apply();
+//        preferences = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
+//        preferences.edit()
+//                .putBoolean(getResources().getString(R.string.visitedPreferences), rememberMe.isChecked())
+//                .apply();
         //TODO sign in
+
+        Intent intent = new Intent(this, BudgetActivity.class);
+        startActivity(intent);
     }
 
 //    @Override
@@ -125,6 +128,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Log.d(TAG, "doCreateAccount: ");
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.login_sign_in)
+    public void clickOnSignIn(){
+        presenter.onSignIn(email.getText().toString(), password.getText().toString());
     }
 
     @OnClick(R.id.login_create_new_account)

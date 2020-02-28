@@ -20,4 +20,8 @@ public interface BaseView {
     void enableElements(List<View> elements);
 
     void enableElements();
+
+    void enableElements(boolean enabled);
+
+    void closeActivity();
 }
