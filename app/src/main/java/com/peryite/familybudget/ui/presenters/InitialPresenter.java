@@ -45,7 +45,7 @@ public class InitialPresenter implements InitialContract.Presenter {
             //TODO authorization
             if (!jsonCredential.equals("empty")) {
                 Credential credential = (Credential) GsonUtil.fromJson(jsonCredential, Credential.class);
-                Call<User> call = userRepository.getInfo(credential.getToken());
+                Call<User> call = userRepository.getInfo(credential.getBearerToken());
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
@@ -65,8 +65,9 @@ public class InitialPresenter implements InitialContract.Presenter {
                         call.cancel();
                     }
                 });
+            } else {
+                view.openActivity(LoginActivity.class);
             }
-            view.openActivity(BudgetActivity.class);
         }
     }
 

@@ -15,4 +15,8 @@ public class Credential {
     public String getToken() {
         return token;
     }
+
+    public String getBearerToken() {
+        return "Bearer " + token;
+    }
 }

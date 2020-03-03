@@ -1,17 +1,22 @@
 package com.peryite.familybudget.ui.presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.peryite.familybudget.ui.contracts.LoginContract;
+import com.peryite.familybudget.ui.models.Login;
+import com.peryite.familybudget.ui.views.BudgetActivity;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
     private final String TAG = this.getClass().getSimpleName();
 
     private LoginContract.View view;
+    private Context context;
 
-    public LoginPresenter(LoginContract.View view) {
+    public LoginPresenter(LoginContract.View view, Context context) {
         this.view = view;
+        this.context = context;
     }
 
     @Override
@@ -22,11 +27,11 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void onSignIn(String email, String password) {
+    public void onSignIn(String username, String password) {
         Log.d(TAG, "onSignIn: ");
-        //TODO sign in
-        view.doSignIn();
-        view.showMessage("onSignIn: placeholder");
+
+        Login login = new Login(username, password);
+        view.doSignIn(login);
     }
 
     @Override
@@ -34,5 +39,15 @@ public class LoginPresenter implements LoginContract.Presenter {
         Log.d(TAG, "onClickCreateNewAccount: ");
 
         view.doCreateAccount();
+    }
+
+    @Override
+    public void signInSuccessful() {
+        view.startActivity(context, BudgetActivity.class);
+    }
+
+    @Override
+    public void signInFailure() {
+
     }
 }

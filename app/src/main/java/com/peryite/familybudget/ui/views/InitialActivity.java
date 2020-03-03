@@ -47,7 +47,7 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
                 .withVisited(hasVisited)
                 .withCredential(credential)
                 .build();
-//        presenter = new InitialPresenter(this, hasVisited);
+
         presenter.start();
     }
 

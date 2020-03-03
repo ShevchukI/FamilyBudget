@@ -1,8 +1,11 @@
 package com.peryite.familybudget.ui.views;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,11 +16,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.peryite.familybudget.R;
+import com.peryite.familybudget.api.RestClient;
+import com.peryite.familybudget.api.repository.UserRepository;
+import com.peryite.familybudget.ui.models.Credential;
+import com.peryite.familybudget.ui.models.User;
+import com.peryite.familybudget.utils.GsonUtil;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BudgetActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private final String TAG = this.getClass().getSimpleName();
+
+    private SharedPreferences preferencesCredential;
+    private UserRepository userRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +59,39 @@ public class BudgetActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
+        String jsonCredential = preferencesCredential.getString("credential", "empty");
+
+        userRepository = RestClient.getClient().create(UserRepository.class);
+
+        if (!jsonCredential.equals("empty")) {
+            Credential credential = (Credential) GsonUtil.fromJson(jsonCredential, Credential.class);
+            Call<User> userCall = userRepository.getInfo(credential.getBearerToken());
+            userCall.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if(response.isSuccessful()){
+                        User user = response.body();
+                        Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_LONG).show();
+
+                        Log.d(TAG, user.toString());
+                    } else {
+                        Log.d(TAG, "onResponse: not successful");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Log.d(TAG, "fail response!");
+                    call.cancel();
+                }
+            });
+
+            Log.d(TAG, "");
+        }
+
+
     }
 
     @Override
@@ -92,6 +144,9 @@ public class BudgetActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else if(id == R.id.nav_logout){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -1,5 +1,6 @@
 package com.peryite.familybudget.ui;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -22,6 +23,8 @@ public interface BaseView {
     void enableElements();
 
     void enableElements(boolean enabled);
+
+    void startActivity(Context packageContext, Class cls);
 
     void closeActivity();
 }

@@ -35,15 +35,15 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/email_address_text"
+            android:text="@string/username_text"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/medium_text" />
 
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/et_email"
+            android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email_text"
+            android:hint="@string/username_text"
             android:inputType="textEmailAddress" />
 
     </LinearLayout>

@@ -1,5 +1,7 @@
 package com.peryite.familybudget.ui.views;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -67,6 +69,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public void enableElements(boolean enabled) {
 
+    }
+
+    @Override
+    public void startActivity(Context packageContext, Class cls) {
+        Intent intent = new Intent(packageContext, cls);
+        startActivity(intent);
     }
 
     @Override
