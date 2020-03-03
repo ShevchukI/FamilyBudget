@@ -56,7 +56,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.login_sign_in_with_google)
     AppCompatButton signInWithGoogle;
 
-//    private Unbinder unbinder;
 
     private LoginContract.Presenter presenter;
 

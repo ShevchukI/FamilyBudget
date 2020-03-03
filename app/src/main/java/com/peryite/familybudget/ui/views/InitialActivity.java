@@ -43,6 +43,9 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
         credential = preferencesCredential.getString("credential", "empty");
 
+//        Intent intent = new Intent(this, CategoryItemActivity.class);
+//        startActivity(intent);
+
         presenter = new InitialPresenter.Builder().withView(this)
                 .withVisited(hasVisited)
                 .withCredential(credential)

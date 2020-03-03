@@ -70,21 +70,21 @@
         app:layout_constraintTop_toBottomOf="@id/input_linear_layout">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_book_recycler"
+            android:id="@+id/category_item_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/rv_book_recycler"
-            app:layout_constraintEnd_toEndOf="@+id/rv_book_recycler"
-            app:layout_constraintHorizontal_bias="0.487"
-            app:layout_constraintStart_toStartOf="@+id/rv_book_recycler"
-            app:layout_constraintTop_toTopOf="@+id/rv_book_recycler" />
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progress_bar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:indeterminate="true"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/category_item_recycler"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/category_item_recycler"-->
+<!--            app:layout_constraintHorizontal_bias="0.487"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/category_item_recycler"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/category_item_recycler" />-->
 
     </android.support.constraint.ConstraintLayout>
 

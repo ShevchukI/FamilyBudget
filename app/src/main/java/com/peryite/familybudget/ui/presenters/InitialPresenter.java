@@ -39,6 +39,7 @@ public class InitialPresenter implements InitialContract.Presenter {
         Log.d(TAG, "start: hasVisited = " + hasVisited);
         view.showProgress();
 
+
         if (!hasVisited) {
             view.openActivity(LoginActivity.class);
         } else {

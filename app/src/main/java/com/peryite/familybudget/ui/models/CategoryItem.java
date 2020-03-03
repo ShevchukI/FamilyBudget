@@ -23,6 +23,14 @@ public class CategoryItem {
     public CategoryItem() {
     }
 
+    public CategoryItem(Long id, String name, Double price, String description, Timestamp date) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.date = date;
+    }
+
     public Long getId() {
         return id;
     }

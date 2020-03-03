@@ -76,7 +76,7 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapte
 
             subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
-            number.setText(getAdapterPosition() + 1);
+//            number.setText(getAdapterPosition() + 1);
             name.setText(categoryItem.getName());
             price.setText(String.valueOf(categoryItem.getPrice()));
             date.setText(String.valueOf(categoryItem.getDate()));
