@@ -21,7 +21,7 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
-    private Unbinder unbinder;
+//    private Unbinder unbinder;
 
     private InitialContract.Presenter presenter;
     private SharedPreferences preferencesVisited;
@@ -68,11 +68,11 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         startActivity(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
-        unbinder.unbind();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        Log.d(TAG, "onDestroy: ");
+//        unbinder.unbind();
+//    }
 
 }

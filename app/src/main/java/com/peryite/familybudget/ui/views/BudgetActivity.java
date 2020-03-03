@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
@@ -25,17 +26,25 @@ import com.peryite.familybudget.ui.models.Credential;
 import com.peryite.familybudget.ui.models.User;
 import com.peryite.familybudget.utils.GsonUtil;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BudgetActivity extends AppCompatActivity
+public class BudgetActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+
     private SharedPreferences preferencesCredential;
     private UserRepository userRepository;
+    private Credential credential;
 
 
     @Override
@@ -44,6 +53,9 @@ public class BudgetActivity extends AppCompatActivity
         setContentView(R.layout.activity_budget);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        unbinder = ButterKnife.bind(this);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,13 +64,18 @@ public class BudgetActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+        AppCompatTextView navHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_header_username);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+//        AppCompatTextView navHeaderUsername = drawer.findViewById(R.id.navigation_header_username);
 
         preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
         String jsonCredential = preferencesCredential.getString("credential", "empty");
@@ -66,12 +83,14 @@ public class BudgetActivity extends AppCompatActivity
         userRepository = RestClient.getClient().create(UserRepository.class);
 
         if (!jsonCredential.equals("empty")) {
-            Credential credential = (Credential) GsonUtil.fromJson(jsonCredential, Credential.class);
+            credential = (Credential) GsonUtil.fromJson(jsonCredential, Credential.class);
+            navHeaderUsername.setText(credential.getUsername());
+
             Call<User> userCall = userRepository.getInfo(credential.getBearerToken());
             userCall.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         User user = response.body();
                         Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_LONG).show();
 
@@ -96,7 +115,7 @@ public class BudgetActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -144,13 +163,18 @@ public class BudgetActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        } else if(id == R.id.nav_logout){
+        } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+
+
         return true;
     }
+
+
 }

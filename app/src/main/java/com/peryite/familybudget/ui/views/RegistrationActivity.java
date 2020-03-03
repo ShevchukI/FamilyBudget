@@ -72,7 +72,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
     @BindView(R.id.registration_create)
     AppCompatButton registration;
 
-    private Unbinder unbinder;
+//    private Unbinder unbinder;
 
     private RegistrationContract.Presenter presenter;
 
@@ -99,12 +99,12 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         userRepository = RestClient.getClient().create(UserRepository.class);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
-        unbinder.unbind();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        Log.d(TAG, "onDestroy: ");
+//        unbinder.unbind();
+//    }
 
 
     @Override

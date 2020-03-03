@@ -4,6 +4,7 @@
 
 
     <string name="title_activity_budget">BudgetActivity</string>
+    <string name="budgets_text">Budgets</string>
 
     <!--Navigation elements-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

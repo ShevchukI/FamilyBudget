@@ -56,7 +56,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.login_sign_in_with_google)
     AppCompatButton signInWithGoogle;
 
-    private Unbinder unbinder;
+//    private Unbinder unbinder;
 
     private LoginContract.Presenter presenter;
 
@@ -88,12 +88,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
-        unbinder.unbind();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        Log.d(TAG, "onDestroy: ");
+//        unbinder.unbind();
+//    }
 
     @Override
     public void doSignIn() {
@@ -138,6 +138,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         });
 
     }
+
 
     @Override
     public void doCreateAccount() {

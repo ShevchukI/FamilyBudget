@@ -13,15 +13,21 @@ import com.peryite.familybudget.ui.BaseView;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
     private final String TAG = this.getClass().getSimpleName();
 
     protected List<View> elements;
 
+    protected Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        unbinder = ButterKnife.bind(this);
     }
 
     @Override
@@ -82,4 +88,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         this.finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+        unbinder.unbind();
+    }
 }
