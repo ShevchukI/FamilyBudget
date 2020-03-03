@@ -5,6 +5,12 @@
 
     <string name="title_activity_budget">BudgetActivity</string>
     <string name="budgets_text">Budgets</string>
+    <string name="items_text">Items</string>
+    <string name="grill_icon_text">#</string>
+    <string name="name_text">Name</string>
+    <string name="price_text">Price</string>
+    <string name="added_text">Added</string>
+    <string name="description_text">Description</string>
 
     <!--Navigation elements-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

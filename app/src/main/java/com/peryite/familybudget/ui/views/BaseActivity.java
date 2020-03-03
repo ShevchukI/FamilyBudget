@@ -13,7 +13,6 @@ import com.peryite.familybudget.ui.BaseView;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
