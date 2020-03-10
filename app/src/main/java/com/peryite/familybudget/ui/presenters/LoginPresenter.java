@@ -6,6 +6,7 @@ import android.util.Log;
 import com.peryite.familybudget.ui.contracts.LoginContract;
 import com.peryite.familybudget.ui.models.Login;
 import com.peryite.familybudget.ui.views.BudgetActivity;
+import com.peryite.familybudget.ui.views.CategoryItemActivity;
 
 public class LoginPresenter implements LoginContract.Presenter {
 

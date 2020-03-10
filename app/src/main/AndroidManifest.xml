@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.views.CategoryItemActivity"></activity>
+        <activity
+            android:name=".ui.views.CategoryItemActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.views.RegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar" />

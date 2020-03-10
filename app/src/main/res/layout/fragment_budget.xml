@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/budget_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/budget_title_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/budget_title_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="budgetGroup/" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/budget_title_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Budget"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium_text" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/budget_title_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="01/01/2020-01/01/2021" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/budget_spend_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/budget_spend_progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/circle"
+                    android:rotation="270" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/budget_spend_progressBar_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="25%"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/budget_spend_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="50/100" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/budget_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/categories_text"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/medium_text"
+        app:layout_constraintTop_toBottomOf="@id/budget_header_layout"
+        android:gravity="center"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/budget_categories" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_white_24dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="339dp"
+        tools:layout_editor_absoluteY="659dp" />
+
+</android.support.constraint.ConstraintLayout>

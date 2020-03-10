@@ -33,7 +33,7 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapte
     public void onBindViewHolder(@NonNull CategoryItemViewHolder categoryItemViewHolder, final int position) {
         final CategoryItem categoryItem = categoryItems.get(position);
 
-        categoryItemViewHolder.bind(categoryItem);
+        categoryItemViewHolder.bind(categoryItem, position);
 
         categoryItemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,12 +71,12 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapte
             subItem = itemView.findViewById(R.id.category_item_sub_item);
         }
 
-        private void bind(CategoryItem categoryItem) {
+        private void bind(CategoryItem categoryItem, int position) {
             boolean expanded = categoryItem.isExpanded();
 
             subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
-//            number.setText(getAdapterPosition() + 1);
+            number.setText(String.valueOf(position+1));
             name.setText(categoryItem.getName());
             price.setText(String.valueOf(categoryItem.getPrice()));
             date.setText(String.valueOf(categoryItem.getDate()));

@@ -38,8 +38,8 @@ public class BudgetActivity extends BaseActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+//    @BindView(R.id.fab)
+//    FloatingActionButton fab;
 
     AppCompatTextView navHeaderUsername;
 
@@ -70,13 +70,13 @@ public class BudgetActivity extends BaseActivity
 
         navHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_header_username);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

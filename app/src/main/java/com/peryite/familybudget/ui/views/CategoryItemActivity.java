@@ -1,9 +1,11 @@
 package com.peryite.familybudget.ui.views;
 
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.widget.ProgressBar;
 
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.ui.adapters.CategoryItemAdapter;
@@ -11,7 +13,6 @@ import com.peryite.familybudget.ui.models.CategoryItem;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,8 +20,15 @@ import butterknife.ButterKnife;
 
 public class CategoryItemActivity extends BaseActivity {
 
+    @BindView(R.id.category_item_spend_progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.category_item_spend_progressBar_progress)
+    AppCompatTextView progress;
+
     @BindView(R.id.category_item_recycler)
     RecyclerView recyclerView;
+
+    private int limit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +36,8 @@ public class CategoryItemActivity extends BaseActivity {
         setContentView(R.layout.activity_category_item);
 
         unbinder = ButterKnife.bind(this);
+
+        limit = 500;
 
         List<CategoryItem> categoryItems = new ArrayList<>();
         categoryItems.add(new CategoryItem(23L, "itemOne", 24.04, "desct", new Timestamp(1)));
@@ -45,5 +55,19 @@ public class CategoryItemActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(categoryItemAdapter);
         recyclerView.setHasFixedSize(true);
+
+        double allPrice = 0;
+        for (CategoryItem categoryItem : categoryItems) {
+            allPrice += categoryItem.getPrice();
+        }
+
+        setProgressValue((int) allPrice);
+    }
+
+
+    private void setProgressValue(int progressValue) {
+        progressBar.setProgress(((100 * progressValue) / limit));
+        progress.setText(progressBar.getProgress() + "%");
+
     }
 }
