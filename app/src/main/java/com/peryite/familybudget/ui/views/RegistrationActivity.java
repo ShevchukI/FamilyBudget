@@ -1,5 +1,6 @@
 package com.peryite.familybudget.ui.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -75,6 +76,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
     private RegistrationContract.Presenter presenter;
 
     private UserRepository userRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +187,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
                     User user = response.body();
 
                     Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_SHORT).show();
-
                     presenter.registrationSuccessful();
                 } else {
                     try {

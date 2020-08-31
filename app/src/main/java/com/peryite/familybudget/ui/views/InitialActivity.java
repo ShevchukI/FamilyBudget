@@ -34,27 +34,12 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
         Log.d(TAG, "onCreate:");
-        unbinder = ButterKnife.bind(this);
+
         init();
-       /* unbinder = ButterKnife.bind(this);
-
-        preferencesVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
-        hasVisited = preferencesVisited.getBoolean(getResources().getString(R.string.visitedPreferences), false);
-
-        preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
-        credential = preferencesCredential.getString("credential", "empty");
-
-
-        presenter = new InitialPresenter.Builder().withView(this)
-                .withVisited(hasVisited)
-                .withCredential(credential)
-                .build();
-
-        presenter.start();*/
     }
 
     private void init(){
-
+        unbinder = ButterKnife.bind(this);
 
         preferencesVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
         hasVisited = preferencesVisited.getBoolean(getResources().getString(R.string.visitedPreferences), false);
@@ -65,13 +50,8 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         InitialModel initialModel = new InitialModel(hasVisited, credential);
         presenter = new InitialPresenter(initialModel);
         presenter.attachView(this);
-        presenter.start();
-       /* presenter = new InitialPresenter.Builder().withView(this)
-                .withVisited(hasVisited)
-                .withCredential(credential)
-                .build();
 
-        presenter.start();*/
+        presenter.start();
     }
 
     @Override
@@ -97,14 +77,6 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
         presenter.detachView();
-        try {
-            unbinder.unbind();
-
-        } catch (IllegalStateException unbinderISE){
-            if(unbinderISE.getMessage().equals("Bindings already cleared.")){
-                Log.d(TAG, "onDestroy: Bindings already cleared.");
-            }
-        }
 
     }
 

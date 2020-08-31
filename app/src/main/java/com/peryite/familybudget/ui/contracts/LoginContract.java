@@ -1,11 +1,12 @@
 package com.peryite.familybudget.ui.contracts;
 
+import com.peryite.familybudget.ui.BaseModel;
 import com.peryite.familybudget.ui.BasePresenter;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.entities.Login;
 
 public interface LoginContract {
-    interface Model {
+    interface Model extends BaseModel {
 
     }
 
@@ -20,9 +21,9 @@ public interface LoginContract {
     }
 
     interface Presenter extends BasePresenter {
-        void onForgotPassword();
+        void onClickForgotPassword();
 
-        void onSignIn(String email, String password);
+        void onClickSignIn(String email, String password);
 
         void onClickCreateNewAccount();
 

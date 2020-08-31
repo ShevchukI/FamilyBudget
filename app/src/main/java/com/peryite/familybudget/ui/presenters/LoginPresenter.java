@@ -13,7 +13,12 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
     private LoginContract.View view;
+    private LoginContract.Model model;
     private Context context;
+
+    public LoginPresenter(LoginContract.Model model){
+        this.model = model;
+    }
 
     public LoginPresenter(LoginContract.View view, Context context) {
         this.view = view;
@@ -21,14 +26,14 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void onForgotPassword() {
+    public void onClickForgotPassword() {
         Log.d(TAG, "onForgotPassword: ");
         //TODO forgot password
         view.showMessage("onForgotPassword: placeholder");
     }
 
     @Override
-    public void onSignIn(String username, String password) {
+    public void onClickSignIn(String username, String password) {
         Log.d(TAG, "onSignIn: ");
 
         Login login = new Login(username, password);

@@ -18,6 +18,7 @@ import com.peryite.familybudget.api.repository.AuthorizationRepository;
 import com.peryite.familybudget.ui.contracts.LoginContract;
 import com.peryite.familybudget.entities.Credential;
 import com.peryite.familybudget.entities.Login;
+import com.peryite.familybudget.ui.models.LoginModel;
 import com.peryite.familybudget.ui.presenters.LoginPresenter;
 import com.peryite.familybudget.utils.GsonUtil;
 
@@ -61,7 +62,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private SharedPreferences preferencesHasVisited;
     private SharedPreferences preferencesCredential;
 
-    private AuthorizationRepository authorizationRepository;
+   // private AuthorizationRepository authorizationRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +72,15 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         unbinder = ButterKnife.bind(this);
 
-        presenter = new LoginPresenter(this, this);
+        init();
+    }
+
+    private void init(){
+        //presenter = new LoginPresenter(this, this);
 
         elements = fillElementList();
 
-        authorizationRepository = RestClient.getClient().create(AuthorizationRepository.class);
+    //    authorizationRepository = RestClient.getClient().create(AuthorizationRepository.class);
 
         preferencesCredential = getSharedPreferences(getResources().getString(R.string.credentialPreferences), MODE_PRIVATE);
 
@@ -83,15 +88,19 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         preferencesHasVisited.edit()
                 .putBoolean(getResources().getString(R.string.visitedPreferences), false)
                 .apply();
+
+        LoginModel loginModel = new LoginModel(preferencesCredential);
+
+        presenter = new LoginPresenter(loginModel);
+        presenter.attachView(this);
     }
 
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        Log.d(TAG, "onDestroy: ");
-//        unbinder.unbind();
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+        presenter.detachView();
+    }
 
     @Override
     public void doSignIn() {
@@ -101,39 +110,39 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void doSignIn(Login login) {
-        Log.d(TAG, "doSignIn: ");
-        Call<Credential> credentialCall = authorizationRepository.login(login);
-        credentialCall.enqueue(new Callback<Credential>() {
-            @Override
-            public void onResponse(Call<Credential> call, Response<Credential> response) {
-                if (response.isSuccessful()) {
-                    Credential credential = response.body();
-                    if (credential != null) {
-
-                        String json = GsonUtil.toJson(credential);
-                        preferencesCredential.edit().putString(getResources().getString(R.string.credentialPreferences), json)
-                                .apply();
-
-                        preferencesHasVisited.edit()
-                                .putBoolean(getResources().getString(R.string.visitedPreferences), rememberMe.isChecked())
-                                .apply();
-
-                        presenter.signInSuccessful();
-                    }
-                } else {
-                    if (response.code() == 403) {
-                        Toast.makeText(getApplicationContext(), "Username or password incorrect!", Toast.LENGTH_LONG).show();
-                        presenter.signInFailure();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Credential> call, Throwable t) {
-                presenter.signInFailure();
-                call.cancel();
-            }
-        });
+//        Log.d(TAG, "doSignIn: ");
+//        Call<Credential> credentialCall = authorizationRepository.login(login);
+//        credentialCall.enqueue(new Callback<Credential>() {
+//            @Override
+//            public void onResponse(Call<Credential> call, Response<Credential> response) {
+//                if (response.isSuccessful()) {
+//                    Credential credential = response.body();
+//                    if (credential != null) {
+//
+//                        String json = GsonUtil.toJson(credential);
+//                        preferencesCredential.edit().putString(getResources().getString(R.string.credentialPreferences), json)
+//                                .apply();
+//
+//                        preferencesHasVisited.edit()
+//                                .putBoolean(getResources().getString(R.string.visitedPreferences), rememberMe.isChecked())
+//                                .apply();
+//
+//                        presenter.signInSuccessful();
+//                    }
+//                } else {
+//                    if (response.code() == 403) {
+//                        Toast.makeText(getApplicationContext(), "Username or password incorrect!", Toast.LENGTH_LONG).show();
+//                        presenter.signInFailure();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Credential> call, Throwable t) {
+//                presenter.signInFailure();
+//                call.cancel();
+//            }
+//        });
 
     }
 
@@ -152,7 +161,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @OnClick(R.id.login_sign_in)
     public void clickOnSignIn() {
-        presenter.onSignIn(username.getText().toString(), password.getText().toString());
+        presenter.onClickSignIn(username.getText().toString(), password.getText().toString());
     }
 
     @OnClick(R.id.login_create_new_account)

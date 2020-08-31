@@ -9,7 +9,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
-    private static final String BASE_URL = " https://family-budget-diploma.herokuapp.com";
+    //private static final String BASE_URL = " https://family-budget-diploma.herokuapp.com";
+    private static final String BASE_URL = " https://badget-manager-back-api.herokuapp.com";
 
     private static Retrofit retrofit = null;
 
