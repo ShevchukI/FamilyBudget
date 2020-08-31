@@ -124,11 +124,11 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     public User fillUserFromFields() {
         User user = new User();
-        user.setFirstName(firstName.getText().toString());
-        user.setLastName(lastName.getText().toString());
+     //   user.setFirstName(firstName.getText().toString());
+     //   user.setLastName(lastName.getText().toString());
         user.setUsername(username.getText().toString());
-        user.setEmail(email.getText().toString());
-        user.setPassword(password.getText().toString());
+     //   user.setEmail(email.getText().toString());
+       // user.setPassword(password.getText().toString());
 
         return user;
     }

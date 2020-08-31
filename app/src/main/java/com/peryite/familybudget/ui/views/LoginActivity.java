@@ -2,6 +2,7 @@ package com.peryite.familybudget.ui.views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.AuthorizationRepository;
+import com.peryite.familybudget.api.repository.UserRepository;
+import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.contracts.LoginContract;
 import com.peryite.familybudget.entities.Credential;
 import com.peryite.familybudget.entities.Login;
@@ -22,6 +25,7 @@ import com.peryite.familybudget.ui.models.LoginModel;
 import com.peryite.familybudget.ui.presenters.LoginPresenter;
 import com.peryite.familybudget.utils.GsonUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +63,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private LoginContract.Presenter presenter;
 
-    private SharedPreferences preferencesHasVisited;
-    private SharedPreferences preferencesCredential;
-
-   // private AuthorizationRepository authorizationRepository;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,21 +74,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         init();
     }
 
-    private void init(){
-        //presenter = new LoginPresenter(this, this);
-
+    private void init() {
         elements = fillElementList();
 
-    //    authorizationRepository = RestClient.getClient().create(AuthorizationRepository.class);
+        SharedPreferences preferencesCredential = getSharedPreferences(getResources().getString(R.string.credentialPreferences), MODE_PRIVATE);
 
-        preferencesCredential = getSharedPreferences(getResources().getString(R.string.credentialPreferences), MODE_PRIVATE);
-
-        preferencesHasVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
+        SharedPreferences preferencesHasVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
         preferencesHasVisited.edit()
                 .putBoolean(getResources().getString(R.string.visitedPreferences), false)
                 .apply();
 
-        LoginModel loginModel = new LoginModel(preferencesCredential);
+        LoginModel loginModel = new LoginModel(preferencesCredential, preferencesHasVisited);
 
         presenter = new LoginPresenter(loginModel);
         presenter.attachView(this);
@@ -159,6 +154,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         return false;
     }
 
+    @Override
+    public void checkUser(String username, String password) {
+        CheckUserTask checkUserTask = new CheckUserTask();
+        checkUserTask.execute(username, password);
+    }
+
     @OnClick(R.id.login_sign_in)
     public void clickOnSignIn() {
         presenter.onClickSignIn(username.getText().toString(), password.getText().toString());
@@ -178,5 +179,30 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         views.add(createNewAccount);
 
         return views;
+    }
+
+    private class CheckUserTask extends AsyncTask<String, Void, User>{
+
+        @Override
+        protected User doInBackground(String... strings) {
+            User user = null;
+
+            UserRepository userRepository = RestClient.getClient(new Credential(strings[0], strings[1])).create(UserRepository.class);
+            Call<User> userCall = userRepository.getUser();
+
+            try {
+                Response<User> userResponse = userCall.execute();
+                user = userResponse.body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return user;
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            presenter.userCheckResult(user);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.peryite.familybudget.ui.presenters;
 import android.content.Context;
 import android.util.Log;
 
+import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.LoginContract;
 import com.peryite.familybudget.entities.Login;
@@ -33,12 +34,16 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void onClickSignIn(String username, String password) {
-        Log.d(TAG, "onSignIn: ");
-
-        Login login = new Login(username, password);
-        view.doSignIn(login);
+    public void onClickSignIn(String email, String password) {
+        view.checkUser(email, password);
     }
+
+//    public void onClickSignIn(String username, String password) {
+//        Log.d(TAG, "onSignIn: ");
+//
+//        Login login = new Login(username, password);
+//        view.doSignIn(login);
+//    }
 
     @Override
     public void onClickCreateNewAccount() {
@@ -55,6 +60,15 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void signInFailure() {
 
+    }
+
+    @Override
+    public void userCheckResult(User user) {
+        if(user!=null){
+            view.showMessage(user.toString());
+        } else {
+            view.showMessage("User is Null. Something wrong!");
+        }
     }
 
     @Override

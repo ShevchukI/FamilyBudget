@@ -15,4 +15,7 @@ public interface UserRepository {
 
     @GET("/api/users/info")
     Call<User> getInfo(@Header("Authorization") String token);
+
+    @GET("/user")
+    Call<User> getUser();
 }
