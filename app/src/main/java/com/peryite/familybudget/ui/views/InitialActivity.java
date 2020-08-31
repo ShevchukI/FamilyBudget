@@ -1,5 +1,6 @@
 package com.peryite.familybudget.ui.views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.ProgressBar;
 
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.ui.contracts.InitialContract;
+import com.peryite.familybudget.ui.models.InitialModel;
 import com.peryite.familybudget.ui.presenters.InitialPresenter;
 
 import butterknife.BindView;
@@ -21,8 +23,6 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
-//    private Unbinder unbinder;
-
     private InitialContract.Presenter presenter;
     private SharedPreferences preferencesVisited;
     private SharedPreferences preferencesCredential;
@@ -34,8 +34,9 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
         Log.d(TAG, "onCreate:");
-
         unbinder = ButterKnife.bind(this);
+        init();
+       /* unbinder = ButterKnife.bind(this);
 
         preferencesVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
         hasVisited = preferencesVisited.getBoolean(getResources().getString(R.string.visitedPreferences), false);
@@ -43,15 +44,34 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
         credential = preferencesCredential.getString("credential", "empty");
 
-//        Intent intent = new Intent(this, CategoryItemActivity.class);
-//        startActivity(intent);
 
         presenter = new InitialPresenter.Builder().withView(this)
                 .withVisited(hasVisited)
                 .withCredential(credential)
                 .build();
 
+        presenter.start();*/
+    }
+
+    private void init(){
+
+
+        preferencesVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
+        hasVisited = preferencesVisited.getBoolean(getResources().getString(R.string.visitedPreferences), false);
+
+        preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
+        credential = preferencesCredential.getString("credential", "empty");
+
+        InitialModel initialModel = new InitialModel(hasVisited, credential);
+        presenter = new InitialPresenter(initialModel);
+        presenter.attachView(this);
         presenter.start();
+       /* presenter = new InitialPresenter.Builder().withView(this)
+                .withVisited(hasVisited)
+                .withCredential(credential)
+                .build();
+
+        presenter.start();*/
     }
 
     @Override
@@ -64,18 +84,28 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         hideProgress(progressBar);
     }
 
+
     @Override
     public void openActivity(Class<?> activityClass) {
-        Log.d(TAG, String.format(getResources().getString(R.string.open_activity), activityClass.getSimpleName()));
+        Log.d(TAG, String.format(getResources().getString(R.string.open_activity).toString(), activityClass.getSimpleName()));
         Intent intent = new Intent(this, activityClass);
         startActivity(intent);
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        Log.d(TAG, "onDestroy: ");
-//        unbinder.unbind();
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+        presenter.detachView();
+        try {
+            unbinder.unbind();
+
+        } catch (IllegalStateException unbinderISE){
+            if(unbinderISE.getMessage().equals("Bindings already cleared.")){
+                Log.d(TAG, "onDestroy: Bindings already cleared.");
+            }
+        }
+
+    }
 
 }

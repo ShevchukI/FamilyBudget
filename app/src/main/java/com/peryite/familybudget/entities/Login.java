@@ -1,4 +1,4 @@
-package com.peryite.familybudget.ui.models;
+package com.peryite.familybudget.entities;
 
 public class Login {
     private String username;

@@ -2,7 +2,7 @@ package com.peryite.familybudget.ui.contracts;
 
 import com.peryite.familybudget.ui.BasePresenter;
 import com.peryite.familybudget.ui.BaseView;
-import com.peryite.familybudget.ui.models.Login;
+import com.peryite.familybudget.entities.Login;
 
 public interface LoginContract {
     interface Model {

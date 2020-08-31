@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.ui.adapters.CategoryItemAdapter;
-import com.peryite.familybudget.ui.models.CategoryItem;
+import com.peryite.familybudget.entities.CategoryItem;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.peryite.familybudget.ui.models;
+package com.peryite.familybudget.entities;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -18,5 +18,9 @@ public class Credential {
 
     public String getBearerToken() {
         return "Bearer " + token;
+    }
+
+    public String getBasicAuth(){
+        return username + ":" + token;
     }
 }

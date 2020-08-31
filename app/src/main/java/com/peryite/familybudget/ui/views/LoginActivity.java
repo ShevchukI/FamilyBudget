@@ -16,8 +16,8 @@ import com.peryite.familybudget.R;
 import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.AuthorizationRepository;
 import com.peryite.familybudget.ui.contracts.LoginContract;
-import com.peryite.familybudget.ui.models.Credential;
-import com.peryite.familybudget.ui.models.Login;
+import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.entities.Login;
 import com.peryite.familybudget.ui.presenters.LoginPresenter;
 import com.peryite.familybudget.utils.GsonUtil;
 
@@ -27,7 +27,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

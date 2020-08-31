@@ -1,7 +1,7 @@
 package com.peryite.familybudget.api.repository;
 
-import com.peryite.familybudget.ui.models.Credential;
-import com.peryite.familybudget.ui.models.Login;
+import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.entities.Login;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

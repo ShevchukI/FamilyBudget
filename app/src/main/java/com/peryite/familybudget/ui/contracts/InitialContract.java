@@ -1,11 +1,12 @@
 package com.peryite.familybudget.ui.contracts;
 
+import com.peryite.familybudget.ui.BaseModel;
 import com.peryite.familybudget.ui.BasePresenter;
 import com.peryite.familybudget.ui.BaseView;
 
 public interface InitialContract {
-    interface Model {
-
+    interface Model extends BaseModel {
+        boolean isVisitedUser();
     }
 
     interface View extends BaseView {

@@ -3,10 +3,10 @@ package com.peryite.familybudget.ui.presenters;
 import android.content.Context;
 import android.util.Log;
 
+import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.LoginContract;
-import com.peryite.familybudget.ui.models.Login;
+import com.peryite.familybudget.entities.Login;
 import com.peryite.familybudget.ui.views.BudgetActivity;
-import com.peryite.familybudget.ui.views.CategoryItemActivity;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
@@ -50,5 +50,15 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void signInFailure() {
 
+    }
+
+    @Override
+    public void attachView(BaseView view) {
+        this.view = (LoginContract.View) view;
+    }
+
+    @Override
+    public void detachView() {
+        this.view = null;
     }
 }

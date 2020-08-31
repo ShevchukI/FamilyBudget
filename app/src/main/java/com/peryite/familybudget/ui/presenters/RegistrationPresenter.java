@@ -1,7 +1,8 @@
 package com.peryite.familybudget.ui.presenters;
 
+import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.RegistrationContract;
-import com.peryite.familybudget.ui.models.User;
+import com.peryite.familybudget.entities.User;
 
 import java.util.Map;
 
@@ -53,5 +54,15 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
         user.setPassword((String) values.get("password"));
 
         return user;
+    }
+
+    @Override
+    public void attachView(BaseView view) {
+        this.view = (RegistrationContract.View) view;
+    }
+
+    @Override
+    public void detachView() {
+        this.view = null;
     }
 }

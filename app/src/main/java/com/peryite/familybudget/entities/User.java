@@ -1,4 +1,4 @@
-package com.peryite.familybudget.ui.models;
+package com.peryite.familybudget.entities;
 
 import com.google.gson.annotations.SerializedName;
 

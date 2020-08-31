@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.peryite.familybudget.R;
-import com.peryite.familybudget.ui.models.CategoryItem;
+import com.peryite.familybudget.entities.CategoryItem;
 
 import java.util.List;
 
