@@ -156,15 +156,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         return false;
     }
 
-    @Override
-    public void checkUser(String username, String password) {
-        CheckUserTask checkUserTask = new CheckUserTask();
-        checkUserTask.execute(username, password);
-    }
-
     @OnClick(R.id.login_sign_in)
     public void clickOnSignIn() {
-        presenter.onClickSignIn(username.getText().toString(), password.getText().toString());
+        presenter.onClickSignIn(username.getText().toString(), password.getText().toString(), rememberMe.isChecked());
     }
 
     @OnClick(R.id.login_create_new_account)
@@ -181,31 +175,5 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         views.add(createNewAccount);
 
         return views;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private class CheckUserTask extends AsyncTask<String, Void, User>{
-
-        @Override
-        protected User doInBackground(String... strings) {
-            User user = null;
-
-            UserRepository userRepository = RestClient.getClient(new Credential(strings[0], strings[1])).create(UserRepository.class);
-            Call<User> userCall = userRepository.getUser();
-
-            try {
-                Response<User> userResponse = userCall.execute();
-                user = userResponse.body();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return user;
-        }
-
-        @Override
-        protected void onPostExecute(User user) {
-            super.onPostExecute(user);
-            presenter.userCheckResult(user);
-        }
     }
 }

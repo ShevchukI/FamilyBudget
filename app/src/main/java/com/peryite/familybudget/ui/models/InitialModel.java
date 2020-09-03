@@ -1,6 +1,7 @@
 package com.peryite.familybudget.ui.models;
 
 import com.peryite.familybudget.ui.contracts.InitialContract;
+import com.peryite.familybudget.ui.listeners.BaseAPIRequestListener;
 
 public class InitialModel implements InitialContract.Model {
     private boolean hasVisited;
@@ -24,5 +25,10 @@ public class InitialModel implements InitialContract.Model {
                 return true;
             }
         }
+    }
+
+    @Override
+    public void setListener(BaseAPIRequestListener listener) {
+
     }
 }

@@ -7,7 +7,10 @@ import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.LoginContract;
 import com.peryite.familybudget.entities.Login;
+import com.peryite.familybudget.ui.listeners.OnAPIUserRequestListener;
 import com.peryite.familybudget.ui.views.BudgetActivity;
+
+import java.util.List;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
@@ -17,7 +20,33 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginContract.Model model;
     private Context context;
 
-    public LoginPresenter(LoginContract.Model model){
+    public LoginPresenter(final LoginContract.Model model) {
+        model.setListener(new OnAPIUserRequestListener() {
+            @Override
+            public void onResponse() {
+            }
+
+            @Override
+            public void onFailure() {
+                view.showMessage("Fail!");
+            }
+
+            @Override
+            public void setUser(User user) {
+                if (user != null) {
+                    //TODO: add saving hasVisited state and do login
+                    view.showMessage(user.toString());
+                } else {
+                    view.showMessage("User not found!");
+                }
+            }
+
+            @Override
+            public void setUsers(List<User> users) {
+
+            }
+        });
+
         this.model = model;
     }
 
@@ -34,16 +63,12 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void onClickSignIn(String email, String password) {
-        view.checkUser(email, password);
+    public void onClickSignIn(String login, String password, boolean rememberMe) {
+        Log.d(TAG, "onSignIn: ");
+
+        model.getUser(login, password);
     }
 
-//    public void onClickSignIn(String username, String password) {
-//        Log.d(TAG, "onSignIn: ");
-//
-//        Login login = new Login(username, password);
-//        view.doSignIn(login);
-//    }
 
     @Override
     public void onClickCreateNewAccount() {
@@ -64,7 +89,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void userCheckResult(User user) {
-        if(user!=null){
+        if (user != null) {
             view.showMessage(user.toString());
         } else {
             view.showMessage("User is Null. Something wrong!");

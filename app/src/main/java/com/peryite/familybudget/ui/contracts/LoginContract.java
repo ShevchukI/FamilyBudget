@@ -10,6 +10,8 @@ public interface LoginContract {
     interface Model extends BaseModel {
 
         boolean isSignInSuccessful(String username, String password);
+
+        void getUser(String login, String password);
     }
 
     interface View extends BaseView {
@@ -21,13 +23,12 @@ public interface LoginContract {
 
         boolean isFieldsValid();
 
-        void checkUser(String email, String password);
     }
 
     interface Presenter extends BasePresenter {
         void onClickForgotPassword();
 
-        void onClickSignIn(String email, String password);
+        void onClickSignIn(String login, String password, boolean rememberMe);
 
         void onClickCreateNewAccount();
 
