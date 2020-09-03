@@ -20,7 +20,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginContract.Model model;
     private Context context;
 
-    public LoginPresenter(final LoginContract.Model model) {
+    public LoginPresenter(LoginContract.Model model) {
         model.setListener(new OnAPIUserRequestListener() {
             @Override
             public void onResponse() {

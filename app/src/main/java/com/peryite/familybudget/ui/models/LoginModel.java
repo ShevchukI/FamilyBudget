@@ -49,6 +49,7 @@ public class LoginModel implements LoginContract.Model {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 listener.onFailure();
+                call.cancel();
             }
         });
 

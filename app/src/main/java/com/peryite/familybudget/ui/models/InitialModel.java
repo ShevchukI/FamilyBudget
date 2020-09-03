@@ -49,6 +49,7 @@ public class InitialModel implements InitialContract.Model {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 listener.onFailure();
+                call.cancel();
             }
         });
     }

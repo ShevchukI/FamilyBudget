@@ -15,6 +15,7 @@ import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.UserRepository;
 import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.contracts.RegistrationContract;
+import com.peryite.familybudget.ui.models.RegistrationModel;
 import com.peryite.familybudget.ui.presenters.RegistrationPresenter;
 import com.peryite.familybudget.utils.RegEx;
 
@@ -61,8 +62,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     private RegistrationContract.Presenter presenter;
 
-    private UserRepository userRepository;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,11 +77,11 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         passwordError.setText(getString(R.string.format_empty_field, password.getHint().toString()));
         passwordConfirmError.setText(getString(R.string.format_incorrect_value, passwordConfirm.getHint().toString()));
 
-        presenter = new RegistrationPresenter(this);
-
         elements = fillElementList();
 
-        userRepository = RestClient.getClient().create(UserRepository.class);
+        RegistrationModel registrationModel = new RegistrationModel();
+        presenter = new RegistrationPresenter(registrationModel);
+        presenter.attachView(this);
     }
 
     @Override
@@ -136,39 +135,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         values.put("enableAlexa", enableAlexa.isChecked());
 
         return values;
-    }
-
-    @Override
-    public boolean registerNewUser(User user) {
-        Call<User> userCall = userRepository.create(user);
-        userCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(response.isSuccessful()) {
-                    User user = response.body();
-
-                    Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_SHORT).show();
-                    presenter.registrationSuccessful();
-                } else {
-                    try {
-                        Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_LONG).show();
-
-                        presenter.registrationFailure();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                presenter.registrationFailure();
-
-                call.cancel();
-            }
-        });
-
-        return true;
     }
 
     @Override
@@ -236,10 +202,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         }
 
         return isValid;
-    }
-
-    private boolean isPasswordValid(String password, String confirmPassword) {
-        return password.matches(RegEx.WITHOUT_SPACE.getFullName()) && password.equals(confirmPassword);
     }
 
 }

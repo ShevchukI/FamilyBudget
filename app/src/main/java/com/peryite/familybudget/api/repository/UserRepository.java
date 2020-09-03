@@ -1,7 +1,9 @@
 package com.peryite.familybudget.api.repository;
 
+import com.peryite.familybudget.entities.Login;
 import com.peryite.familybudget.entities.User;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -18,4 +20,7 @@ public interface UserRepository {
 
     @GET("/user")
     Call<User> getUser();
+
+    @POST("/registration/user")
+    Call<ResponseBody> registration(@Body Login login);
 }
