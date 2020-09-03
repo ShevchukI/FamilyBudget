@@ -8,6 +8,7 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/registration_title"
+        style="@style/MediumText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -15,8 +16,6 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:gravity="center"
         android:text="@string/create_new_account"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/medium_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,98 +46,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/first_name_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/first_name_text"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/medium_text" />
-                    <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/optional_text"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/medium_text" />
-                </LinearLayout>
-
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_first_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/first_name_text"
-                    android:inputType="textPersonName" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/tv_first_name_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/colorRed"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/last_name_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:orientation="vertical"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/first_name_linear_layout">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/last_name_text"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/medium_text" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/optional_text"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/medium_text" />
-                </LinearLayout>
-
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/last_name_text"
-                    android:inputType="textPersonName" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/tv_last_name_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/colorRed"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/username_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,14 +55,13 @@
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/last_name_linear_layout">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.v7.widget.AppCompatTextView
+                    style="@style/MediumText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/username_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/medium_text" />
+                    android:text="@string/username_text" />
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_username"
@@ -174,7 +80,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/email_linear_layout"
+                android:id="@+id/password_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -186,46 +92,10 @@
                 app:layout_constraintTop_toBottomOf="@id/username_linear_layout">
 
                 <android.support.v7.widget.AppCompatTextView
+                    style="@style/MediumText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/email_address_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/medium_text" />
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email_text"
-                    android:inputType="textEmailAddress" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/tv_email_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/colorRed"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/password_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:orientation="vertical"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/email_linear_layout">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/password_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/medium_text" />
+                    android:text="@string/password_text" />
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_password"
@@ -256,11 +126,10 @@
                 app:layout_constraintTop_toBottomOf="@id/password_linear_layout">
 
                 <android.support.v7.widget.AppCompatTextView
+                    style="@style/MediumText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/password_confirm_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/medium_text" />
+                    android:text="@string/password_confirm_text" />
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_password_confirm"
@@ -278,20 +147,39 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password_confirm_linear_layout">
+
+                <CheckBox
+                    android:id="@+id/chb_enable_alexa"
+                    style="@style/MediumText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_alexa" />
+
+            </LinearLayout>
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/registration_create"
+        style="@style/MediumText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/registration_text"
         android:textAllCaps="false"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/medium_text"
         app:layout_constraintTop_toBottomOf="@id/sv_create_new_account" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,11 +1,11 @@
 package com.peryite.familybudget.ui.views;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Patterns;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.UserRepository;
-import com.peryite.familybudget.ui.contracts.RegistrationContract;
 import com.peryite.familybudget.entities.User;
+import com.peryite.familybudget.ui.contracts.RegistrationContract;
 import com.peryite.familybudget.ui.presenters.RegistrationPresenter;
 import com.peryite.familybudget.utils.RegEx;
 
@@ -35,25 +35,10 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     private final String TAG = this.getClass().getSimpleName();
 
-    @BindView(R.id.et_first_name)
-    AppCompatEditText firstName;
-    @BindView(R.id.tv_first_name_error)
-    AppCompatTextView firstNameError;
-
-    @BindView(R.id.et_last_name)
-    AppCompatEditText lastName;
-    @BindView(R.id.tv_last_name_error)
-    AppCompatTextView lastNameError;
-
     @BindView(R.id.et_username)
     AppCompatEditText username;
     @BindView(R.id.tv_username_error)
     AppCompatTextView usernameError;
-
-    @BindView(R.id.et_email)
-    AppCompatEditText email;
-    @BindView(R.id.tv_email_error)
-    AppCompatTextView emailError;
 
     @BindView(R.id.et_password)
     AppCompatEditText password;
@@ -65,30 +50,31 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
     @BindView(R.id.tv_password_confirm_error)
     AppCompatTextView passwordConfirmError;
 
+    @BindView(R.id.chb_enable_alexa)
+    AppCompatCheckBox enableAlexa;
+
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
     @BindView(R.id.registration_create)
     AppCompatButton registration;
 
-//    private Unbinder unbinder;
-
     private RegistrationContract.Presenter presenter;
 
     private UserRepository userRepository;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        init();
+    }
+
+    private void init(){
         unbinder = ButterKnife.bind(this);
 
-        firstNameError.setText(getString(R.string.format_empty_field, firstName.getHint().toString()));
-        lastNameError.setText(getString(R.string.format_empty_field, lastName.getHint().toString()));
         usernameError.setText(getString(R.string.format_empty_field, username.getHint().toString()));
-        emailError.setText(getString(R.string.format_incorrect_value, email.getHint().toString()));
         passwordError.setText(getString(R.string.format_empty_field, password.getHint().toString()));
         passwordConfirmError.setText(getString(R.string.format_incorrect_value, passwordConfirm.getHint().toString()));
 
@@ -99,13 +85,12 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         userRepository = RestClient.getClient().create(UserRepository.class);
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        Log.d(TAG, "onDestroy: ");
-//        unbinder.unbind();
-//    }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+        presenter.detachView();
+    }
 
     @Override
     public void showProgress() {
@@ -122,42 +107,20 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         presenter.onClickRegistration();
     }
 
-    public User fillUserFromFields() {
-        User user = new User();
-     //   user.setFirstName(firstName.getText().toString());
-     //   user.setLastName(lastName.getText().toString());
-        user.setUsername(username.getText().toString());
-     //   user.setEmail(email.getText().toString());
-       // user.setPassword(password.getText().toString());
-
-        return user;
-    }
-
     private List<View> fillElementList() {
         List<View> views = new ArrayList<>();
-        views.add(firstName);
-        views.add(lastName);
         views.add(username);
-        views.add(email);
         views.add(password);
-
+        views.add(enableAlexa);
         return views;
     }
 
     public boolean isFieldsValid() {
         boolean isValid = true;
-//        if (!isFieldNotEmpty(firstName, firstNameError)) {
-//            isValid = false;
-//        }
-//        if (!isFieldNotEmpty(lastName, lastNameError)) {
-//            isValid = false;
-//        }
         if (!isFieldNotEmpty(username, usernameError)) {
             isValid = false;
         }
-        if (!isEmailValid()) {
-            isValid = false;
-        }
+
         if (!isPasswordValid()) {
             isValid = false;
         }
@@ -168,11 +131,9 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
     @Override
     public Map<String, Object> getFieldsValue() {
         Map<String, Object> values = new HashMap<>();
-        values.put("firstName", firstName.getText().toString());
-        values.put("lastName", lastName.getText().toString());
         values.put("username", username.getText().toString());
-        values.put("email", email.getText().toString());
         values.put("password", passwordConfirm.getText().toString());
+        values.put("enableAlexa", enableAlexa.isChecked());
 
         return values;
     }
@@ -212,52 +173,37 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     @Override
     public void disableElements() {
-        firstName.setEnabled(false);
-        firstNameError.setEnabled(false);
-        lastName.setEnabled(false);
-        lastNameError.setEnabled(false);
         username.setEnabled(false);
         usernameError.setEnabled(false);
-        email.setEnabled(false);
-        emailError.setEnabled(false);
         password.setEnabled(false);
         passwordError.setEnabled(false);
         passwordConfirm.setEnabled(false);
         passwordConfirmError.setEnabled(false);
+        enableAlexa.setEnabled(false);
         registration.setEnabled(false);
     }
 
     @Override
     public void enableElements() {
-        firstName.setEnabled(true);
-        firstNameError.setEnabled(true);
-        lastName.setEnabled(true);
-        lastNameError.setEnabled(true);
         username.setEnabled(true);
         usernameError.setEnabled(true);
-        email.setEnabled(true);
-        emailError.setEnabled(true);
         password.setEnabled(true);
         passwordError.setEnabled(true);
         passwordConfirm.setEnabled(true);
         passwordConfirmError.setEnabled(true);
+        enableAlexa.setEnabled(true);
         registration.setEnabled(true);
     }
 
     @Override
     public void enableElements(boolean enabled) {
-        firstName.setEnabled(enabled);
-        firstNameError.setEnabled(enabled);
-        lastName.setEnabled(enabled);
-        lastNameError.setEnabled(enabled);
         username.setEnabled(enabled);
         usernameError.setEnabled(enabled);
-        email.setEnabled(enabled);
-        emailError.setEnabled(enabled);
         password.setEnabled(enabled);
         passwordError.setEnabled(enabled);
         passwordConfirm.setEnabled(enabled);
         passwordConfirmError.setEnabled(enabled);
+        enableAlexa.setEnabled(enabled);
         registration.setEnabled(enabled);
     }
 
@@ -271,30 +217,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         }
     }
 
-
-    private boolean isEmailValid() {
-        if (Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
-            emailError.setVisibility(View.GONE);
-            return true;
-        } else {
-            emailError.setVisibility(View.VISIBLE);
-            return false;
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private boolean isEmailValid(String email, AppCompatTextView errorTextView) {
-        if (!isEmailValid(email)) {
-            errorTextView.setVisibility(View.VISIBLE);
-            return false;
-        } else {
-            errorTextView.setVisibility(View.GONE);
-            return true;
-        }
-    }
 
     private boolean isPasswordValid() {
         boolean isValid = true;
@@ -319,6 +241,5 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
     private boolean isPasswordValid(String password, String confirmPassword) {
         return password.matches(RegEx.WITHOUT_SPACE.getFullName()) && password.equals(confirmPassword);
     }
-
 
 }

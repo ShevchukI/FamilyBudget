@@ -47,6 +47,7 @@
     <string name="username_text">Username</string>
     <string name="registration_text">Registration</string>
     <string name="categories_text">Categories</string>
+    <string name="enable_alexa">Enable Alexa</string>
 
 
     <!--String format-->

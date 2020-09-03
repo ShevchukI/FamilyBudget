@@ -13,8 +13,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/medium_text"
+        style="@style/MediumText"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -36,8 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/username_text"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_text" />
+            style="@style/MediumText" />
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/et_username"
@@ -64,8 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/password_text"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_text" />
+            style="@style/MediumText"/>
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/et_password"
@@ -118,8 +115,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/sign_in"
         android:textAllCaps="false"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/medium_text"
+        style="@style/MediumText"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_remember_me" />
@@ -133,8 +129,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/create_new_account"
         android:textAllCaps="false"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/medium_text"
+        style="@style/MediumText"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_sign_in" />

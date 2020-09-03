@@ -3,7 +3,9 @@ package com.peryite.familybudget.ui.views;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
@@ -181,6 +183,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         return views;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class CheckUserTask extends AsyncTask<String, Void, User>{
 
         @Override

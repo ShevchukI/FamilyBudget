@@ -1,15 +1,6 @@
 package com.peryite.familybudget.ui.models;
 
-import com.peryite.familybudget.entities.Credential;
-import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.contracts.InitialContract;
-import com.peryite.familybudget.ui.views.BudgetActivity;
-import com.peryite.familybudget.ui.views.LoginActivity;
-import com.peryite.familybudget.utils.GsonUtil;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class InitialModel implements InitialContract.Model {
     private boolean hasVisited;
