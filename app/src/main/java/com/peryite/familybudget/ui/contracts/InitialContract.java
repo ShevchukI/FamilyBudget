@@ -7,6 +7,8 @@ import com.peryite.familybudget.ui.BaseView;
 public interface InitialContract {
     interface Model extends BaseModel {
         boolean isVisitedUser();
+
+        void checkHealth();
     }
 
     interface View extends BaseView {

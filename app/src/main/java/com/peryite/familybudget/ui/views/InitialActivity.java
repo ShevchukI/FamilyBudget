@@ -1,6 +1,5 @@
 package com.peryite.familybudget.ui.views;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import com.peryite.familybudget.ui.presenters.InitialPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class InitialActivity extends BaseActivity implements InitialContract.View {
 
@@ -24,10 +22,6 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
     ProgressBar progressBar;
 
     private InitialContract.Presenter presenter;
-    private SharedPreferences preferencesVisited;
-    private SharedPreferences preferencesCredential;
-    private boolean hasVisited;
-    private String credential;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +35,11 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
     private void init(){
         unbinder = ButterKnife.bind(this);
 
-        preferencesVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
-        hasVisited = preferencesVisited.getBoolean(getResources().getString(R.string.visitedPreferences), false);
+        SharedPreferences preferencesVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
+        boolean hasVisited = preferencesVisited.getBoolean(getResources().getString(R.string.visitedPreferences), false);
 
-        preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
-        credential = preferencesCredential.getString("credential", "empty");
+        SharedPreferences preferencesCredential = getSharedPreferences("credential", MODE_PRIVATE);
+        String credential = preferencesCredential.getString("credential", "empty");
 
         InitialModel initialModel = new InitialModel(hasVisited, credential);
         presenter = new InitialPresenter(initialModel);
@@ -67,7 +61,7 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
 
     @Override
     public void openActivity(Class<?> activityClass) {
-        Log.d(TAG, String.format(getResources().getString(R.string.open_activity).toString(), activityClass.getSimpleName()));
+        Log.d(TAG, String.format(getResources().getString(R.string.open_activity), activityClass.getSimpleName()));
         Intent intent = new Intent(this, activityClass);
         startActivity(intent);
     }
@@ -77,7 +71,6 @@ public class InitialActivity extends BaseActivity implements InitialContract.Vie
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
         presenter.detachView();
-
     }
 
 }

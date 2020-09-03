@@ -1,17 +1,10 @@
 package com.peryite.familybudget.ui.presenters;
 
-import com.peryite.familybudget.api.RestClient;
-import com.peryite.familybudget.api.repository.HealthRepository;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.InitialContract;
-
+import com.peryite.familybudget.ui.listeners.BaseAPIRequestListener;
 import com.peryite.familybudget.ui.views.BudgetActivity;
 import com.peryite.familybudget.ui.views.LoginActivity;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class InitialPresenter implements InitialContract.Presenter {
@@ -21,6 +14,24 @@ public class InitialPresenter implements InitialContract.Presenter {
     private InitialContract.Model model;
 
     public InitialPresenter(InitialContract.Model model) {
+        model.setListener(new BaseAPIRequestListener() {
+            @Override
+            public void onResponse() {
+                if (isVisited()) {
+                    //TODO: created open BudgetActivity
+                    view.openActivity(BudgetActivity.class);
+                } else {
+                    view.openActivity(LoginActivity.class);
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                view.hideProgress();
+                view.showMessage("The server does not respond. Please try restart application");
+            }
+        });
+
         this.model = model;
     }
 
@@ -35,33 +46,9 @@ public class InitialPresenter implements InitialContract.Presenter {
 
     @Override
     public void start() {
-
         view.showProgress();
-        HealthRepository healthRepository = RestClient.getClient().create(HealthRepository.class);
-        Call<ResponseBody> healthCall = healthRepository.isHealth();
 
-        healthCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    if (model.isVisitedUser()) {
-                        //TODO: created open BudgetActivity
-                        view.openActivity(BudgetActivity.class);
-                    } else {
-                        view.openActivity(LoginActivity.class);
-                    }
-                } else {
-                    view.hideProgress();
-                    view.showMessage("Something wrong :( Error code: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                view.hideProgress();
-                view.showMessage("The server does not respond. Please try restart application");
-            }
-        });
+        model.checkHealth();
     }
 
     public InitialContract.View getView() {
@@ -72,4 +59,7 @@ public class InitialPresenter implements InitialContract.Presenter {
         this.view = view;
     }
 
+    private boolean isVisited() {
+        return model.isVisitedUser();
+    }
 }
