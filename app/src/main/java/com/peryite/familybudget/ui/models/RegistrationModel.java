@@ -3,8 +3,11 @@ package com.peryite.familybudget.ui.models;
 import android.util.Log;
 
 import com.peryite.familybudget.api.RestClient;
+import com.peryite.familybudget.api.repository.AlexaRepository;
 import com.peryite.familybudget.api.repository.UserRepository;
+import com.peryite.familybudget.entities.Credential;
 import com.peryite.familybudget.entities.Login;
+import com.peryite.familybudget.entities.UserOTP;
 import com.peryite.familybudget.ui.contracts.RegistrationContract;
 import com.peryite.familybudget.ui.listeners.BaseAPIRequestListener;
 import com.peryite.familybudget.ui.listeners.OnAPIRegistrationRequestListener;
@@ -50,5 +53,28 @@ public class RegistrationModel implements RegistrationContract.Model {
             }
         });
        
+    }
+
+    @Override
+    public void requestAlexaCode(Login login) {
+        AlexaRepository alexaRepository = RestClient.getClient(new Credential(login.getUsername(), login.getPassword())).create(AlexaRepository.class);
+        Call<UserOTP> alexaCall = alexaRepository.getUserOTP();
+        alexaCall.enqueue(new Callback<UserOTP>() {
+            @Override
+            public void onResponse(Call<UserOTP> call, Response<UserOTP> response) {
+                if(response.code()==200){
+                    listener.sendAlexaCode(response.body().getOtp());
+                } else {
+                    listener.errorMessage("Error: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserOTP> call, Throwable t) {
+                listener.onFailure();
+
+                call.cancel();
+            }
+        });
     }
 }

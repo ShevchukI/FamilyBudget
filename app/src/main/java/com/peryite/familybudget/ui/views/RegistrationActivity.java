@@ -1,5 +1,8 @@
 package com.peryite.familybudget.ui.views;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -135,6 +138,21 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         values.put("enableAlexa", enableAlexa.isChecked());
 
         return values;
+    }
+
+    @Override
+    public void showDialog(String title, String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                closeActivity();
+            }
+        });
+
+        alertDialog.show();
     }
 
     @Override

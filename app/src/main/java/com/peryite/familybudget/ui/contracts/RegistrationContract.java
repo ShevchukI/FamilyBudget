@@ -13,6 +13,7 @@ public interface RegistrationContract {
     interface Model extends BaseModel {
         void registerNewUser(Login login);
 
+        void requestAlexaCode(Login login);
     }
 
     interface View extends BaseView {
@@ -24,6 +25,8 @@ public interface RegistrationContract {
         boolean isFieldsValid();
 
         Map<String, Object> getFieldsValue();
+
+        void showDialog(String title, String message);
 
     }
 

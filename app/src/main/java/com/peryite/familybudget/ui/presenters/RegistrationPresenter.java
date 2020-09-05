@@ -17,6 +17,8 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
     private RegistrationContract.View view;
     private RegistrationContract.Model model;
 
+    private Login login;
+
     public RegistrationPresenter(RegistrationContract.View view) {
         this.view = view;
     }
@@ -29,6 +31,11 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
                 view.enableElements(true);
 
                 view.showMessage(text);
+            }
+
+            @Override
+            public void sendAlexaCode(String code) {
+                view.showDialog("Successful", "Alexa code: " + code);
             }
 
             @Override
@@ -48,7 +55,7 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
     @Override
     public void onClickRegistration() {
         if (view.isFieldsValid()) {
-            Login login = fillUserFromFields(view.getFieldsValue());
+            login = fillUserFromFields(view.getFieldsValue());
 
             view.enableElements(false);
             view.showProgress();
@@ -62,9 +69,15 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
         view.hideProgress();
         view.enableElements(true);
 
-        view.showMessage("Successful");
+        if ((boolean) view.getFieldsValue().get("enableAlexa") == true) {
+            model.requestAlexaCode(login);
 
-        view.closeActivity();
+        } else {
+
+            view.showMessage("Successful");
+
+            view.closeActivity();
+        }
     }
 
     @Override
@@ -95,4 +108,5 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
     public void detachView() {
         this.view = null;
     }
+
 }
