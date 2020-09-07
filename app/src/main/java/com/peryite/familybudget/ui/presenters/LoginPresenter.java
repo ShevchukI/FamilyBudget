@@ -20,7 +20,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginContract.Model model;
     private Context context;
 
-    public LoginPresenter(LoginContract.Model model) {
+    private Login login;
+    private boolean rememberMe;
+
+    public LoginPresenter(final LoginContract.Model model) {
         model.setListener(new OnAPIUserRequestListener() {
             @Override
             public void onResponse() {
@@ -35,7 +38,9 @@ public class LoginPresenter implements LoginContract.Presenter {
             public void setUser(User user) {
                 if (user != null) {
                     //TODO: add saving hasVisited state and do login
-                    view.showMessage(user.toString());
+                    view.saveCredential();
+                    view.doSignIn();
+                    //view.showMessage(user.toString());
                 } else {
                     view.showMessage("User not found!");
                 }
@@ -48,6 +53,8 @@ public class LoginPresenter implements LoginContract.Presenter {
         });
 
         this.model = model;
+
+        login = new Login();
     }
 
     public LoginPresenter(LoginContract.View view, Context context) {
@@ -63,10 +70,19 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void onClickSignIn(String login, String password, boolean rememberMe) {
+    public void onClickSignIn(String username, String password, boolean rememberMe) {
         Log.d(TAG, "onSignIn: ");
+        if(username.equals("")){
+            view.showMessage("Login is empty!");
+        } else if(password.equals("")){
+            view.showMessage("Password is empty");
+        } else {
+            this.rememberMe = rememberMe;
+            login.setUsername(username);
+            login.setPassword(password);
 
-        model.getUser(login, password);
+            model.getUser(username, password);
+        }
     }
 
 
@@ -105,4 +121,5 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void detachView() {
         this.view = null;
     }
+
 }

@@ -29,6 +29,7 @@
     <string name="menu_send">Send</string>
     <string name="menu_exit">Exit</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_category">Category</string>
 
     <!--Elements-->
     <string name="email_address_text">Email Address</string>

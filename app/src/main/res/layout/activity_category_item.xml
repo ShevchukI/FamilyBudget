@@ -28,81 +28,80 @@
         android:id="@+id/category_item_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false" android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/app_bar">
 
         <LinearLayout
             android:id="@+id/category_item_category_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/category_item_path_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="groupName/budgetName"
-                android:textColor="@color/colorGray"
-                android:textSize="12sp"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+            <!--            <android.support.v7.widget.AppCompatTextView-->
+            <!--                android:id="@+id/category_item_path_name"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="groupName/budgetName"-->
+            <!--                android:textColor="@color/colorGray"-->
+            <!--                android:textSize="12sp"-->
+            <!--                android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+            <!--                android:layout_marginLeft="@dimen/activity_horizontal_margin" />-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/category_item_category"
+                style="@style/MediumText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Category"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/medium_text"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="Category" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/category_item_spend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/category_item_spend"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical">-->
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-                <ProgressBar
-                    android:id="@+id/category_item_spend_progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:max="100"
-                    android:progress="100"
-                    android:rotation="270"
-                    android:progressDrawable="@drawable/circle" />
+<!--            &lt;!&ndash;            <RelativeLayout&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_gravity="center">&ndash;&gt;-->
+<!--            &lt;!&ndash;                <ProgressBar&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:id="@+id/category_item_spend_progressBar"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    style="?android:attr/progressBarStyleHorizontal"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_height="45dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_gravity="center"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:max="100"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:progress="100"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:rotation="270"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:progressDrawable="@drawable/circle" />&ndash;&gt;-->
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/category_item_spend_progressBar_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="25%"
-                    android:textColor="@color/colorBlack"
-                    android:layout_centerInParent="true"
-                    android:textSize="15sp" />
-            </RelativeLayout>
+<!--            &lt;!&ndash;                <android.support.v7.widget.AppCompatTextView&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:id="@+id/category_item_spend_progressBar_progress"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:gravity="center"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:text="25%"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:textColor="@color/colorBlack"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_centerInParent="true"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:textSize="15sp" />&ndash;&gt;-->
+<!--            &lt;!&ndash;            </RelativeLayout>&ndash;&gt;-->
 
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/category_item_spend_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="50/100"
-                android:layout_gravity="center"/>
+<!--            <android.support.v7.widget.AppCompatTextView-->
+<!--                android:id="@+id/category_item_spend_price"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="50/100" />-->
 
-        </LinearLayout>
-
+<!--        </LinearLayout>-->
 
 
     </LinearLayout>

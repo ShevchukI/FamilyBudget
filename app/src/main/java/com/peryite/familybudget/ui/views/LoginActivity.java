@@ -62,6 +62,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.login_sign_in_with_google)
     AppCompatButton signInWithGoogle;
 
+    private SharedPreferences preferencesCredential;
+    private SharedPreferences preferencesHasVisited;
 
     private LoginContract.Presenter presenter;
 
@@ -79,14 +81,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private void init() {
         elements = fillElementList();
 
-        SharedPreferences preferencesCredential = getSharedPreferences(getResources().getString(R.string.credentialPreferences), MODE_PRIVATE);
+        preferencesCredential = getSharedPreferences(getResources().getString(R.string.credentialPreferences), MODE_PRIVATE);
 
-        SharedPreferences preferencesHasVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
+        preferencesHasVisited = getSharedPreferences(getResources().getString(R.string.visitedPreferences), MODE_PRIVATE);
         preferencesHasVisited.edit()
                 .putBoolean(getResources().getString(R.string.visitedPreferences), false)
                 .apply();
 
-        LoginModel loginModel = new LoginModel(preferencesCredential, preferencesHasVisited);
+        LoginModel loginModel = new LoginModel();
 
         presenter = new LoginPresenter(loginModel);
         presenter.attachView(this);
@@ -102,6 +104,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void doSignIn() {
         Intent intent = new Intent(this, BudgetActivity.class);
+        if(rememberMe.isChecked()){
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
         startActivity(intent);
     }
 
@@ -155,6 +160,19 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public boolean isFieldsValid() {
         return false;
     }
+
+    @Override
+    public void saveCredential() {
+        String json = GsonUtil.toJson(new Credential(username.getText().toString(), password.getText().toString()));
+
+        preferencesCredential.edit().putString(getResources().getString(R.string.credentialPreferences), json)
+                .apply();
+
+        preferencesHasVisited.edit()
+                .putBoolean(getResources().getString(R.string.visitedPreferences), rememberMe.isChecked())
+                .apply();
+    }
+
 
     @OnClick(R.id.login_sign_in)
     public void clickOnSignIn() {

@@ -1,5 +1,7 @@
 package com.peryite.familybudget.ui.contracts;
 
+import android.util.Log;
+
 import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.BaseModel;
 import com.peryite.familybudget.ui.BasePresenter;
@@ -22,6 +24,8 @@ public interface LoginContract {
         void doCreateAccount();
 
         boolean isFieldsValid();
+
+        void saveCredential();
 
     }
 
