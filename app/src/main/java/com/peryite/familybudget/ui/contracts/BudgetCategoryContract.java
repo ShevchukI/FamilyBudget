@@ -23,5 +23,9 @@ public interface BudgetCategoryContract {
 
     interface Presenter extends BasePresenter {
         void start();
+
+        void onOpenCategoryClick(int categoryId);
+
+        void onAddItemToCategoryClick(int categoryId);
     }
 }

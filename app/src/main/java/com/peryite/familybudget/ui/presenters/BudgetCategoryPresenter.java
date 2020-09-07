@@ -53,6 +53,16 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
 
     @Override
     public void start() {
-       model.getCategories();
+        model.getCategories();
+    }
+
+    @Override
+    public void onOpenCategoryClick(int categoryId) {
+        view.showMessage("Open category: " + categoryId);
+    }
+
+    @Override
+    public void onAddItemToCategoryClick(int categoryId) {
+        view.showMessage("Add item to category: " + categoryId);
     }
 }

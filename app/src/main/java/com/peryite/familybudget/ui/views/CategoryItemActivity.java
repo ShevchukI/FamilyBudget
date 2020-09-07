@@ -20,10 +20,10 @@ import butterknife.ButterKnife;
 
 public class CategoryItemActivity extends BaseActivity {
 
-    @BindView(R.id.category_item_spend_progressBar)
-    ProgressBar progressBar;
-    @BindView(R.id.category_item_spend_progressBar_progress)
-    AppCompatTextView progress;
+//    @BindView(R.id.category_item_spend_progressBar)
+//    ProgressBar progressBar;
+//    @BindView(R.id.category_item_spend_progressBar_progress)
+//    AppCompatTextView progress;
 
     @BindView(R.id.category_item_recycler)
     RecyclerView recyclerView;
@@ -61,13 +61,13 @@ public class CategoryItemActivity extends BaseActivity {
             allPrice += categoryItem.getPrice();
         }
 
-        setProgressValue((int) allPrice);
+//        setProgressValue((int) allPrice);
     }
 
-
-    private void setProgressValue(int progressValue) {
-        progressBar.setProgress(((100 * progressValue) / limit));
-        progress.setText(progressBar.getProgress() + "%");
-
-    }
+//
+//    private void setProgressValue(int progressValue) {
+//        progressBar.setProgress(((100 * progressValue) / limit));
+//        progress.setText(progressBar.getProgress() + "%");
+//
+//    }
 }

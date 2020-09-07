@@ -79,12 +79,12 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
         adapter.setListener(new OnBudgetCategoryItemClick() {
             @Override
             public void onOpenCategoryClick(int id) {
-                showMessage("Open category: " + id);
+                presenter.onOpenCategoryClick(adapter.getItems().get(id).getId());
             }
 
             @Override
             public void onAddCategoryItemClick(int id) {
-                showMessage("Add item to category: " + id);
+                presenter.onAddItemToCategoryClick(adapter.getItems().get(id).getId());
             }
         });
     }

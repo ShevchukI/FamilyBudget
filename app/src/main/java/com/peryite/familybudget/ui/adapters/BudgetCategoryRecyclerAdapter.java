@@ -19,20 +19,15 @@ import java.util.List;
 
 public class BudgetCategoryRecyclerAdapter extends RecyclerView.Adapter<BudgetCategoryRecyclerAdapter.ViewHolder> {
 
-    public BudgetCategoryRecyclerAdapter(List<BudgetCategory> budgetCategoryList, FragmentActivity activity) {
-        this.items = budgetCategoryList;
-        this.context = activity;
-    }
-
     private final static String LOG_TAG = BudgetCategoryRecyclerAdapter.class.getSimpleName();
 
     private List<BudgetCategory> items;
     private OnBudgetCategoryItemClick listener;
     private Context context;
 
-    public BudgetCategoryRecyclerAdapter(List<BudgetCategory> items, Context context) {
-        this.items = items;
-        this.context = context;
+    public BudgetCategoryRecyclerAdapter(List<BudgetCategory> budgetCategoryList, FragmentActivity activity) {
+        this.items = budgetCategoryList;
+        this.context = activity;
     }
 
     @NonNull
@@ -40,6 +35,18 @@ public class BudgetCategoryRecyclerAdapter extends RecyclerView.Adapter<BudgetCa
     public BudgetCategoryRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_category, viewGroup, false);
         final ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.categoryOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onOpenCategoryClick(viewHolder.getAdapterPosition());
+            }
+        });
+        view.findViewById(R.id.category_add_item_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onAddCategoryItemClick(viewHolder.getAdapterPosition());
+            }
+        });
 //        view.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -75,20 +82,20 @@ public class BudgetCategoryRecyclerAdapter extends RecyclerView.Adapter<BudgetCa
 
         viewHolder.categoryName.setText(items.get(i).getName());
         viewHolder.categorySpendPrice.setText(items.get(i).getDescription());
-        final int id = items.get(i).getId();
-        viewHolder.categoryOpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onOpenCategoryClick(id);
-            }
-        });
-
-        viewHolder.categoryAddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAddCategoryItemClick(id);
-            }
-        });
+//        final int id = items.get(i).getId();
+//        viewHolder.categoryOpen.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                listener.onOpenCategoryClick(id);
+//            }
+//        });
+//
+//        viewHolder.categoryAddItem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                listener.onAddCategoryItemClick(id);
+//            }
+//        });
 
 //        switch (items.get(i).getHeroGender()) {
 //            case FEMALE:
