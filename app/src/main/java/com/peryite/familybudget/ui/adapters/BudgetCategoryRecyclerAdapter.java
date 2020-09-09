@@ -121,6 +121,7 @@ public class BudgetCategoryRecyclerAdapter extends RecyclerView.Adapter<BudgetCa
 
                 switch (item.getItemId()) {
                     case 1:
+                        listener.onEditCategoryClick(getAdapterPosition());
                         //listener.showListenerMessage("edit? Item id: " + item.getItemId() + " adapterPosition: " + getAdapterPosition() + " itemId: " + getItems().get(getAdapterPosition()).getId());
                         //Do stuff
                         break;

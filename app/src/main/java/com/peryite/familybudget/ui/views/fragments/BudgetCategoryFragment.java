@@ -61,13 +61,7 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
         presenter = new BudgetCategoryPresenter(budgetCategoryModel);
         presenter.attachView(this);
         presenter.start();
-//        fabAddItem = view.findViewById(R.id.add_item);
-//        fabAddItem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showMessage("Add item click!");
-//            }
-//        });
+
         return view;
     }
 
@@ -102,7 +96,7 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
 
             @Override
             public void onEditCategoryClick(int id) {
-                //    presenter.onEditCategoryClick()
+                presenter.onEditCategoryClick(adapter.getItems().get(id));
             }
 
             @Override
@@ -153,12 +147,25 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
 
     @Override
     public void showAddCategoryDialog() {
+        createEditCategoryDialog(new BudgetCategory(), false);
+    }
+
+    @Override
+    public void showEditCategoryDialog(BudgetCategory budgetCategory) {
+        createEditCategoryDialog(budgetCategory, true);
+    }
+
+    private void createEditCategoryDialog(final BudgetCategory budgetCategory, final boolean edit){
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.edit_dialog_budget_category, null);
 
         final AppCompatEditText etCategoryName = dialogView.findViewById(R.id.et_edit_category_name);
         final AppCompatEditText etCategoryDescription = dialogView.findViewById(R.id.et_edit_category_description);
+
+        etCategoryName.setText(budgetCategory.getName());
+        etCategoryDescription.setText(budgetCategory.getDescription());
+
         AppCompatButton btnOk = dialogView.findViewById(R.id.btn_edit_category_ok);
         AppCompatButton btnCancel = dialogView.findViewById(R.id.btn_edit_category_cancel);
 
@@ -168,7 +175,11 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
                 String name = etCategoryName.getText().toString();
                 String description = etCategoryDescription.getText().toString();
                 if (!name.equals("")) {
-                    presenter.confirmCreateCategory(new BudgetCategory(0, name, description));
+                    if(edit) {
+                        presenter.updateCategory(new BudgetCategory(budgetCategory.getId(), name, description));
+                    } else {
+                        presenter.confirmCreateCategory(new BudgetCategory(0, name, description));
+                    }
                     dialogBuilder.dismiss();
                 } else {
                     showMessage("Empty name!");
@@ -182,23 +193,6 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
                 dialogBuilder.dismiss();
             }
         });
-//        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
-//        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
-
-//        button2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialogBuilder.dismiss();
-//            }
-//        });
-//        button1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // DO SOMETHINGS
-//                dialogBuilder.dismiss();
-//            }
-//        });
-
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
     }

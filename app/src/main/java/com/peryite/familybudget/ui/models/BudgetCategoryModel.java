@@ -33,7 +33,6 @@ public class BudgetCategoryModel implements BudgetCategoryContract.Model {
 
     @Override
     public void getCategories() {
-        //CategoryRepository categoryRepository = RestClient.getClient(credential).create(CategoryRepository.class);
         Call<List<BudgetCategory>> categoryCall = categoryRepository.getAllUserCategory();
         categoryCall.enqueue(new Callback<List<BudgetCategory>>() {
             @Override
@@ -59,7 +58,7 @@ public class BudgetCategoryModel implements BudgetCategoryContract.Model {
         categoryCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     listener.doRefresh();
                 } else {
                     listener.onResponse();
@@ -79,9 +78,31 @@ public class BudgetCategoryModel implements BudgetCategoryContract.Model {
         categoryCall.enqueue(new Callback<BudgetCategory>() {
             @Override
             public void onResponse(Call<BudgetCategory> call, Response<BudgetCategory> response) {
-                if(response.code() == 200){
-                    if(response.body()!=null){
-                     listener.doRefresh();
+                if (response.code() == 200) {
+                    if (response.body() != null) {
+                        listener.doRefresh();
+                    }
+                } else {
+                    listener.onResponse();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BudgetCategory> call, Throwable t) {
+                listener.onFailure();
+            }
+        });
+    }
+
+    @Override
+    public void updateCategory(BudgetCategory budgetCategory) {
+        Call<BudgetCategory> categoryCall = categoryRepository.updateUserCategory(budgetCategory.getId(), budgetCategory);
+        categoryCall.enqueue(new Callback<BudgetCategory>() {
+            @Override
+            public void onResponse(Call<BudgetCategory> call, Response<BudgetCategory> response) {
+                if (response.code() == 200) {
+                    if (response.body() != null) {
+                        listener.doRefresh();
                     }
                 } else {
                     listener.onResponse();

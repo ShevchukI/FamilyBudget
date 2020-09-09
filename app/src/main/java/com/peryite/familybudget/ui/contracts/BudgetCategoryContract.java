@@ -17,6 +17,8 @@ public interface BudgetCategoryContract {
         void deleteCategory(int id);
 
         void createCategory(BudgetCategory budgetCategory);
+
+        void updateCategory(BudgetCategory budgetCategory);
     }
 
     interface View  extends BaseView{
@@ -27,6 +29,8 @@ public interface BudgetCategoryContract {
         void updateCategories(List<BudgetCategory> budgetCategories);
 
         void showAddCategoryDialog();
+
+        void showEditCategoryDialog(BudgetCategory budgetCategory);
     }
 
     interface Presenter extends BasePresenter {
@@ -43,5 +47,9 @@ public interface BudgetCategoryContract {
         void onDeleteCategoryClick(int id);
 
         void confirmCreateCategory(BudgetCategory budgetCategory);
+
+        void updateCategory(BudgetCategory budgetCategory);
+
+        void onEditCategoryClick(BudgetCategory budgetCategory);
     }
 }

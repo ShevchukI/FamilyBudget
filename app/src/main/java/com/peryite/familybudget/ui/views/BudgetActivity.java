@@ -1,5 +1,7 @@
 package com.peryite.familybudget.ui.views;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -103,7 +105,6 @@ public class BudgetActivity extends BaseActivity
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
                 int id = item.getItemId();
 
                 switch (id) {
@@ -112,6 +113,9 @@ public class BudgetActivity extends BaseActivity
                         break;
                     case R.id.action_settings:
                         presenter.onClickSetting();
+                        break;
+                    case R.id.action_get_alexa_code:
+                        showDialogAlexaRequest();
                         break;
                     default:
                         break;
@@ -194,17 +198,22 @@ public class BudgetActivity extends BaseActivity
 
         if (id == R.id.nav_category) {
             presenter.onClickBudgetCategory();
-        } else if (id == R.id.nav_gallery) {
-            //removeFragment();
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-            Log.d(TAG, String.valueOf(Calendar.getInstance().getTime()));
-        } else if (id == R.id.nav_logout) {
+        }
+//        else if(id == R.id.nav_alexa_code){
+//            presenter.onClickAlexaCode();
+//        }
+//        else if (id == R.id.nav_gallery) {
+//            //removeFragment();
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_tools) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//            Log.d(TAG, String.valueOf(Calendar.getInstance().getTime()));
+//        }
+        else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
@@ -250,12 +259,47 @@ public class BudgetActivity extends BaseActivity
         FragmentManager.getInstance().getFragment(fragmentSelect).refresh();
     }
 
+    @Override
+    public void showDialog(String title, String text) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(text);
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        alertDialog.show();
+    }
+
     private void removeFragment() {
         if(currentFragment!=null) {
             getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
             navigationView.setCheckedItem(selectedId);
             currentFragment = null;
         }
+    }
+
+    public void showDialogAlexaRequest(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Get Alexa Code");
+        alertDialog.setMessage("Do you want to get new Alexa code?");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.onClickAlexaCode();
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alertDialog.show();
     }
 
     @Override

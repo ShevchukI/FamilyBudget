@@ -15,9 +15,12 @@ public class InitialModel implements InitialContract.Model {
     private String credential;
     private BaseAPIRequestListener listener;
 
+    private int failCount;
+
     public InitialModel(boolean hasVisited, String credential) {
         this.hasVisited = hasVisited;
         this.credential = credential;
+        failCount = 3;
     }
 
 

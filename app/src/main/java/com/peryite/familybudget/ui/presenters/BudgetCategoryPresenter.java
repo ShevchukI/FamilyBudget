@@ -91,4 +91,14 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
     public void confirmCreateCategory(BudgetCategory budgetCategory) {
         model.createCategory(budgetCategory);
     }
+
+    @Override
+    public void updateCategory(BudgetCategory budgetCategory) {
+        model.updateCategory(budgetCategory);
+    }
+
+    @Override
+    public void onEditCategoryClick(BudgetCategory budgetCategory) {
+        view.showEditCategoryDialog(budgetCategory);
+    }
 }

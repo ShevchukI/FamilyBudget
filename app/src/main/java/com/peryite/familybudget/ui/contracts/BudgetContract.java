@@ -11,6 +11,8 @@ public interface BudgetContract {
         void getUser();
 
         void setUser(User user);
+
+        void getAlexaCode();
     }
 
     interface View extends BaseView {
@@ -23,6 +25,8 @@ public interface BudgetContract {
         void setUserInfo(User user);
 
         void refreshFragment(FragmentManager.FragmentSelect budgetCategory);
+
+        void showDialog(String title, String text);
     }
 
     interface Presenter extends BasePresenter {
@@ -33,5 +37,7 @@ public interface BudgetContract {
         void onClickRefresh();
 
         void onClickSetting();
+
+        void onClickAlexaCode();
     }
 }

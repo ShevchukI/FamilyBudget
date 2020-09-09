@@ -28,6 +28,16 @@ public class BudgetPresenter implements BudgetContract.Presenter {
             }
 
             @Override
+            public void sendAlexaCode(String text) {
+                view.showDialog("Alexa code", text);
+            }
+
+            @Override
+            public void errorMessage(String message) {
+
+            }
+
+            @Override
             public void setUser(User user) {
                 view.setUserInfo(user);
             }
@@ -94,6 +104,11 @@ public class BudgetPresenter implements BudgetContract.Presenter {
     @Override
     public void onClickSetting() {
         view.showMessage("Setting");
+    }
+
+    @Override
+    public void onClickAlexaCode() {
+        model.getAlexaCode();
     }
 
     private List<BaseFragment> fillFragmentList(){
