@@ -13,18 +13,26 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.contracts.BudgetContract;
 import com.peryite.familybudget.ui.models.BudgetModel;
 import com.peryite.familybudget.ui.presenters.BudgetPresenter;
+import com.peryite.familybudget.ui.views.fragments.BaseFragment;
 import com.peryite.familybudget.ui.views.fragments.BudgetCategoryFragment;
 import com.peryite.familybudget.ui.views.fragments.FragmentManager;
 import com.peryite.familybudget.utils.GsonUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +51,8 @@ public class BudgetActivity extends BaseActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     private AppCompatTextView navHeaderUsername;
 
@@ -79,7 +89,7 @@ public class BudgetActivity extends BaseActivity
         unbinder = ButterKnife.bind(this);
 
         navHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_header_username);
-        navHeaderUsername.setText(credential.getUsername());
+        // navHeaderUsername.setText(credential.getUsername());
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -88,6 +98,28 @@ public class BudgetActivity extends BaseActivity
 //            }
 //        });
 
+        toolbar.inflateMenu(R.menu.budget);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.action_refresh:
+                        presenter.onClickRefresh();
+                        break;
+                    case R.id.action_settings:
+                        presenter.onClickSetting();
+                        break;
+                    default:
+                        break;
+                }
+
+                return false;
+            }
+        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -96,12 +128,12 @@ public class BudgetActivity extends BaseActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        BudgetModel budgetModel = new BudgetModel();
+        BudgetModel budgetModel = new BudgetModel(credential);
         presenter = new BudgetPresenter(budgetModel);
         presenter.attachView(this);
         presenter.start();
 
-        selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
+        //  selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
 //        fragment = new BudgetCategoryFragment();
 //
 //        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
@@ -152,27 +184,6 @@ public class BudgetActivity extends BaseActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.budget, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -211,11 +222,11 @@ public class BudgetActivity extends BaseActivity
         FragmentManager.getInstance().setContextOnFragment(fragmentSelect, this);
         FragmentManager.getInstance().setCredentialOnFragment(fragmentSelect, credential);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(MAIN_CONTAINER_ID, currentFragment);
-        transaction.commit();
-        navigationView.setCheckedItem(selectedId);
+       getSupportFragmentManager().beginTransaction()
+               .replace(MAIN_CONTAINER_ID, currentFragment)
+               .commitNow();
 
+        navigationView.setCheckedItem(selectedId);
     }
 
     @Override
@@ -223,9 +234,37 @@ public class BudgetActivity extends BaseActivity
         navigationView.setCheckedItem(id);
     }
 
-    private void removeFragment(){
-        getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
-        navigationView.setCheckedItem(selectedId);
-        currentFragment = null;
+    @Override
+    public void setBudget(double budget) {
+        toolbar.setTitle(String.valueOf(budget));
+    }
+
+    @Override
+    public void setUserInfo(User user) {
+        navHeaderUsername.setText(user.getUsername());
+        toolbar.setTitle(String.valueOf(user.getBudget()));
+    }
+
+    @Override
+    public void refreshFragment(FragmentManager.FragmentSelect fragmentSelect) {
+        FragmentManager.getInstance().getFragment(fragmentSelect).refresh();
+    }
+
+    private void removeFragment() {
+        if(currentFragment!=null) {
+            getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
+            navigationView.setCheckedItem(selectedId);
+            currentFragment = null;
+        }
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 }

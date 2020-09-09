@@ -41,4 +41,8 @@ public abstract class BaseFragment extends Fragment {
     public void setCredential(Credential credential) {
         this.credential = credential;
     }
+
+    public void refresh(){
+
+    }
 }

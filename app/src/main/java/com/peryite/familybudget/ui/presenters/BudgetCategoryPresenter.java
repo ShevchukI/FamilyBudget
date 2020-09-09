@@ -1,11 +1,9 @@
 package com.peryite.familybudget.ui.presenters;
 
 import com.peryite.familybudget.entities.BudgetCategory;
-import com.peryite.familybudget.entities.CategoryItem;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.BudgetCategoryContract;
 import com.peryite.familybudget.ui.listeners.OnAPICategoryRequestListener;
-import com.peryite.familybudget.ui.models.BudgetCategoryModel;
 
 import java.util.List;
 
@@ -13,18 +11,24 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
     private BudgetCategoryContract.View view;
     private BudgetCategoryContract.Model model;
 
+    private boolean isRefresh;
+
     public BudgetCategoryPresenter(BudgetCategoryContract.Model model) {
         model.setListener(new OnAPICategoryRequestListener() {
             @Override
             public void setCategories(List<BudgetCategory> budgetCategories) {
-                view.addCategoriesToAdapter(budgetCategories);
-                view.initRecycler();
-//                StringBuilder stringBuilder = new StringBuilder();
-//                for(BudgetCategory budgetCategory:budgetCategories){
-//                    stringBuilder.append(budgetCategory.toString());
-//                }
-//
-//                view.showMessage(stringBuilder.toString());
+                if (isRefresh) {
+                    view.updateCategories(budgetCategories);
+                    isRefresh = false;
+                } else {
+                    view.addCategoriesToAdapter(budgetCategories);
+                    view.initRecycler();
+                }
+            }
+
+            @Override
+            public void doRefresh() {
+                refresh();
             }
 
             @Override
@@ -64,5 +68,27 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
     @Override
     public void onAddItemToCategoryClick(int categoryId) {
         view.showMessage("Add item to category: " + categoryId);
+    }
+
+    @Override
+    public void refresh() {
+
+        isRefresh = true;
+        model.getCategories();
+    }
+
+    @Override
+    public void onAddCategoryClick() {
+        view.showAddCategoryDialog();
+    }
+
+    @Override
+    public void onDeleteCategoryClick(int id) {
+        model.deleteCategory(id);
+    }
+
+    @Override
+    public void confirmCreateCategory(BudgetCategory budgetCategory) {
+        model.createCategory(budgetCategory);
     }
 }

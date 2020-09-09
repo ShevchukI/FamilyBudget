@@ -22,6 +22,17 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+    </ProgressBar>
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -38,8 +49,8 @@
 <!--            android:layout_margin="@dimen/fab_margin"-->
 <!--            app:srcCompat="@android:drawable/ic_dialog_email"-->
 <!--            tools:ignore="MissingConstraints" />-->
-    </FrameLayout>
 
+    </FrameLayout>
     <!--    <include layout="@layout/content_budget" />-->
 
 </android.support.constraint.ConstraintLayout>

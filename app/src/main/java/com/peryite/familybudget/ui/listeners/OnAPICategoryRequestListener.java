@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface OnAPICategoryRequestListener extends BaseAPIRequestListener{
     void setCategories(List<BudgetCategory> budgetCategories);
+
+    void doRefresh();
 }

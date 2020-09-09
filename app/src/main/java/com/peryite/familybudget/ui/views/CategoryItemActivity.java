@@ -64,6 +64,16 @@ public class CategoryItemActivity extends BaseActivity {
 //        setProgressValue((int) allPrice);
     }
 
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
 //
 //    private void setProgressValue(int progressValue) {
 //        progressBar.setProgress(((100 * progressValue) / limit));

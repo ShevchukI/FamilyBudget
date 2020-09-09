@@ -194,4 +194,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         return views;
     }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
 }

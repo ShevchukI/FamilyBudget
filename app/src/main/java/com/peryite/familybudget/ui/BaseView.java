@@ -27,4 +27,8 @@ public interface BaseView {
     void startActivity(Context packageContext, Class cls);
 
     void closeActivity();
+
+    void showProgress();
+
+    void hideProgress();
 }

@@ -21,7 +21,7 @@ public class FragmentManager {
     }
 
     private FragmentManager(){
-        fragmentList = fillFragmentList();
+        //fragmentList = fillFragmentList();
     }
 
     private List<BaseFragment> fillFragmentList(){
@@ -30,8 +30,8 @@ public class FragmentManager {
         return fragments;
     }
 
-    public Fragment getFragment(FragmentSelect fragmentSelect){
-        Fragment fragment = null;
+    public BaseFragment getFragment(FragmentSelect fragmentSelect){
+        BaseFragment fragment = null;
         if(fragmentSelect.equals(FragmentSelect.BudgetCategory)){
             fragment = fragmentList.get(0);
         }
@@ -50,7 +50,11 @@ public class FragmentManager {
         }
     }
 
-   public enum FragmentSelect{
+    public void setFragmentList(List<BaseFragment> baseFragments) {
+        fragmentList = baseFragments;
+    }
+
+    public enum FragmentSelect{
         BudgetCategory
     }
 
