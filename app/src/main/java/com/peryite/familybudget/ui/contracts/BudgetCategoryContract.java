@@ -1,6 +1,7 @@
 package com.peryite.familybudget.ui.contracts;
 
 import com.peryite.familybudget.entities.BudgetCategory;
+import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.ui.BaseModel;
 import com.peryite.familybudget.ui.BasePresenter;
 import com.peryite.familybudget.ui.BaseView;
@@ -17,6 +18,8 @@ public interface BudgetCategoryContract {
         void createCategory(BudgetCategory budgetCategory);
 
         void updateCategory(BudgetCategory budgetCategory);
+
+        void addItemToCategory(Item item);
     }
 
     interface View extends BaseView {
@@ -33,6 +36,10 @@ public interface BudgetCategoryContract {
         void showEditCategoryDialog(BudgetCategory budgetCategory);
 
         void openCategory(BudgetCategory budgetCategory);
+
+        void showAddItemDialog(int categoryId);
+
+        void updateBudget();
     }
 
     interface Presenter extends BasePresenter {
@@ -53,5 +60,7 @@ public interface BudgetCategoryContract {
         void updateCategory(BudgetCategory budgetCategory);
 
         void onEditCategoryClick(BudgetCategory budgetCategory);
+
+        void confirmCreateItem(Item item);
     }
 }

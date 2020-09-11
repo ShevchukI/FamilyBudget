@@ -68,26 +68,26 @@ public class BudgetItemPresenter implements BudgetItemContract.Presenter {
 
     @Override
     public void onAddItemClick() {
-        view.showMessage("Add item click");
+        view.showAddItemDialog();
     }
 
     @Override
-    public void onDeleteItemClick(Long id) {
-        view.showMessage("Delete item click");
+    public void onDeleteItemClick(int id) {
+        model.deleteItem(id);
     }
 
     @Override
     public void confirmCreateItem(Item item) {
-
+        model.createItem(item);
     }
 
     @Override
     public void updateItem(Item item) {
-
+        model.updateItem(item);
     }
 
     @Override
     public void onEditItemClick(Item item) {
-        view.showMessage("Edit item click");
+        view.showEditItemDialog(item);
     }
 }

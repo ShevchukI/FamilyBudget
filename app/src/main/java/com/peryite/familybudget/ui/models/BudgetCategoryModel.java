@@ -1,10 +1,14 @@
 package com.peryite.familybudget.ui.models;
 
 
+import android.support.v7.widget.RecyclerView;
+
 import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.CategoryRepository;
+import com.peryite.familybudget.api.repository.ItemRepository;
 import com.peryite.familybudget.entities.BudgetCategory;
 import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.ui.contracts.BudgetCategoryContract;
 import com.peryite.familybudget.ui.listeners.BaseAPIRequestListener;
 import com.peryite.familybudget.ui.listeners.OnAPICategoryRequestListener;
@@ -111,6 +115,27 @@ public class BudgetCategoryModel implements BudgetCategoryContract.Model {
 
             @Override
             public void onFailure(Call<BudgetCategory> call, Throwable t) {
+                listener.onFailure();
+            }
+        });
+    }
+
+    @Override
+    public void addItemToCategory(Item item) {
+        ItemRepository itemRepository = RestClient.getClient(credential).create(ItemRepository.class);
+        Call<Item> itemCall = itemRepository.createItem(item.getId(), item);
+        itemCall.enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(Call<Item> call, Response<Item> response) {
+                if(response.code() == 200){
+                    listener.doRefresh();
+                } else {
+                    listener.onResponse();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Item> call, Throwable t) {
                 listener.onFailure();
             }
         });

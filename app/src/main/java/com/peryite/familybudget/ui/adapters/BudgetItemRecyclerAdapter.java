@@ -136,7 +136,7 @@ public class BudgetItemRecyclerAdapter extends RecyclerView.Adapter<BudgetItemRe
             itemName.setText(item.getName());
             itemPrice.setText(String.valueOf(item.getPrice()));
             itemDescription.setText(item.getDescription());
-            itemDate.setText(String.valueOf(item.getDescription()));
+            itemDate.setText(String.valueOf(item.getDate()));
 
         }
     }

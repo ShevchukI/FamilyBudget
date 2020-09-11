@@ -1,6 +1,7 @@
 package com.peryite.familybudget.ui.presenters;
 
 import com.peryite.familybudget.entities.BudgetCategory;
+import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.BudgetCategoryContract;
 import com.peryite.familybudget.ui.listeners.OnAPICategoryRequestListener;
@@ -13,13 +14,14 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
 
     private boolean isRefresh;
 
-    public BudgetCategoryPresenter(BudgetCategoryContract.Model model) {
+    public BudgetCategoryPresenter(final BudgetCategoryContract.Model model) {
         model.setListener(new OnAPICategoryRequestListener() {
             @Override
             public void setCategories(List<BudgetCategory> budgetCategories) {
                 if (isRefresh) {
                     view.updateCategories(budgetCategories);
                     isRefresh = false;
+                    view.updateBudget();
                 } else {
                     view.addCategoriesToAdapter(budgetCategories);
                     view.initRecycler();
@@ -68,7 +70,8 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
 
     @Override
     public void onAddItemToCategoryClick(int categoryId) {
-        view.showMessage("Add item to category: " + categoryId);
+        view.showAddItemDialog(categoryId);
+        //view.showMessage("Add item to category: " + categoryId);
     }
 
     @Override
@@ -101,5 +104,10 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
     @Override
     public void onEditCategoryClick(BudgetCategory budgetCategory) {
         view.showEditCategoryDialog(budgetCategory);
+    }
+
+    @Override
+    public void confirmCreateItem(Item item) {
+        model.addItemToCategory(item);
     }
 }

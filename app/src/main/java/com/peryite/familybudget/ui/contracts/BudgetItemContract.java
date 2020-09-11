@@ -38,7 +38,7 @@ public interface BudgetItemContract {
 
         void onAddItemClick();
 
-        void onDeleteItemClick(Long id);
+        void onDeleteItemClick(int id);
 
         void confirmCreateItem(Item item);
 

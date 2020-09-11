@@ -71,7 +71,7 @@
             style="@style/MediumText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/category_description_enter" />
+            android:text="@string/item_description_enter" />
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/et_edit_item_description"

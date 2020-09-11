@@ -6,13 +6,13 @@ import java.sql.Timestamp;
 
 public class Item {
     @SerializedName("id")
-    private Long id;
+    private int id;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
     private String description;
-    @SerializedName("itemsDate")
-    private Timestamp date;
+    @SerializedName("itemDate")
+    private String date;
     @SerializedName("price")
     private Double price;
     @SerializedName("category")
@@ -24,11 +24,11 @@ public class Item {
 
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -48,11 +48,11 @@ public class Item {
         this.description = description;
     }
 
-    public Timestamp getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -81,10 +81,10 @@ public class Item {
     }
 
     public static class Builder{
-        private Long id;
+        private int id;
         private String name;
         private String description;
-        private Timestamp date;
+        private String date;
         private Double price;
         private BudgetCategory budgetCategory;
 
@@ -104,7 +104,7 @@ public class Item {
             return this;
         }
 
-        public Builder withDate(Timestamp date){
+        public Builder withDate(String date){
             this.date = date;
 
             return this;
@@ -123,15 +123,22 @@ public class Item {
         }
 
         public Builder withNowDate(){
-            this.date = new Timestamp(System.currentTimeMillis());
+            this.date = new Timestamp(System.currentTimeMillis()).toString();
 
             return this;
         }
 
         public Builder asEarned(Double price){
             this.name = "Earnings";
-            this.date = new Timestamp(System.currentTimeMillis());
-            this.price = price;
+            this.date = new Timestamp(System.currentTimeMillis()).toString();
+            this.price = Math.abs(price);
+
+            return this;
+        }
+
+        public Builder asSpending(Double price){
+            this.date = new Timestamp(System.currentTimeMillis()).toString();
+            this.price = -Math.abs(price);
 
             return this;
         }

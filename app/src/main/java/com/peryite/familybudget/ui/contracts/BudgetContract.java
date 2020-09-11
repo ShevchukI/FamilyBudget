@@ -31,6 +31,8 @@ public interface BudgetContract {
 
         void refreshFragment(FragmentManager.FragmentSelect budgetCategory);
 
+        void refreshCurrentFragment();
+
         void showDialog(String title, String text);
 
         void setListenerOnFragment(FragmentManager.FragmentSelect budgetCategory, BudgetFragmentListener budgetFragmentListener);

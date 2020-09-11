@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.entities.BudgetCategory;
+import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.ui.adapters.BudgetCategoryRecyclerAdapter;
 import com.peryite.familybudget.ui.contracts.BudgetCategoryContract;
 import com.peryite.familybudget.ui.listeners.BudgetFragmentListener;
@@ -164,6 +165,50 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     @Override
     public void openCategory(BudgetCategory budgetCategory) {
         listener.openCategory(budgetCategory);
+    }
+
+    @Override
+    public void showAddItemDialog(final int categoryId) {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.edit_dialog_budget_item, null);
+
+        final AppCompatEditText etItemPrice = dialogView.findViewById(R.id.et_edit_item_price);
+        final AppCompatEditText etItemName = dialogView.findViewById(R.id.et_edit_item_name);
+        final AppCompatEditText etItemDescription = dialogView.findViewById(R.id.et_edit_item_description);
+
+        AppCompatButton btnOk = dialogView.findViewById(R.id.btn_edit_item_ok);
+        final AppCompatButton btnCancel = dialogView.findViewById(R.id.btn_edit_item_cancel);
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Item item = new Item.Builder()
+                        .asSpending(Double.parseDouble(etItemPrice.getText().toString()))
+                        .withName(etItemName.getText().toString())
+                        .withDescription(etItemDescription.getText().toString())
+                        .build();
+                item.setId(categoryId);
+
+                presenter.confirmCreateItem(item);
+
+                dialogBuilder.dismiss();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+    }
+
+    @Override
+    public void updateBudget() {
+        listener.refreshBudget();
     }
 
     private void createEditCategoryDialog(final BudgetCategory budgetCategory, final boolean edit){

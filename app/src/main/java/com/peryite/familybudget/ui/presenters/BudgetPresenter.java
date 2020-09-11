@@ -90,6 +90,11 @@ public class BudgetPresenter implements BudgetContract.Presenter {
                 view.selectFragment(FragmentManager.FragmentSelect.BudgetItem);
 
             }
+
+            @Override
+            public void refreshBudget() {
+                model.getUser();
+            }
         });
 
         view.hideProgress();
@@ -105,9 +110,10 @@ public class BudgetPresenter implements BudgetContract.Presenter {
         //TODO: refresh fragment
         view.showProgress();
         model.getUser();
-        view.refreshFragment(FragmentManager.FragmentSelect.BudgetCategory);
-        view.showMessage("Refresh!");
-        view.selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
+        view.refreshCurrentFragment();
+//        view.refreshFragment(FragmentManager.FragmentSelect.BudgetCategory);
+//        view.showMessage("Refresh!");
+//        view.selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
 
         view.hideProgress();
     }

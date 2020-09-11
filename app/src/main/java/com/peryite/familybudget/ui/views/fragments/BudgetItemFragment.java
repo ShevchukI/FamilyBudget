@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +37,7 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
 
     private BudgetCategory budgetCategory;
 
-    public BudgetItemFragment(){
+    public BudgetItemFragment() {
 
     }
 
@@ -49,7 +50,7 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // presenter.onAddCategoryClick();
+                // presenter.onAddCategoryClick();
             }
         });
 
@@ -61,9 +62,9 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
     }
 
     @SuppressLint("SetTextI18n")
-    private void init(){
+    private void init() {
         tvTitle = view.findViewById(R.id.tv_list_title);
-        tvTitle.setText("Category/"+budgetCategory.getName());
+        tvTitle.setText("Category/" + budgetCategory.getName());
 
         btnAddItem = view.findViewById(R.id.btn_list_add);
         btnAddItem.setText(R.string.add_item);
@@ -189,12 +190,13 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
 
     @Override
     public void showAddItemDialog() {
+        createEditItemDialog(null, false, false);
         //createEditCategoryDialog(new BudgetCategory(), false);
     }
 
     @Override
     public void showEditItemDialog(Item item) {
-
+        createEditItemDialog(item, true, false);
     }
 
     public BudgetCategory getBudgetCategory() {
@@ -203,5 +205,63 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
 
     public void setBudgetCategory(BudgetCategory budgetCategory) {
         this.budgetCategory = budgetCategory;
+    }
+
+    private void createEditItemDialog(final Item item, final boolean edit, final boolean earn) {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.edit_dialog_budget_item, null);
+
+        final AppCompatEditText etItemPrice = dialogView.findViewById(R.id.et_edit_item_price);
+        final AppCompatEditText etItemName = dialogView.findViewById(R.id.et_edit_item_name);
+        final AppCompatEditText etItemDescription = dialogView.findViewById(R.id.et_edit_item_description);
+
+        if (edit && item != null) {
+            etItemPrice.setText(String.valueOf(item.getPrice()));
+            etItemName.setText(item.getName());
+            etItemDescription.setText(item.getDescription());
+        }
+
+        AppCompatButton btnOk = dialogView.findViewById(R.id.btn_edit_item_ok);
+        AppCompatButton btnCancel = dialogView.findViewById(R.id.btn_edit_item_cancel);
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Item itm;
+                if (earn) {
+                    itm = new Item.Builder()
+                            .asEarned(Double.parseDouble(etItemPrice.getText().toString()))
+                            .withDescription(etItemDescription.getText().toString())
+                            .withCategory(budgetCategory)
+                            .build();
+                } else {
+                    itm = new Item.Builder()
+                            .asSpending(Double.parseDouble(etItemPrice.getText().toString()))
+                            .withName(etItemName.getText().toString())
+                            .withDescription(etItemDescription.getText().toString())
+                            .withCategory(budgetCategory)
+                            .build();
+                }
+
+                if (edit) {
+                    itm.setId(item.getId());
+                    itm.setDate(item.getDate());
+                    presenter.updateItem(itm);
+                } else {
+                    presenter.confirmCreateItem(itm);
+                }
+                dialogBuilder.dismiss();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
     }
 }

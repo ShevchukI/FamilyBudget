@@ -1,5 +1,6 @@
 package com.peryite.familybudget.ui.views;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.peryite.familybudget.R;
@@ -61,6 +63,7 @@ public class BudgetActivity extends BaseActivity
     private SharedPreferences preferencesCredential;
     private Credential credential;
     private Fragment currentFragment;
+    private FragmentManager.FragmentSelect currentFragmentType;
     private final static int MAIN_CONTAINER_ID = R.id.fragment_container;
     private BudgetContract.Presenter presenter;
     private int selectedId;
@@ -219,6 +222,7 @@ public class BudgetActivity extends BaseActivity
 //        }
         else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 
@@ -232,6 +236,7 @@ public class BudgetActivity extends BaseActivity
     @Override
     public void selectFragment(FragmentManager.FragmentSelect fragmentSelect) {
         currentFragment = FragmentManager.getInstance().getFragment(fragmentSelect);
+        currentFragmentType = fragmentSelect;
         FragmentManager.getInstance().setContextOnFragment(fragmentSelect, this);
         FragmentManager.getInstance().setCredentialOnFragment(fragmentSelect, credential);
 
@@ -252,15 +257,22 @@ public class BudgetActivity extends BaseActivity
         toolbar.setTitle(String.valueOf(budget));
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void setUserInfo(User user) {
         navHeaderUsername.setText(user.getUsername());
-        toolbar.setTitle(String.valueOf(user.getBudget()));
+        toolbar.setTitle(String.format("%.2f", user.getBudget()));
     }
 
     @Override
     public void refreshFragment(FragmentManager.FragmentSelect fragmentSelect) {
         FragmentManager.getInstance().getFragment(fragmentSelect).refresh();
+    }
+
+    @Override
+    public void refreshCurrentFragment() {
+        FragmentManager.getInstance().getFragment(currentFragmentType).refresh();
+
     }
 
     @Override
@@ -318,10 +330,10 @@ public class BudgetActivity extends BaseActivity
         View dialogView = inflater.inflate(R.layout.edit_dialog_budget_item, null);
 
         final AppCompatEditText etItemPrice = dialogView.findViewById(R.id.et_edit_item_price);
-        final AppCompatEditText etItemName = dialogView.findViewById(R.id.et_edit_item_name);
+        final LinearLayout linLayName = dialogView.findViewById(R.id.linLay_edit_item_name);
         final AppCompatEditText etItemDescription = dialogView.findViewById(R.id.et_edit_item_description);
 
-        etItemName.setVisibility(View.GONE);
+        linLayName.setVisibility(View.GONE);
 
         AppCompatButton btnOk = dialogView.findViewById(R.id.btn_edit_item_ok);
         AppCompatButton btnCancel = dialogView.findViewById(R.id.btn_edit_item_cancel);
@@ -335,7 +347,7 @@ public class BudgetActivity extends BaseActivity
                             .asEarned(price)
                             .withDescription(etItemDescription.getText().toString())
                             .build();
-                    presenter.onClickAddBudget(item);
+                  //  presenter.onClickAddBudget(item);
 
                     dialogBuilder.dismiss();
                 } else {
