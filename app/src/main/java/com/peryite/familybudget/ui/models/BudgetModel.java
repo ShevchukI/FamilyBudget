@@ -4,6 +4,7 @@ import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.AlexaRepository;
 import com.peryite.familybudget.api.repository.UserRepository;
 import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.entities.UserOTP;
 import com.peryite.familybudget.ui.contracts.BudgetContract;
@@ -77,5 +78,10 @@ public class BudgetModel implements BudgetContract.Model {
                 call.cancel();
             }
         });
+    }
+
+    @Override
+    public void addBudget(Item budget) {
+        //TODO: addBudget request!
     }
 }

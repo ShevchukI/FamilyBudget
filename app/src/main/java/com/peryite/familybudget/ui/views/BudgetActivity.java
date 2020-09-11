@@ -7,37 +7,33 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.contracts.BudgetContract;
+import com.peryite.familybudget.ui.listeners.BudgetFragmentListener;
+import com.peryite.familybudget.ui.listeners.OnBudgetCategoryListener;
 import com.peryite.familybudget.ui.models.BudgetModel;
 import com.peryite.familybudget.ui.presenters.BudgetPresenter;
-import com.peryite.familybudget.ui.views.fragments.BaseFragment;
-import com.peryite.familybudget.ui.views.fragments.BudgetCategoryFragment;
 import com.peryite.familybudget.ui.views.fragments.FragmentManager;
 import com.peryite.familybudget.utils.GsonUtil;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class BudgetActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, BudgetContract.View {
@@ -47,6 +43,9 @@ public class BudgetActivity extends BaseActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.btn_add_budget)
+    AppCompatButton btnAddBudget;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
 
@@ -55,6 +54,7 @@ public class BudgetActivity extends BaseActivity
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+
 
     private AppCompatTextView navHeaderUsername;
 
@@ -184,7 +184,11 @@ public class BudgetActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(currentFragment == FragmentManager.getInstance().getFragment(FragmentManager.FragmentSelect.BudgetItem)){
+                selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -231,9 +235,9 @@ public class BudgetActivity extends BaseActivity
         FragmentManager.getInstance().setContextOnFragment(fragmentSelect, this);
         FragmentManager.getInstance().setCredentialOnFragment(fragmentSelect, credential);
 
-       getSupportFragmentManager().beginTransaction()
-               .replace(MAIN_CONTAINER_ID, currentFragment)
-               .commitNow();
+        getSupportFragmentManager().beginTransaction()
+                .replace(MAIN_CONTAINER_ID, currentFragment)
+                .commitNow();
 
         navigationView.setCheckedItem(selectedId);
     }
@@ -273,15 +277,20 @@ public class BudgetActivity extends BaseActivity
         alertDialog.show();
     }
 
+    @Override
+    public void setListenerOnFragment(FragmentManager.FragmentSelect fragmentSelect, BudgetFragmentListener listener) {
+        FragmentManager.getInstance().getFragment(fragmentSelect).setListener(listener);
+    }
+
     private void removeFragment() {
-        if(currentFragment!=null) {
+        if (currentFragment != null) {
             getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
             navigationView.setCheckedItem(selectedId);
             currentFragment = null;
         }
     }
 
-    public void showDialogAlexaRequest(){
+    public void showDialogAlexaRequest() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Get Alexa Code");
         alertDialog.setMessage("Do you want to get new Alexa code?");
@@ -302,6 +311,95 @@ public class BudgetActivity extends BaseActivity
         alertDialog.show();
     }
 
+    @OnClick(R.id.btn_add_budget)
+    public void onClickAddBudget() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.edit_dialog_budget_item, null);
+
+        final AppCompatEditText etItemPrice = dialogView.findViewById(R.id.et_edit_item_price);
+        final AppCompatEditText etItemName = dialogView.findViewById(R.id.et_edit_item_name);
+        final AppCompatEditText etItemDescription = dialogView.findViewById(R.id.et_edit_item_description);
+
+        etItemName.setVisibility(View.GONE);
+
+        AppCompatButton btnOk = dialogView.findViewById(R.id.btn_edit_item_ok);
+        AppCompatButton btnCancel = dialogView.findViewById(R.id.btn_edit_item_cancel);
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double price = Double.parseDouble(etItemPrice.getText().toString());
+                if (price > 0) {
+                    Item item = new Item.Builder()
+                            .asEarned(price)
+                            .withDescription(etItemDescription.getText().toString())
+                            .build();
+                    presenter.onClickAddBudget(item);
+
+                    dialogBuilder.dismiss();
+                } else {
+                    showMessage("Budget cannot be negative!");
+                }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//        alertDialog.setTitle("Budget");
+//        alertDialog.setMessage("Add budget value");
+//
+//        final EditText inputBudget = new EditText(this);
+//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.MATCH_PARENT);
+//        inputBudget.setLayoutParams(lp);
+//
+//
+//        final EditText inputDescription = new EditText(this);
+//        inputDescription.setLayoutParams(lp);
+//
+//        int type = InputType.TYPE_CLASS_NUMBER |  InputType.TYPE_NUMBER_FLAG_DECIMAL;
+//
+//        inputBudget.setInputType(type);
+//        alertDialog.setView(inputBudget);
+//
+//        alertDialog.setPositiveButton("OK",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        try {
+//                            double budget = Double.parseDouble(inputBudget.getText().toString());
+//                            if (budget > 0) {
+//                                Item item = new Item.Builder()
+//                                        .asEarned(budget)
+//                                        .
+//                                presenter.onClickAddBudget(item);
+//                            } else {
+//                                showMessage("Budget cannot be negative!");
+//                            }
+//                        } catch (NumberFormatException ex){
+//                            showMessage("Please input double value");
+//                        }
+//                    }
+//                });
+//
+//        alertDialog.setNegativeButton("Cancel",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        alertDialog.show();
+    }
+
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
@@ -311,4 +409,5 @@ public class BudgetActivity extends BaseActivity
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
     }
+
 }

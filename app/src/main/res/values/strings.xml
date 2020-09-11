@@ -56,6 +56,10 @@
     <string name="cancel">Cancel</string>
     <string name="alexa_code">Alexa code</string>
     <string name="get_alexa_code">Get Alexa Code</string>
+    <string name="add_item">Add item</string>
+    <string name="item_name_enter">Enter Item Name</string>
+    <string name="item_description_enter">Enter Item Description</string>
+    <string name="item_price_enter">Enter Item Price</string>
 
 
     <!--String format-->

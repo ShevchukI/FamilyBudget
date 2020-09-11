@@ -61,8 +61,9 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
     }
 
     @Override
-    public void onOpenCategoryClick(int categoryId) {
-        view.showMessage("Open category: " + categoryId);
+    public void onOpenCategoryClick(BudgetCategory budgetCategory) {
+        view.openCategory(budgetCategory);
+       // view.showMessage("Open category: " + categoryId);
     }
 
     @Override

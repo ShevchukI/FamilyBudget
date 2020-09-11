@@ -1,15 +1,16 @@
 package com.peryite.familybudget.ui.presenters;
 
-import android.support.v4.app.Fragment;
-import android.util.Log;
-
 import com.peryite.familybudget.R;
+import com.peryite.familybudget.entities.BudgetCategory;
+import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.BudgetContract;
 import com.peryite.familybudget.ui.listeners.BudgetListener;
+import com.peryite.familybudget.ui.listeners.OnBudgetCategoryListener;
 import com.peryite.familybudget.ui.views.fragments.BaseFragment;
 import com.peryite.familybudget.ui.views.fragments.BudgetCategoryFragment;
+import com.peryite.familybudget.ui.views.fragments.BudgetItemFragment;
 import com.peryite.familybudget.ui.views.fragments.FragmentManager;
 
 import java.util.ArrayList;
@@ -80,6 +81,16 @@ public class BudgetPresenter implements BudgetContract.Presenter {
         model.getUser();
         view.selectNavigation(R.id.nav_category);
         view.selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
+        view.setListenerOnFragment(FragmentManager.FragmentSelect.BudgetCategory, new OnBudgetCategoryListener() {
+            @Override
+            public void openCategory(BudgetCategory budgetCategory) {
+                BudgetItemFragment bif = (BudgetItemFragment)FragmentManager.getInstance().getFragment(FragmentManager.FragmentSelect.BudgetItem);
+                bif.setBudgetCategory(budgetCategory);
+
+                view.selectFragment(FragmentManager.FragmentSelect.BudgetItem);
+
+            }
+        });
 
         view.hideProgress();
     }
@@ -111,9 +122,15 @@ public class BudgetPresenter implements BudgetContract.Presenter {
         model.getAlexaCode();
     }
 
+    @Override
+    public void onClickAddBudget(Item budget) {
+        model.addBudget(budget);
+    }
+
     private List<BaseFragment> fillFragmentList(){
         List<BaseFragment> baseFragments = new ArrayList<>();
         baseFragments.add(new BudgetCategoryFragment());
+        baseFragments.add(new BudgetItemFragment());
 
         return baseFragments;
     }

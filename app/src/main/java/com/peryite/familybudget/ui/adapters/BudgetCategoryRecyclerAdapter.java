@@ -93,19 +93,12 @@ public class BudgetCategoryRecyclerAdapter extends RecyclerView.Adapter<BudgetCa
             categoryOpen = itemView.findViewById(R.id.category_open_category_item);
             categoryAddItem = itemView.findViewById(R.id.category_add_item_button);
 
-
-////            heroGender = itemView.findViewById(R.id.tv_hero_gender);
-//            heroRace = itemView.findViewById(R.id.tv_hero_race);
-//            heroSpecialtyIcon = itemView.findViewById(R.id.iv_hero_specialty);
-//            heroSpecialtyName = itemView.findViewById(R.id.tv_specialty_name);
             divider = itemView.findViewById(R.id.divider);
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle("Select The Action");
-//            menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
-//            menu.add(0, v.getId(), 0, "SMS");
 
             MenuItem edit = menu.add(Menu.NONE, 1, 1, "Edit");
             MenuItem delete = menu.add(Menu.NONE, 2, 2, "Delete");
@@ -122,14 +115,10 @@ public class BudgetCategoryRecyclerAdapter extends RecyclerView.Adapter<BudgetCa
                 switch (item.getItemId()) {
                     case 1:
                         listener.onEditCategoryClick(getAdapterPosition());
-                        //listener.showListenerMessage("edit? Item id: " + item.getItemId() + " adapterPosition: " + getAdapterPosition() + " itemId: " + getItems().get(getAdapterPosition()).getId());
-                        //Do stuff
                         break;
 
                     case 2:
-                        //Do stuff
                         listener.onDeleteCategoryClick(getAdapterPosition());
-                        //listener.showListenerMessage("delete? Item id: " + item.getItemId()+ " adapterPosition: " + getAdapterPosition() + " itemId: " + getItems().get(getAdapterPosition()).getId());
                         break;
                     default:
                         break;
@@ -148,10 +137,6 @@ public class BudgetCategoryRecyclerAdapter extends RecyclerView.Adapter<BudgetCa
         this.items = items;
     }
 
-//    public OnHeroRecyclerItemClickListener getListener() {
-//        return listener;
-//    }
-//
     public void setListener(OnBudgetCategoryItemClick listener) {
         this.listener = listener;
     }

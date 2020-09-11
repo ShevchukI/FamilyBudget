@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 
     <View
         android:id="@+id/item_divider"
@@ -19,24 +22,12 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/category_item_number"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/grill_icon_text"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_text" />
-
-        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/category_item_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:gravity="center"
             android:text="@string/name_text"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_text" />
+            style="@style/MediumText" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/category_item_price"
@@ -45,8 +36,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/price_text"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_text" />
+            style="@style/MediumText" />
 
     </LinearLayout>
 
@@ -69,10 +59,16 @@
             android:id="@+id/category_item_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textSize="18sp"
             tools:text="Year: 1993" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="@color/divider"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.widget.LinearLayout>

@@ -3,43 +3,38 @@ package com.peryite.familybudget.ui.views.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.peryite.familybudget.R;
 import com.peryite.familybudget.entities.BudgetCategory;
-import com.peryite.familybudget.entities.CategoryItem;
-import com.peryite.familybudget.entities.Credential;
 import com.peryite.familybudget.ui.adapters.BudgetCategoryRecyclerAdapter;
 import com.peryite.familybudget.ui.contracts.BudgetCategoryContract;
+import com.peryite.familybudget.ui.listeners.BudgetFragmentListener;
 import com.peryite.familybudget.ui.listeners.OnBudgetCategoryItemClick;
+import com.peryite.familybudget.ui.listeners.OnBudgetCategoryListener;
 import com.peryite.familybudget.ui.models.BudgetCategoryModel;
 import com.peryite.familybudget.ui.presenters.BudgetCategoryPresenter;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 public class BudgetCategoryFragment extends BaseFragment implements BudgetCategoryContract.View {
 
+    private AppCompatTextView tvTitle;
     private RecyclerView recyclerView;
     private AppCompatButton btnAddCategory;
     private BudgetCategoryContract.Presenter presenter;
     private BudgetCategoryRecyclerAdapter adapter;
+    private OnBudgetCategoryListener listener;
 
     public BudgetCategoryFragment() {
 
@@ -48,21 +43,32 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_budget_category, container, false);
+        view = inflater.inflate(R.layout.fragment_crud_list, container, false);
         // Inflate the layout for this fragment
-        btnAddCategory = view.findViewById(R.id.btn_add_category);
+
+        init();
+
+        presenter.start();
+
+        return view;
+    }
+
+    private void init(){
+        tvTitle = view.findViewById(R.id.tv_list_title);
+        tvTitle.setText(R.string.categories_text);
+
+        btnAddCategory = view.findViewById(R.id.btn_list_add);
+        btnAddCategory.setText(R.string.add_category);
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.onAddCategoryClick();
             }
         });
+
         BudgetCategoryModel budgetCategoryModel = new BudgetCategoryModel(credential);
         presenter = new BudgetCategoryPresenter(budgetCategoryModel);
         presenter.attachView(this);
-        presenter.start();
-
-        return view;
     }
 
     @Override
@@ -86,7 +92,7 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
         adapter.setListener(new OnBudgetCategoryItemClick() {
             @Override
             public void onOpenCategoryClick(int id) {
-                presenter.onOpenCategoryClick(adapter.getItems().get(id).getId());
+                presenter.onOpenCategoryClick(adapter.getItems().get(id));
             }
 
             @Override
@@ -132,7 +138,7 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
 
     @Override
     public void initRecycler() {
-        recyclerView = view.findViewById(R.id.rv_budget_categories);
+        recyclerView = view.findViewById(R.id.rv_list_body);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -153,6 +159,11 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     @Override
     public void showEditCategoryDialog(BudgetCategory budgetCategory) {
         createEditCategoryDialog(budgetCategory, true);
+    }
+
+    @Override
+    public void openCategory(BudgetCategory budgetCategory) {
+        listener.openCategory(budgetCategory);
     }
 
     private void createEditCategoryDialog(final BudgetCategory budgetCategory, final boolean edit){
@@ -204,6 +215,10 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
         presenter.refresh();
     }
 
+    @Override
+    public void setListener(BudgetFragmentListener listener) {
+        this.listener = (OnBudgetCategoryListener) listener;
+    }
 
     @Override
     public void disableElements(List<View> elements) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.ui.listeners.BudgetFragmentListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,39 +15,74 @@ public class FragmentManager {
     private List<BaseFragment> fragmentList;
 
     public static FragmentManager getInstance() {
-       if(instance==null){
-           instance = new FragmentManager();
-       }
-       return instance;
+        if (instance == null) {
+            instance = new FragmentManager();
+        }
+        return instance;
     }
 
-    private FragmentManager(){
+    private FragmentManager() {
         //fragmentList = fillFragmentList();
     }
 
-    private List<BaseFragment> fillFragmentList(){
+    private List<BaseFragment> fillFragmentList() {
         List<BaseFragment> fragments = new ArrayList<>();
         fragments.add(new BudgetCategoryFragment());
         return fragments;
     }
 
-    public BaseFragment getFragment(FragmentSelect fragmentSelect){
+    public BaseFragment getFragment(FragmentSelect fragmentSelect) {
         BaseFragment fragment = null;
-        if(fragmentSelect.equals(FragmentSelect.BudgetCategory)){
-            fragment = fragmentList.get(0);
+        switch (fragmentSelect) {
+            case BudgetCategory:
+                fragment = fragmentList.get(0);
+                break;
+            case BudgetItem:
+                fragment = fragmentList.get(1);
+                break;
+            default:
+                break;
         }
+
         return fragment;
     }
 
-    public void setContextOnFragment(FragmentSelect fragmentSelect, Context context){
-        if(fragmentSelect.equals(FragmentSelect.BudgetCategory)){
-            fragmentList.get(0).setContext(context);
+    public void setContextOnFragment(FragmentSelect fragmentSelect, Context context) {
+        switch (fragmentSelect) {
+            case BudgetCategory:
+                fragmentList.get(0).setContext(context);
+                break;
+            case BudgetItem:
+                fragmentList.get(1).setContext(context);
+                break;
+            default:
+                break;
         }
     }
 
-    public void setCredentialOnFragment(FragmentSelect fragmentSelect, Credential credential){
-        if(fragmentSelect.equals(FragmentSelect.BudgetCategory)){
-            fragmentList.get(0).setCredential(credential);
+    public void setCredentialOnFragment(FragmentSelect fragmentSelect, Credential credential) {
+        switch (fragmentSelect) {
+            case BudgetCategory:
+                fragmentList.get(0).setCredential(credential);
+                break;
+            case BudgetItem:
+                fragmentList.get(1).setCredential(credential);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void setListenerOnFragment(FragmentSelect fragmentSelect, BudgetFragmentListener listener){
+        switch (fragmentSelect) {
+            case BudgetCategory:
+                fragmentList.get(0).setListener(listener);
+                break;
+            case BudgetItem:
+                fragmentList.get(1).setListener(listener);
+                break;
+            default:
+                break;
         }
     }
 
@@ -54,8 +90,10 @@ public class FragmentManager {
         fragmentList = baseFragments;
     }
 
-    public enum FragmentSelect{
-        BudgetCategory
+
+    public enum FragmentSelect {
+        BudgetCategory,
+        BudgetItem
     }
 
 

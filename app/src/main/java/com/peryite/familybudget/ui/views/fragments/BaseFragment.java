@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.ui.listeners.BudgetFragmentListener;
 
 public abstract class BaseFragment extends Fragment {
     protected View view;
@@ -13,6 +14,8 @@ public abstract class BaseFragment extends Fragment {
     protected Context context;
 
     protected Credential credential;
+
+    protected BudgetFragmentListener listener;
 
     @Nullable
     @Override
@@ -44,5 +47,13 @@ public abstract class BaseFragment extends Fragment {
 
     public void refresh(){
 
+    }
+
+    public BudgetFragmentListener getListener() {
+        return listener;
+    }
+
+    public void setListener(BudgetFragmentListener listener) {
+        this.listener = listener;
     }
 }
