@@ -6,4 +6,6 @@ public interface BudgetListener extends OnAPIUserRequestListener{
     void sendAlexaCode(String text);
 
     void errorMessage(String message);
+
+    void updateUser();
 }

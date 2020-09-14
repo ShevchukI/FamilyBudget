@@ -6,6 +6,7 @@ import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.entities.User;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.BudgetContract;
+import com.peryite.familybudget.ui.listeners.BudgetFragmentListener;
 import com.peryite.familybudget.ui.listeners.BudgetListener;
 import com.peryite.familybudget.ui.listeners.OnBudgetCategoryListener;
 import com.peryite.familybudget.ui.views.fragments.BaseFragment;
@@ -36,6 +37,11 @@ public class BudgetPresenter implements BudgetContract.Presenter {
             @Override
             public void errorMessage(String message) {
 
+            }
+
+            @Override
+            public void updateUser() {
+                model.getUser();
             }
 
             @Override
@@ -91,6 +97,13 @@ public class BudgetPresenter implements BudgetContract.Presenter {
 
             }
 
+            @Override
+            public void refreshBudget() {
+                model.getUser();
+            }
+        });
+
+        view.setListenerOnFragment(FragmentManager.FragmentSelect.BudgetItem, new BudgetFragmentListener() {
             @Override
             public void refreshBudget() {
                 model.getUser();

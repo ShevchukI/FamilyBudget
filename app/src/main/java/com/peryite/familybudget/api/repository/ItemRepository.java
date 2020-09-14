@@ -25,4 +25,7 @@ public interface ItemRepository {
 
     @PUT("/item/{itemId}")
     Call<Item> updateItem(@Path("itemId") int id, @Body Item item);
+
+    @POST("/item/default")
+    Call<Item> addBudget(@Body Item item);
 }

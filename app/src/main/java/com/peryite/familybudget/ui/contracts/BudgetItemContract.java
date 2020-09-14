@@ -16,6 +16,7 @@ public interface BudgetItemContract {
         void createItem(Item item);
 
         void updateItem(Item item);
+
     }
 
     interface View extends BaseView{
@@ -28,6 +29,8 @@ public interface BudgetItemContract {
         void showAddItemDialog();
 
         void showEditItemDialog(Item item);
+
+        void updateBudget();
     }
 
     interface Presenter extends BasePresenter{

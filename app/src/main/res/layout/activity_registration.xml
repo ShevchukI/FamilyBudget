@@ -173,7 +173,7 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/registration_create"
-        style="@style/MediumText"
+        style="@style/button_primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"

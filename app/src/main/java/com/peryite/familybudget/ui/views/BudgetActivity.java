@@ -291,7 +291,8 @@ public class BudgetActivity extends BaseActivity
 
     @Override
     public void setListenerOnFragment(FragmentManager.FragmentSelect fragmentSelect, BudgetFragmentListener listener) {
-        FragmentManager.getInstance().getFragment(fragmentSelect).setListener(listener);
+        FragmentManager.getInstance().setListenerOnFragment(fragmentSelect, listener);
+        //FragmentManager.getInstance().getFragment(fragmentSelect).setListener(listener);
     }
 
     private void removeFragment() {
@@ -341,17 +342,21 @@ public class BudgetActivity extends BaseActivity
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Double price = Double.parseDouble(etItemPrice.getText().toString());
-                if (price > 0) {
-                    Item item = new Item.Builder()
-                            .asEarned(price)
-                            .withDescription(etItemDescription.getText().toString())
-                            .build();
-                  //  presenter.onClickAddBudget(item);
+                if(!etItemPrice.getText().toString().equals("")) {
+                    Double price = Double.parseDouble(etItemPrice.getText().toString());
+                    if (price > 0) {
+                        Item item = new Item.Builder()
+                                .asEarned(price)
+                                .withDescription(etItemDescription.getText().toString())
+                                .build();
+                        presenter.onClickAddBudget(item);
 
-                    dialogBuilder.dismiss();
+                        dialogBuilder.dismiss();
+                    } else {
+                        showMessage("Budget cannot be negative!");
+                    }
                 } else {
-                    showMessage("Budget cannot be negative!");
+                    showMessage("Price is empty!");
                 }
             }
         });

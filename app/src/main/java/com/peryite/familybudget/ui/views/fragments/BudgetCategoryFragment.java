@@ -3,7 +3,10 @@ package com.peryite.familybudget.ui.views.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
@@ -32,7 +35,8 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
 
     private AppCompatTextView tvTitle;
     private RecyclerView recyclerView;
-    private AppCompatButton btnAddCategory;
+    // private AppCompatButton btnAddCategory;
+    private FloatingActionButton btnAddCategory;
     private BudgetCategoryContract.Presenter presenter;
     private BudgetCategoryRecyclerAdapter adapter;
     private OnBudgetCategoryListener listener;
@@ -54,12 +58,13 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
         return view;
     }
 
-    private void init(){
+    private void init() {
         tvTitle = view.findViewById(R.id.tv_list_title);
         tvTitle.setText(R.string.categories_text);
 
-        btnAddCategory = view.findViewById(R.id.btn_list_add);
-        btnAddCategory.setText(R.string.add_category);
+        btnAddCategory = view.findViewById(R.id.add_item);
+        // btnAddCategory = view.findViewById(R.id.btn_list_add);
+        // btnAddCategory.setText(R.string.add_category);
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,6 +175,7 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     @Override
     public void showAddItemDialog(final int categoryId) {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
+        dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.edit_dialog_budget_item, null);
 
@@ -183,16 +189,19 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Item item = new Item.Builder()
-                        .asSpending(Double.parseDouble(etItemPrice.getText().toString()))
-                        .withName(etItemName.getText().toString())
-                        .withDescription(etItemDescription.getText().toString())
-                        .build();
-                item.setId(categoryId);
+                if (!etItemPrice.getText().toString().equals("")) {
+                    Item item = new Item.Builder()
+                            .asSpending(Double.parseDouble(etItemPrice.getText().toString()))
+                            .withName(etItemName.getText().toString())
+                            .withDescription(etItemDescription.getText().toString())
+                            .build();
+                    item.setId(categoryId);
 
-                presenter.confirmCreateItem(item);
-
-                dialogBuilder.dismiss();
+                    presenter.confirmCreateItem(item);
+                    dialogBuilder.dismiss();
+                } else {
+                    showMessage("Price is empty!");
+                }
             }
         });
 
@@ -211,8 +220,9 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
         listener.refreshBudget();
     }
 
-    private void createEditCategoryDialog(final BudgetCategory budgetCategory, final boolean edit){
+    private void createEditCategoryDialog(final BudgetCategory budgetCategory, final boolean edit) {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
+        dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.edit_dialog_budget_category, null);
 
@@ -231,7 +241,7 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
                 String name = etCategoryName.getText().toString();
                 String description = etCategoryDescription.getText().toString();
                 if (!name.equals("")) {
-                    if(edit) {
+                    if (edit) {
                         presenter.updateCategory(new BudgetCategory(budgetCategory.getId(), name, description));
                     } else {
                         presenter.confirmCreateCategory(new BudgetCategory(0, name, description));
@@ -309,5 +319,4 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     public void hideProgress() {
 
     }
-
 }

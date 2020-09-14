@@ -2,6 +2,7 @@ package com.peryite.familybudget.ui.models;
 
 import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.AlexaRepository;
+import com.peryite.familybudget.api.repository.ItemRepository;
 import com.peryite.familybudget.api.repository.UserRepository;
 import com.peryite.familybudget.entities.Credential;
 import com.peryite.familybudget.entities.Item;
@@ -82,6 +83,25 @@ public class BudgetModel implements BudgetContract.Model {
 
     @Override
     public void addBudget(Item budget) {
+        ItemRepository itemRepository = RestClient.getClient(credential).create(ItemRepository.class);
+        Call<Item> itemCall = itemRepository.addBudget(budget);
+        itemCall.enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(Call<Item> call, Response<Item> response) {
+                if(response.code()==200){
+                    if(response.body()!=null){
+                        listener.updateUser();
+                    }
+                }else {
+                    listener.onResponse();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Item> call, Throwable t) {
+                listener.onFailure();
+            }
+        });
         //TODO: addBudget request!
     }
 }

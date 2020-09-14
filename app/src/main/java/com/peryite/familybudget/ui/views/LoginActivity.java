@@ -49,8 +49,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @BindView(R.id.login_remember_me)
     AppCompatCheckBox rememberMe;
-    @BindView(R.id.login_forgot_password)
-    AppCompatTextView forgotPassword;
+//    @BindView(R.id.login_forgot_password)
+//    AppCompatTextView forgotPassword;
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -59,8 +59,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     AppCompatButton signIn;
     @BindView(R.id.login_create_new_account)
     AppCompatButton createNewAccount;
-    @BindView(R.id.login_sign_in_with_google)
-    AppCompatButton signInWithGoogle;
+//    @BindView(R.id.login_sign_in_with_google)
+//    AppCompatButton signInWithGoogle;
 
     private SharedPreferences preferencesCredential;
     private SharedPreferences preferencesHasVisited;

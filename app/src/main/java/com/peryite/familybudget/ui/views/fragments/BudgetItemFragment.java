@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
@@ -21,6 +24,7 @@ import com.peryite.familybudget.entities.BudgetCategory;
 import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.ui.adapters.BudgetItemRecyclerAdapter;
 import com.peryite.familybudget.ui.contracts.BudgetItemContract;
+import com.peryite.familybudget.ui.listeners.OnBudgetCategoryListener;
 import com.peryite.familybudget.ui.listeners.OnBudgetItemClick;
 import com.peryite.familybudget.ui.models.BudgetItemModel;
 import com.peryite.familybudget.ui.presenters.BudgetItemPresenter;
@@ -31,7 +35,8 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
 
     private AppCompatTextView tvTitle;
     private RecyclerView recyclerView;
-    private AppCompatButton btnAddItem;
+   // private AppCompatButton btnAddItem;
+    private FloatingActionButton btnAddItem;
     private BudgetItemContract.Presenter presenter;
     private BudgetItemRecyclerAdapter adapter;
 
@@ -46,7 +51,8 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_crud_list, container, false);
         // Inflate the layout for this fragment
-        btnAddItem = view.findViewById(R.id.btn_list_add);
+        //btnAddItem = view.findViewById(R.id.btn_list_add);
+        btnAddItem = view.findViewById(R.id.add_item);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +72,9 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         tvTitle = view.findViewById(R.id.tv_list_title);
         tvTitle.setText("Category/" + budgetCategory.getName());
 
-        btnAddItem = view.findViewById(R.id.btn_list_add);
-        btnAddItem.setText(R.string.add_item);
+        btnAddItem = view.findViewById(R.id.add_item);
+       // btnAddItem = view.findViewById(R.id.btn_list_add);
+       // btnAddItem.setText(R.string.add_item);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,6 +206,11 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         createEditItemDialog(item, true, false);
     }
 
+    @Override
+    public void updateBudget() {
+        listener.refreshBudget();
+    }
+
     public BudgetCategory getBudgetCategory() {
         return budgetCategory;
     }
@@ -209,6 +221,8 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
 
     private void createEditItemDialog(final Item item, final boolean edit, final boolean earn) {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
+        dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.edit_dialog_budget_item, null);
 

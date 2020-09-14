@@ -64,6 +64,7 @@ public class BudgetItemPresenter implements BudgetItemContract.Presenter {
     public void refresh() {
         isRefresh = true;
         model.getItems();
+        view.updateBudget();
     }
 
     @Override

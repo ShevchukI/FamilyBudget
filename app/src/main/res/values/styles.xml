@@ -22,5 +22,21 @@
         <item name="android:textSize">@dimen/medium_text</item>
         <item name="android:textAllCaps">false</item>
     </style>
+    
+    <style name="button_primary">
+        <item name="android:background">@drawable/button_shape_primary</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/medium_text</item>
+    </style>
+
+    <style name="button_primaryDark">
+        <item name="android:background">@drawable/button_shape_primary_dark</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/medium_text</item>
+    </style>
+
+    <style name="background_shape">
+        <item name="android:background">@drawable/background_shape</item>
+    </style>
 
 </resources>

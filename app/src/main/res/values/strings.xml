@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Family Budget</string>
+    <string name="app_name">Budget Manager</string>
     <string name="placeholder">{PLACEHOLDER}</string>
 
 

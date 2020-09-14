@@ -84,18 +84,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/password_linear_layout" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/login_forgot_password"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:gravity="center"
-        android:linksClickable="true"
-        android:text="@string/forgot_password"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_linear_layout" />
+<!--    <android.support.v7.widget.AppCompatTextView-->
+<!--        android:id="@+id/login_forgot_password"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+<!--        android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+<!--        android:gravity="center"-->
+<!--        android:linksClickable="true"-->
+<!--        android:text="@string/forgot_password"-->
+<!--        android:textColor="@color/colorBlack"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/password_linear_layout" />-->
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -115,7 +115,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/sign_in"
         android:textAllCaps="false"
-        style="@style/MediumText"
+        style="@style/button_primary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_remember_me" />
@@ -129,26 +129,26 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/create_new_account"
         android:textAllCaps="false"
-        style="@style/MediumText"
+        style="@style/button_primaryDark"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_sign_in" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/login_sign_in_with_google"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:drawableStart="@drawable/logo_google"
-        android:drawableLeft="@drawable/logo_google"
-        android:text="@string/sign_in_with_google"
-        android:textAllCaps="false"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/medium_text"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_create_new_account" />
+<!--    <android.support.v7.widget.AppCompatButton-->
+<!--        android:id="@+id/login_sign_in_with_google"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+<!--        android:layout_marginTop="@dimen/activity_vertical_margin"-->
+<!--        android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+<!--        android:drawableStart="@drawable/logo_google"-->
+<!--        android:drawableLeft="@drawable/logo_google"-->
+<!--        android:text="@string/sign_in_with_google"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/colorBlack"-->
+<!--        android:textSize="@dimen/medium_text"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/login_create_new_account" />-->
 
 </android.support.constraint.ConstraintLayout>
