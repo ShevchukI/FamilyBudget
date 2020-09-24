@@ -40,6 +40,9 @@ public class FragmentManager {
             case BudgetItem:
                 fragment = fragmentList.get(1);
                 break;
+            case InsertChart:
+                fragment = fragmentList.get(2);
+                break;
             default:
                 break;
         }
@@ -55,6 +58,9 @@ public class FragmentManager {
             case BudgetItem:
                 fragmentList.get(1).setContext(context);
                 break;
+            case InsertChart:
+                fragmentList.get(2).setContext(context);
+                break;
             default:
                 break;
         }
@@ -67,6 +73,9 @@ public class FragmentManager {
                 break;
             case BudgetItem:
                 fragmentList.get(1).setCredential(credential);
+                break;
+            case InsertChart:
+                fragmentList.get(2).setCredential(credential);
                 break;
             default:
                 break;
@@ -81,6 +90,9 @@ public class FragmentManager {
             case BudgetItem:
                 fragmentList.get(1).setListener(listener);
                 break;
+            case InsertChart:
+                fragmentList.get(2).setListener(listener);
+                break;
             default:
                 break;
         }
@@ -93,7 +105,9 @@ public class FragmentManager {
 
     public enum FragmentSelect {
         BudgetCategory,
-        BudgetItem
+        BudgetItem,
+        InsertChart;
+
     }
 
 

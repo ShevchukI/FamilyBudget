@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -59,6 +60,13 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
                 // presenter.onAddCategoryClick();
             }
         });
+
+        if(savedInstanceState!=null){
+            budgetCategory = new BudgetCategory();
+            budgetCategory.setId(savedInstanceState.getInt("budgetCategoryId"));
+            budgetCategory.setName(savedInstanceState.getString("budgetCategoryName"));
+            budgetCategory.setDescription(savedInstanceState.getString("budgetCategoryDescription"));
+        }
 
         init();
 
@@ -278,4 +286,18 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
     }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putInt("budgetCategoryId", budgetCategory.getId());
+//        outState.putString("budgetCategoryName", budgetCategory.getName());
+//        outState.putString("budgetCategoryDescription", budgetCategory.getDescription());
+//    }
+//
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        onSaveInstanceState(new Bundle());
+//    }
 }

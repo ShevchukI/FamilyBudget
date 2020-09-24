@@ -8,6 +8,10 @@
             android:id="@+id/nav_category"
             android:icon="@drawable/ic_list_black_24dp"
             android:title="@string/menu_category" />
+        <item
+            android:id="@+id/nav_insert_chart"
+            android:icon="@drawable/ic_insert_chart_black_24dp"
+            android:title="@string/statistic_text"/>
 <!--        <item-->
 <!--            android:id="@+id/nav_gallery"-->
 <!--            android:icon="@drawable/ic_menu_gallery"-->

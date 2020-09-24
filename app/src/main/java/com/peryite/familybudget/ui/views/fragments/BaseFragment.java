@@ -4,11 +4,16 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.peryite.familybudget.entities.Credential;
+import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.listeners.BudgetFragmentListener;
 
-public abstract class BaseFragment extends Fragment {
+import java.util.List;
+
+public abstract class BaseFragment extends Fragment implements BaseView {
     protected View view;
 
     protected Context context;
@@ -45,7 +50,7 @@ public abstract class BaseFragment extends Fragment {
         this.credential = credential;
     }
 
-    public void refresh(){
+    public void refresh() {
 
     }
 
@@ -55,5 +60,65 @@ public abstract class BaseFragment extends Fragment {
 
     public void setListener(BudgetFragmentListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void showProgress(ProgressBar progressBar) {
+
+    }
+
+    @Override
+    public void hideProgress(ProgressBar progressBar) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void disableElements(List<View> elements) {
+
+    }
+
+    @Override
+    public void disableElements() {
+
+    }
+
+    @Override
+    public void enableElements(List<View> elements) {
+
+    }
+
+    @Override
+    public void enableElements() {
+
+    }
+
+    @Override
+    public void enableElements(boolean enabled) {
+
+    }
+
+    @Override
+    public void startActivity(Context packageContext, Class cls) {
+
+    }
+
+    @Override
+    public void closeActivity() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
     }
 }

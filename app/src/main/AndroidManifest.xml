@@ -22,7 +22,8 @@
         <activity
             android:name=".ui.views.BudgetActivity"
             android:label="@string/title_activity_budget"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".ui.views.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />

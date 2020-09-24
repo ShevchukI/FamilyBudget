@@ -13,6 +13,7 @@ import com.peryite.familybudget.ui.views.fragments.BaseFragment;
 import com.peryite.familybudget.ui.views.fragments.BudgetCategoryFragment;
 import com.peryite.familybudget.ui.views.fragments.BudgetItemFragment;
 import com.peryite.familybudget.ui.views.fragments.FragmentManager;
+import com.peryite.familybudget.ui.views.fragments.InsertChartFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,11 +147,16 @@ public class BudgetPresenter implements BudgetContract.Presenter {
         model.addBudget(budget);
     }
 
+    @Override
+    public void onClickInsertChart() {
+        view.selectFragment(FragmentManager.FragmentSelect.InsertChart);
+    }
+
     private List<BaseFragment> fillFragmentList(){
         List<BaseFragment> baseFragments = new ArrayList<>();
         baseFragments.add(new BudgetCategoryFragment());
         baseFragments.add(new BudgetItemFragment());
-
+        baseFragments.add(new InsertChartFragment());
         return baseFragments;
     }
 }

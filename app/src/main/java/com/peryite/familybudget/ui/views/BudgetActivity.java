@@ -15,6 +15,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,7 +76,25 @@ public class BudgetActivity extends BaseActivity
         setContentView(R.layout.activity_budget);
         setSupportActionBar(toolbar);
 
+        if (currentFragment != null) {
+            Log.d(TAG, "onCreate: notNull");
+        }
+
         init();
+        if (savedInstanceState != null) {
+            switch (savedInstanceState.getInt("currentFragment")) {
+                case 0:
+                    selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
+                    break;
+                case 1:
+                    selectFragment(FragmentManager.FragmentSelect.BudgetItem);
+                    break;
+                case 2:
+                    selectFragment(FragmentManager.FragmentSelect.InsertChart);
+                    break;
+            }
+        }
+
 
     }
 
@@ -140,6 +159,7 @@ public class BudgetActivity extends BaseActivity
         presenter.attachView(this);
         presenter.start();
 
+
         //  selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
 //        fragment = new BudgetCategoryFragment();
 //
@@ -187,7 +207,7 @@ public class BudgetActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(currentFragment == FragmentManager.getInstance().getFragment(FragmentManager.FragmentSelect.BudgetItem)){
+            if (currentFragment == FragmentManager.getInstance().getFragment(FragmentManager.FragmentSelect.BudgetItem)) {
                 selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
             } else {
                 super.onBackPressed();
@@ -205,6 +225,8 @@ public class BudgetActivity extends BaseActivity
 
         if (id == R.id.nav_category) {
             presenter.onClickBudgetCategory();
+        } else if (id == R.id.nav_insert_chart) {
+            presenter.onClickInsertChart();
         }
 //        else if(id == R.id.nav_alexa_code){
 //            presenter.onClickAlexaCode();
@@ -342,7 +364,7 @@ public class BudgetActivity extends BaseActivity
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!etItemPrice.getText().toString().equals("")) {
+                if (!etItemPrice.getText().toString().equals("")) {
                     Double price = Double.parseDouble(etItemPrice.getText().toString());
                     if (price > 0) {
                         Item item = new Item.Builder()
@@ -427,4 +449,19 @@ public class BudgetActivity extends BaseActivity
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        switch (currentFragmentType) {
+            case BudgetCategory:
+                outState.putInt("currentFragment", 0);
+                break;
+            case BudgetItem:
+                outState.putInt("currentFragment", 1);
+                break;
+            case InsertChart:
+                outState.putInt("currentFragment", 2);
+                break;
+        }
+    }
 }

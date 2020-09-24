@@ -50,5 +50,7 @@ public interface BudgetContract {
         void onClickAlexaCode();
 
         void onClickAddBudget(Item budget);
+
+        void onClickInsertChart();
     }
 }
