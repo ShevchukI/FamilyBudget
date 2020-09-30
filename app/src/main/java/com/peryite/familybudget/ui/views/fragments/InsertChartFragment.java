@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -15,6 +16,9 @@ import android.widget.ProgressBar;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -22,6 +26,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -39,7 +44,7 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
 
     private InsertChartContract.Presenter presenter;
 
-    // private BarChart barChart;
+    private BarChart barChart;
     private PieChart pieChart;
     private AppCompatTextView tvStartDatePicker;
     private AppCompatTextView tvEndDatePicker;
@@ -69,6 +74,7 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
         tvEndDatePicker = view.findViewById(R.id.tv_endDatePicker);
         btnGo = view.findViewById(R.id.btn_goDatePicker);
         pieChart = view.findViewById(R.id.insert_chart_pie_chart);
+        barChart = view.findViewById(R.id.insert_chart_bar_chart);
 
         tvStartDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +90,7 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
                         startOnDateSetListener,
                         year, month, day);
 
-               // datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                // datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
             }
         });
@@ -92,9 +98,9 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
         startOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month+1;
+                month = month + 1;
 
-                String date = dayOfMonth+"/"+month+"/"+year;
+                String date = dayOfMonth + "/" + month + "/" + year;
                 tvStartDatePicker.setText(date);
             }
         };
@@ -121,9 +127,9 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
         endOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month+1;
+                month = month + 1;
 
-                String date = dayOfMonth+"/"+month+"/"+year;
+                String date = dayOfMonth + "/" + month + "/" + year;
                 tvEndDatePicker.setText(date);
             }
         };
@@ -132,8 +138,10 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                barChart.setVisibility(View.GONE);
+                pieChart.setVisibility(View.GONE);
                 presenter.onClickGo(tvStartDatePicker.getText().toString(), tvEndDatePicker.getText().toString());
-               // showMessage(tvStartDatePicker.getText().toString() + " - " + tvEndDatePicker.getText().toString());
+                // showMessage(tvStartDatePicker.getText().toString() + " - " + tvEndDatePicker.getText().toString());
 
 
             }
@@ -159,14 +167,13 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
 //        barChart.animateY(2000);
 
 
-
         InsertChartModel insertChartModel = new InsertChartModel(credential);
         presenter = new InsertChartPresenter(insertChartModel);
         presenter.attachView(this);
     }
 
     @Override
-    public void showChart(List<PieEntry> set, String centerText){
+    public void showPieChart(List<PieEntry> set, String centerText) {
         PieDataSet pieDataSet = new PieDataSet(set, "Visitors");
         pieDataSet.setColors(CustomColorTemplate.FIFTEEN_COLORS);
 //        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -194,4 +201,35 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
         pieChart.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void showBarChart(List<BarEntry> set, List<String> labels, String text) {
+        BarDataSet barDataSet = new BarDataSet(set, text);
+        barDataSet.setColors(CustomColorTemplate.FIFTEEN_COLORS);
+        Description description = new Description();
+        description.setText("");
+
+        barChart.setDescription(description);
+        BarData barData = new BarData(barDataSet);
+        barChart.setData(barData);
+
+        barChart.getData().setValueTextSize(15);
+        barChart.getXAxis().setTextSize(15);
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+        xAxis.setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+       // xAxis.setGranularity(1f);
+        xAxis.setLabelCount(labels.size());
+        xAxis.setLabelRotationAngle(270);
+
+//        YAxis yAxis = barChart.getAxis(YAxis.AxisDependency.LEFT);
+//        yAxis.setStartAtZero(false);
+
+        barChart.animateY(2000);
+        barChart.invalidate();
+
+        barChart.setVisibility(View.VISIBLE);
+    }
 }

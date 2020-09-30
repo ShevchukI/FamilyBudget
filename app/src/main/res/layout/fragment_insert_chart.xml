@@ -60,7 +60,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constLay_datePicker">
+        app:layout_constraintTop_toBottomOf="@id/constLay_datePicker"
+        android:orientation="vertical">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/insert_chart_bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/insert_chart_pie_chart"

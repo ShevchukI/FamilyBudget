@@ -1,6 +1,7 @@
 package com.peryite.familybudget.api.repository;
 
 import com.peryite.familybudget.entities.Item;
+import com.peryite.familybudget.entities.StatisticEntity;
 
 import java.util.List;
 
@@ -28,4 +29,7 @@ public interface ItemRepository {
 
     @POST("/item/default")
     Call<Item> addBudget(@Body Item item);
+
+    @GET("/statistic")
+    Call<StatisticEntity> getStatistic();
 }
