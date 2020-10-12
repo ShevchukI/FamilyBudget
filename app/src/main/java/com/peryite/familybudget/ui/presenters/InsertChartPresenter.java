@@ -6,6 +6,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.InsertChartContract;
 import com.peryite.familybudget.ui.listeners.InsertChartListener;
+import com.peryite.familybudget.utils.ChartType;
 
 import java.util.List;
 
@@ -26,6 +27,16 @@ public class InsertChartPresenter implements InsertChartContract.Presenter {
             }
 
             @Override
+            public void statisticPointsIsDownload() {
+                view.showStatisticButton();
+            }
+
+            @Override
+            public void statisticMonthIsDownload() {
+                view.showMonthButton();
+            }
+
+            @Override
             public void onResponse() {
 
             }
@@ -41,13 +52,27 @@ public class InsertChartPresenter implements InsertChartContract.Presenter {
 
     @Override
     public void start() {
-
+        model.requestStatisticByCategories();
     }
 
     @Override
     public void onClickGo(String startDate, String endDate) {
        // model.requestChartSetByDateRange(startDate, endDate);
         model.requestStatisticByCategories();
+    }
+
+    @Override
+    public void selectStatisticDiagram(ChartType.StatisticType statisticType, ChartType.DiagramType diagramType) {
+        switch (statisticType){
+            case Category:
+                model.requestCategoryDiagram(diagramType);
+                break;
+            case Month:
+                model.requestMonthDiagram(diagramType);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

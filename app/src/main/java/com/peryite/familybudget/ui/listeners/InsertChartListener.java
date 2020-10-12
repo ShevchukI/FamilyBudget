@@ -10,4 +10,8 @@ public interface InsertChartListener extends BaseAPIRequestListener{
     void setPieChartSet(List<PieEntry> set, String centerText);
 
     void setBarChartSet(List<BarEntry> set, List<String> labels, String text);
+
+    void statisticPointsIsDownload();
+
+    void statisticMonthIsDownload();
 }

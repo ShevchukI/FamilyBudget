@@ -7,67 +7,106 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constLay_datePicker"
+    <LinearLayout
+        android:id="@+id/linLay_selected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tv_startDatePicker"
-            style="@style/MediumText"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/rg_statistic_type"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/start_date_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal"
+            android:paddingTop="2dp">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tv_hyphen"
-            style="@style/MediumText"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/rb_statistic_categories"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_background"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center_horizontal"
+                android:text="@string/categories_text"
+                android:textColor="@color/colorWhite"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/rb_statistic_month"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_background"
+                android:button="@null"
+                android:gravity="center_horizontal"
+                android:text="@string/months_text"
+                android:textColor="@color/colorWhite"
+                android:visibility="gone" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg_diagram_type"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/element_vertical_margin"
-            android:layout_marginLeft="@dimen/element_vertical_margin"
-            android:text="@string/hyphen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/tv_startDatePicker"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tv_endDatePicker"
-            style="@style/MediumText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/element_vertical_margin"
-            android:text="@string/end_date_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/tv_hyphen"
-            app:layout_constraintTop_toTopOf="parent" />
+            <RadioButton
+                android:id="@+id/rb_diagram_general"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_background"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center_horizontal"
+                android:text="@string/general_text"
+                android:textColor="@color/colorWhite" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_goDatePicker"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ic_check_black_24dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <RadioButton
+                android:id="@+id/rb_diagram_income"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_background"
+                android:button="@null"
+                android:gravity="center_horizontal"
+                android:text="@string/income_text"
+                android:textColor="@color/colorWhite" />
 
-    </android.support.constraint.ConstraintLayout>
+            <RadioButton
+                android:id="@+id/rb_diagram_spending"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_background"
+                android:button="@null"
+                android:gravity="center_horizontal"
+                android:text="@string/spending_text"
+                android:textColor="@color/colorWhite" />
+        </RadioGroup>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constLay_datePicker"
-        android:orientation="vertical">
+        app:layout_constraintTop_toBottomOf="@id/linLay_selected">
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/insert_chart_bar_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/insert_chart_pie_chart"
