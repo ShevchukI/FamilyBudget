@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.CategoryRepository;
 import com.peryite.familybudget.api.repository.ItemRepository;
+import com.peryite.familybudget.dbhelper.DBConverter;
 import com.peryite.familybudget.entities.BudgetCategory;
 import com.peryite.familybudget.entities.Credential;
 import com.peryite.familybudget.entities.Item;
@@ -140,4 +141,6 @@ public class BudgetCategoryModel implements BudgetCategoryContract.Model {
             }
         });
     }
+
+
 }

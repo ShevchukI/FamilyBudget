@@ -203,6 +203,7 @@ public class InsertChartFragment extends BaseFragment implements InsertChartCont
 
 
         InsertChartModel insertChartModel = new InsertChartModel(credential);
+       insertChartModel.setContext(context);
         presenter = new InsertChartPresenter(insertChartModel);
         presenter.attachView(this);
     }

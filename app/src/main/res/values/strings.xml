@@ -69,6 +69,7 @@
     <string name="general_text">General</string>
     <string name="income_text">Income</string>
     <string name="spending_text">Spending</string>
+    <string name="reload_local_db_text">Reload DB</string>
 
 
     <!--String format-->

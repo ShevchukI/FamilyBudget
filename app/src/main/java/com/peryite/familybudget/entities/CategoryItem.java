@@ -1,41 +1,61 @@
 package com.peryite.familybudget.entities;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "item",
+        foreignKeys = @ForeignKey(entity = BudgetCategory.class, parentColumns = "_id", childColumns = "category_id", onDelete = CASCADE),
+        indices = @Index(value = "category_id"))
 public class CategoryItem {
-    @SerializedName("id")
-    private Long id;
-    @SerializedName("name")
+    @PrimaryKey
+    @ColumnInfo(name = "_id")
+    private int id;
+
+    @ColumnInfo(name = "name")
     private String name;
-    @SerializedName("price")
+
+    @ColumnInfo(name = "price")
     private Double price;
-    @SerializedName("description")
+
+    @ColumnInfo(name = "description")
     private String description;
-    @SerializedName("itemsDate")
+
+    @ColumnInfo(name = "item_date")
     private Timestamp date;
 
-    @Expose
-    private boolean expanded;
+    @ColumnInfo(name = "category_id")
+    private int categoryId;
 
     public CategoryItem() {
     }
 
-    public CategoryItem(Long id, String name, Double price, String description, Timestamp date) {
+    @Ignore
+    public CategoryItem(int id, String name, Double price, String description, Timestamp date, int categoryId) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.date = date;
+        this.categoryId = categoryId;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -71,11 +91,11 @@ public class CategoryItem {
         this.date = date;
     }
 
-    public boolean isExpanded() {
-        return expanded;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }

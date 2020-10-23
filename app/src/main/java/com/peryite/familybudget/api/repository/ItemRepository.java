@@ -16,6 +16,9 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ItemRepository {
+    @GET("/item")
+    Call<List<Item>> getAllItem();
+
     @GET("/item/{categoryId}")
     Call<List<Item>> getCategoryItems(@Path("categoryId") int categoryId);
 

@@ -18,6 +18,8 @@ public interface BudgetContract {
         void getAlexaCode();
 
         void addBudget(Item budget);
+
+        void reloadDB();
     }
 
     interface View extends BaseView {
@@ -52,5 +54,7 @@ public interface BudgetContract {
         void onClickAddBudget(Item budget);
 
         void onClickInsertChart();
+
+        void onClickReloadDB();
     }
 }

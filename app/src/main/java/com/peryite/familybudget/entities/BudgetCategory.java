@@ -1,18 +1,31 @@
 package com.peryite.familybudget.entities;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "category")
 public class BudgetCategory {
     @SerializedName("id")
+    @PrimaryKey
+    @ColumnInfo(name = "_id")
     private int id;
+
     @SerializedName("name")
+    @ColumnInfo(name = "name")
     private String name;
+
     @SerializedName("description")
+    @ColumnInfo(name = "description")
     private String description;
 
     public BudgetCategory() {
     }
 
+    @Ignore
     public BudgetCategory(int id, String name, String description) {
         this.id = id;
         this.name = name;

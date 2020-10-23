@@ -1,10 +1,16 @@
 package com.peryite.familybudget.ui.presenters;
 
+import android.app.Application;
+import android.util.Log;
+
+import com.peryite.familybudget.dbhelper.DBConverter;
+import com.peryite.familybudget.dbhelper.dao.CategoryDAO;
 import com.peryite.familybudget.entities.BudgetCategory;
 import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.ui.BaseView;
 import com.peryite.familybudget.ui.contracts.BudgetCategoryContract;
 import com.peryite.familybudget.ui.listeners.OnAPICategoryRequestListener;
+import com.peryite.familybudget.ui.views.fragments.BaseFragment;
 
 import java.util.List;
 
@@ -110,4 +116,5 @@ public class BudgetCategoryPresenter implements BudgetCategoryContract.Presenter
     public void confirmCreateItem(Item item) {
         model.addItemToCategory(item);
     }
+
 }

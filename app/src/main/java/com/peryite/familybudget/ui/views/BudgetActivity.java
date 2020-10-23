@@ -2,9 +2,11 @@ package com.peryite.familybudget.ui.views;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -23,6 +25,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.peryite.familybudget.R;
+import com.peryite.familybudget.api.RestClient;
+import com.peryite.familybudget.api.repository.CategoryRepository;
+import com.peryite.familybudget.api.repository.ItemRepository;
+import com.peryite.familybudget.dbhelper.DBConverter;
+import com.peryite.familybudget.dbhelper.dao.CategoryDAO;
+import com.peryite.familybudget.dbhelper.dao.ItemDAO;
+import com.peryite.familybudget.entities.BudgetCategory;
+import com.peryite.familybudget.entities.CategoryItem;
 import com.peryite.familybudget.entities.Credential;
 import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.entities.User;
@@ -34,9 +44,17 @@ import com.peryite.familybudget.ui.presenters.BudgetPresenter;
 import com.peryite.familybudget.ui.views.fragments.FragmentManager;
 import com.peryite.familybudget.utils.GsonUtil;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BudgetActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, BudgetContract.View {
@@ -62,7 +80,7 @@ public class BudgetActivity extends BaseActivity
     private AppCompatTextView navHeaderUsername;
 
     private SharedPreferences preferencesCredential;
-    private Credential credential;
+    private static Credential credential;
     private Fragment currentFragment;
     private FragmentManager.FragmentSelect currentFragmentType;
     private final static int MAIN_CONTAINER_ID = R.id.fragment_container;
@@ -113,14 +131,6 @@ public class BudgetActivity extends BaseActivity
         unbinder = ButterKnife.bind(this);
 
         navHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_header_username);
-        // navHeaderUsername.setText(credential.getUsername());
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         toolbar.inflateMenu(R.menu.budget);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -139,6 +149,9 @@ public class BudgetActivity extends BaseActivity
                     case R.id.action_get_alexa_code:
                         showDialogAlexaRequest();
                         break;
+                    case R.id.action_reload_local_database:
+                        reloadDB();
+                        break;
                     default:
                         break;
                 }
@@ -154,51 +167,10 @@ public class BudgetActivity extends BaseActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        BudgetModel budgetModel = new BudgetModel(credential);
+        BudgetModel budgetModel = new BudgetModel(credential, this);
         presenter = new BudgetPresenter(budgetModel);
         presenter.attachView(this);
         presenter.start();
-
-
-        //  selectFragment(FragmentManager.FragmentSelect.BudgetCategory);
-//        fragment = new BudgetCategoryFragment();
-//
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-
-//        fragment = (FragmentRecycleViewBudgetCategory)getSupportFragmentManager().findFragmentById(R.id.budget_categories);
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, fragment)
-//                .commit();
-
-//        userRepository = RestClient.getClient().create(UserRepository.class);
-//
-//        if (!jsonCredential.equals("empty")) {
-//            credential = (Credential) GsonUtil.fromJson(jsonCredential, Credential.class);
-//            navHeaderUsername.setText(credential.getUsername());
-//
-//            Call<User> userCall = userRepository.getInfo(credential.getBearerToken());
-//            userCall.enqueue(new Callback<User>() {
-//                @Override
-//                public void onResponse(Call<User> call, Response<User> response) {
-//                    if (response.isSuccessful()) {
-//                        User user = response.body();
-//                        Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_LONG).show();
-//
-//                        Log.d(TAG, user.toString());
-//                    } else {
-//                        Log.d(TAG, "onResponse: not successful");
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<User> call, Throwable t) {
-//                    Log.d(TAG, "fail response!");
-//                    call.cancel();
-//                }
-//            });
-//
-//            Log.d(TAG, "");
-//        }
 
     }
 
@@ -228,20 +200,7 @@ public class BudgetActivity extends BaseActivity
         } else if (id == R.id.nav_insert_chart) {
             presenter.onClickInsertChart();
         }
-//        else if(id == R.id.nav_alexa_code){
-//            presenter.onClickAlexaCode();
-//        }
-//        else if (id == R.id.nav_gallery) {
-//            //removeFragment();
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_tools) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//            Log.d(TAG, String.valueOf(Calendar.getInstance().getTime()));
-//        }
+
         else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -314,7 +273,6 @@ public class BudgetActivity extends BaseActivity
     @Override
     public void setListenerOnFragment(FragmentManager.FragmentSelect fragmentSelect, BudgetFragmentListener listener) {
         FragmentManager.getInstance().setListenerOnFragment(fragmentSelect, listener);
-        //FragmentManager.getInstance().getFragment(fragmentSelect).setListener(listener);
     }
 
     private void removeFragment() {
@@ -391,52 +349,6 @@ public class BudgetActivity extends BaseActivity
         });
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
-//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-//        alertDialog.setTitle("Budget");
-//        alertDialog.setMessage("Add budget value");
-//
-//        final EditText inputBudget = new EditText(this);
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.MATCH_PARENT);
-//        inputBudget.setLayoutParams(lp);
-//
-//
-//        final EditText inputDescription = new EditText(this);
-//        inputDescription.setLayoutParams(lp);
-//
-//        int type = InputType.TYPE_CLASS_NUMBER |  InputType.TYPE_NUMBER_FLAG_DECIMAL;
-//
-//        inputBudget.setInputType(type);
-//        alertDialog.setView(inputBudget);
-//
-//        alertDialog.setPositiveButton("OK",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        try {
-//                            double budget = Double.parseDouble(inputBudget.getText().toString());
-//                            if (budget > 0) {
-//                                Item item = new Item.Builder()
-//                                        .asEarned(budget)
-//                                        .
-//                                presenter.onClickAddBudget(item);
-//                            } else {
-//                                showMessage("Budget cannot be negative!");
-//                            }
-//                        } catch (NumberFormatException ex){
-//                            showMessage("Please input double value");
-//                        }
-//                    }
-//                });
-//
-//        alertDialog.setNegativeButton("Cancel",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//        alertDialog.show();
     }
 
     @Override
@@ -462,6 +374,152 @@ public class BudgetActivity extends BaseActivity
             case InsertChart:
                 outState.putInt("currentFragment", 2);
                 break;
+        }
+    }
+
+    private void reloadDB() {
+        DBLoader dbLoader = new DBLoader(this);
+        dbLoader.execute();
+    }
+
+    private static class DBLoader extends AsyncTask<Void, Void, Void> {
+
+        public Context context;
+
+        private List<BudgetCategory> budgetCategories;
+
+        public DBLoader(Context context) {
+            this.context = context;
+
+        }
+
+        public List<BudgetCategory> getBudgetCategories() {
+            return budgetCategories;
+        }
+
+        public void setBudgetCategories(List<BudgetCategory> budgetCategories) {
+            this.budgetCategories = budgetCategories;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            DBConverter dbConverter = DBConverter.getInstance(context);
+            final CategoryDAO categoryDAO = dbConverter.getCategoryDAO();
+            if (!dbConverter.isEmptyDataBase()) {
+                dbConverter.clearDataBase();
+                Log.d("db", "reloadDB: db is not empty! " + categoryDAO.getAllEntity().size());
+
+            }
+            CategoryRepository categoryRepository = RestClient.getClient(credential).create(CategoryRepository.class);
+
+
+            Call<List<BudgetCategory>> categoryCall = categoryRepository.getAllUserCategory();
+            categoryCall.enqueue(new Callback<List<BudgetCategory>>() {
+                @Override
+                public void onResponse(Call<List<BudgetCategory>> call, Response<List<BudgetCategory>> response) {
+                    if (response.code() == 200) {
+                        setBudgetCategories(response.body());
+                        AddCategoryLoader addCategoryLoader = new AddCategoryLoader(budgetCategories, context);
+                        addCategoryLoader.execute();
+                    } else {
+                        Log.d("db", "onResponse: ");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<BudgetCategory>> call, Throwable t) {
+                    Log.d("db", "onFailure: ");
+                }
+            });
+
+            return null;
+        }
+
+
+    }
+
+    private static class AddCategoryLoader extends AsyncTask<Void, Void, Void> {
+
+        private Context context;
+        private List<BudgetCategory> budgetCategories;
+
+        public AddCategoryLoader(List<BudgetCategory> budgetCategories, Context context) {
+            this.budgetCategories = budgetCategories;
+            this.context = context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            DBConverter dbConverter = DBConverter.getInstance(context);
+            final CategoryDAO categoryDAO = dbConverter.getCategoryDAO();
+            categoryDAO.insert(budgetCategories);
+            budgetCategories = categoryDAO.getAllEntity();
+
+            addItemsToCategory(budgetCategories);
+            return null;
+        }
+
+        private void addItemsToCategory(final List<BudgetCategory> budgetCategories) {
+            ItemRepository itemRepository = RestClient.getClient(credential).create(ItemRepository.class);
+
+
+            Call<List<Item>> itemCall = itemRepository.getAllItem();
+            itemCall.enqueue(new Callback<List<Item>>() {
+                @Override
+                public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                    if (response.code() == 200) {
+                        AddItemLoader addItemLoader = new AddItemLoader(response.body(), budgetCategories, context);
+                        addItemLoader.execute();
+
+                    } else {
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Item>> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    private static class AddItemLoader extends AsyncTask<Void, Void, Void> {
+
+        private List<Item> items;
+        private List<BudgetCategory> budgetCategories;
+        private Context context;
+
+        public AddItemLoader(List<Item> items, List<BudgetCategory> budgetCategories, Context context) {
+            this.items = items;
+            this.budgetCategories = budgetCategories;
+            this.context = context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            final ItemDAO itemDAO = DBConverter.getInstance(context).getItemDAO();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+
+            for (Item item : items) {
+                Timestamp date = new Timestamp(0);
+
+                try {
+                    date = new Timestamp(formatter.parse(item.getDate()).getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                itemDAO.insert(new CategoryItem(item.getId(), item.getName(), item.getPrice(), item.getDescription(), date, item.getBudgetCategory().getId()));
+            }
+
+            for (BudgetCategory category : budgetCategories) {
+                Log.d("db", "category: " + category.getName());
+                List<CategoryItem> categoryItemList = itemDAO.getAllEntityByCategoryId(category.getId());
+                for (CategoryItem item : categoryItemList) {
+                    Log.d("db", "items: " + item.getName() + " price: " + item.getPrice());
+                }
+            }
+            return null;
         }
     }
 }

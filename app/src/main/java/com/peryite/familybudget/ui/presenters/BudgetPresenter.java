@@ -152,6 +152,11 @@ public class BudgetPresenter implements BudgetContract.Presenter {
         view.selectFragment(FragmentManager.FragmentSelect.InsertChart);
     }
 
+    @Override
+    public void onClickReloadDB() {
+        model.reloadDB();
+    }
+
     private List<BaseFragment> fillFragmentList(){
         List<BaseFragment> baseFragments = new ArrayList<>();
         baseFragments.add(new BudgetCategoryFragment());

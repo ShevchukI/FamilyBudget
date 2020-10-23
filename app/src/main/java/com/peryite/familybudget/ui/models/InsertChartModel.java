@@ -1,12 +1,21 @@
 package com.peryite.familybudget.ui.models;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.util.TimingLogger;
+
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieEntry;
 import com.peryite.familybudget.api.RestClient;
 import com.peryite.familybudget.api.repository.ItemRepository;
+import com.peryite.familybudget.dbhelper.DBConverter;
+import com.peryite.familybudget.dbhelper.dao.CategoryDAO;
+import com.peryite.familybudget.dbhelper.dao.ItemDAO;
+import com.peryite.familybudget.entities.BudgetCategory;
+import com.peryite.familybudget.entities.CategoryItem;
 import com.peryite.familybudget.entities.CategoryMonthStatistic;
 import com.peryite.familybudget.entities.Credential;
-import com.peryite.familybudget.entities.ItemStatisticEntity;
 import com.peryite.familybudget.entities.MonthEntity;
 import com.peryite.familybudget.entities.StatisticEntity;
 import com.peryite.familybudget.entities.StatisticMonth;
@@ -17,7 +26,9 @@ import com.peryite.familybudget.ui.listeners.InsertChartListener;
 import com.peryite.familybudget.utils.ChartType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +41,7 @@ public class InsertChartModel implements InsertChartContract.Model {
     private List<StatisticPoint> statisticPoints;
     private List<CategoryMonthStatistic> categoryMonthStatistics;
     private List<MonthEntity> monthEntities;
+    private Context context;
 
     public InsertChartModel(Credential credential) {
         this.credential = credential;
@@ -62,7 +74,7 @@ public class InsertChartModel implements InsertChartContract.Model {
                     categoryMonthStatistics = response.body().getCategoryMonthStatistics();
                     monthEntities = createEmptyMonths();
                     for (CategoryMonthStatistic categoryMonth : categoryMonthStatistics) {
-                        for (int i =0; i<categoryMonth.getItemStatisticEntities().size(); i++){
+                        for (int i = 0; i < categoryMonth.getItemStatisticEntities().size(); i++) {
                             monthEntities.get(i).addPrice(categoryMonth.getItemStatisticEntities().get(i).getPrice());
                         }
                     }
@@ -104,6 +116,7 @@ public class InsertChartModel implements InsertChartContract.Model {
 
     @Override
     public void requestStatisticByCategories() {
+
         if (statisticPoints == null) {
             final Call<StatisticEntity> statisticEntityCall = itemRepository.getStatistic();
             statisticEntityCall.enqueue(new Callback<StatisticEntity>() {
@@ -145,41 +158,15 @@ public class InsertChartModel implements InsertChartContract.Model {
                 listener.setBarChartSet(set, labels, "Categories");
             }
         }
-//        final Call<StatisticEntity> statisticEntityCall = itemRepository.getStatistic();
-//        statisticEntityCall.enqueue(new Callback<StatisticEntity>() {
-//            @Override
-//            public void onResponse(Call<StatisticEntity> call, Response<StatisticEntity> response) {
-//                if(response.isSuccessful() && response.body()!=null){
-//                    List<StatisticPoint> statisticPoints = response.body().getStatisticPoints();
-//                    if(statisticPoints.size()>0){
-//                        List<BarEntry> set = new ArrayList<>();
-//                        List<String> labels = new ArrayList<>();
-//
-//                        for(int i = 0; i< statisticPoints.size(); i++){
-//                            float value = Float.parseFloat(String.format("%.2f", statisticPoints.get(i).getPrice()));
-//                            set.add(new BarEntry(i, value));
-//                            labels.add(statisticPoints.get(i).getBudgetCategory().getName());
-//                        }
-//
-//                        listener.setBarChartSet(set, labels, "Categories");
-////                        List<PieEntry> statistics = getPieEntryFromStatisticPoints(statisticPoints);
-////                        listener.setPieChartSet(statistics, "Category statistic");
-//
-//                    }
-//                } else {
-//                    listener.onResponse();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<StatisticEntity> call, Throwable t) {
-//                listener.onFailure();
-//            }
-//        });
     }
 
     @Override
     public void requestCategoryDiagram(ChartType.DiagramType diagramType) {
+//
+//        ChartLoader chartLoader = new ChartLoader(diagramType, context, listener);
+//        chartLoader.execute();
+
+
         if (statisticPoints != null) {
             if (statisticPoints.size() > 0) {
                 List<PieEntry> statistics;
@@ -212,6 +199,102 @@ public class InsertChartModel implements InsertChartContract.Model {
         }
     }
 
+
+    private static class ChartLoader extends AsyncTask<Void, Void, Void> {
+        private ChartType.DiagramType diagramType;
+        private Context context;
+        private InsertChartListener listener;
+        private List<BarEntry> set;
+        private List<String> labels;
+        private List<PieEntry> statistics;
+        private long startTime;
+
+        public ChartLoader(ChartType.DiagramType diagramType, Context context, InsertChartListener listener) {
+            this.diagramType = diagramType;
+            this.context = context;
+            this.listener = listener;
+
+            set = new ArrayList<>();
+            labels = new ArrayList<>();
+
+            statistics = new ArrayList<>();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            startTime = System.currentTimeMillis();
+
+
+            CategoryDAO categoryDAO = DBConverter.getInstance(context).getCategoryDAO();
+            ItemDAO itemDAO = DBConverter.getInstance(context).getItemDAO();
+
+            List<BudgetCategory> budgetCategories = categoryDAO.getAllEntity();
+            Map<String, Float> categoryPriceMap = new HashMap<>();
+
+            for (int i = 0; i < budgetCategories.size(); i++) {
+                float price = 0;
+                List<CategoryItem> categoryItemList = itemDAO.getAllEntityByCategoryId(budgetCategories.get(i).getId());
+                for (CategoryItem item : categoryItemList) {
+                    price += item.getPrice();
+                }
+                categoryPriceMap.put(budgetCategories.get(i).getName(), price);
+            }
+            switch (diagramType) {
+                case General:
+                    int i = 0;
+                    for (Map.Entry<String, Float> item : categoryPriceMap.entrySet()) {
+                        set.add(new BarEntry(i, item.getValue()));
+                        labels.add(item.getKey());
+                        i++;
+                    }
+
+                    // listener.setBarChartSet(set, labels, "Categories");
+                    break;
+                case Income:
+                    for (Map.Entry<String, Float> item : categoryPriceMap.entrySet()) {
+                        if (item.getValue() >= 0) {
+                            statistics.add(new PieEntry(item.getValue(), item.getKey()));
+                        }
+                    }
+                    //listener.setPieChartSet(statistics, "Income");
+                    break;
+                case Spending:
+                    for (Map.Entry<String, Float> item : categoryPriceMap.entrySet()) {
+                        if (item.getValue() < 0) {
+                            statistics.add(new PieEntry(Math.abs(item.getValue()), item.getKey()));
+                        }
+                    }
+                    // listener.setPieChartSet(statistics, "Spending");
+                    break;
+                default:
+                    break;
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            long endTime = System.currentTimeMillis();
+            Log.d("timeTag", "onPostExecute: " + (endTime-startTime));
+            if (statistics.isEmpty()) {
+                listener.setBarChartSet(set, labels, "Categories");
+            } else {
+                switch (diagramType) {
+                    case Income:
+                        listener.setPieChartSet(statistics, "Income");
+                        break;
+                    case Spending:
+                        listener.setPieChartSet(statistics, "Spending");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
     @Override
     public void requestMonthDiagram(ChartType.DiagramType diagramType) {
         if (categoryMonthStatistics != null) {
@@ -222,7 +305,7 @@ public class InsertChartModel implements InsertChartContract.Model {
                         List<BarEntry> set = new ArrayList<>();
                         List<String> labels = new ArrayList<>();
 
-                        for(int i = 0; i<monthEntities.size(); i++){
+                        for (int i = 0; i < monthEntities.size(); i++) {
                             set.add(new BarEntry(i, monthEntities.get(i).getPrice()));
                             labels.add(monthEntities.get(i).getMonthType().name());
                         }
@@ -261,15 +344,15 @@ public class InsertChartModel implements InsertChartContract.Model {
         return statistics;
     }
 
-    private List<PieEntry> getPieEntryFromMonthEntities(List<MonthEntity> monthEntities, ChartType.DiagramType diagramType){
+    private List<PieEntry> getPieEntryFromMonthEntities(List<MonthEntity> monthEntities, ChartType.DiagramType diagramType) {
         List<PieEntry> statistics = new ArrayList<>();
-        for(MonthEntity monthEntity: monthEntities){
-            if(diagramType == ChartType.DiagramType.Income){
-                if(monthEntity.getPrice()>0){
+        for (MonthEntity monthEntity : monthEntities) {
+            if (diagramType == ChartType.DiagramType.Income) {
+                if (monthEntity.getPrice() > 0) {
                     statistics.add(new PieEntry(monthEntity.getPrice(), monthEntity.getMonthType().name()));
                 }
-            } else if(diagramType == ChartType.DiagramType.Spending){
-                if(monthEntity.getPrice()<0){
+            } else if (diagramType == ChartType.DiagramType.Spending) {
+                if (monthEntity.getPrice() < 0) {
                     statistics.add(new PieEntry(Math.abs(monthEntity.getPrice()), monthEntity.getMonthType().name()));
                 }
             }
@@ -296,4 +379,7 @@ public class InsertChartModel implements InsertChartContract.Model {
         return monthEntities;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }

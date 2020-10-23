@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.AppCompatButton;
@@ -12,6 +13,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.peryite.familybudget.R;
+import com.peryite.familybudget.dbhelper.DBConverter;
+import com.peryite.familybudget.dbhelper.dao.CategoryDAO;
 import com.peryite.familybudget.entities.BudgetCategory;
 import com.peryite.familybudget.entities.Item;
 import com.peryite.familybudget.ui.adapters.BudgetCategoryRecyclerAdapter;
@@ -29,6 +33,7 @@ import com.peryite.familybudget.ui.listeners.OnBudgetCategoryListener;
 import com.peryite.familybudget.ui.models.BudgetCategoryModel;
 import com.peryite.familybudget.ui.presenters.BudgetCategoryPresenter;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BudgetCategoryFragment extends BaseFragment implements BudgetCategoryContract.View {
@@ -40,6 +45,8 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     private BudgetCategoryContract.Presenter presenter;
     private BudgetCategoryRecyclerAdapter adapter;
     private OnBudgetCategoryListener listener;
+
+    private List<BudgetCategory> categoryList;
 
     public BudgetCategoryFragment() {
 
@@ -155,6 +162,10 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     public void updateCategories(List<BudgetCategory> budgetCategories) {
         adapter.setItems(budgetCategories);
         adapter.notifyDataSetChanged();
+
+        categoryList = budgetCategories;
+        CategoryLoaderTask categoryLoaderTask = new CategoryLoaderTask();
+        categoryLoaderTask.execute();
     }
 
     @Override
@@ -318,5 +329,25 @@ public class BudgetCategoryFragment extends BaseFragment implements BudgetCatego
     @Override
     public void hideProgress() {
 
+    }
+
+    class CategoryLoaderTask extends AsyncTask<Void, Void, List<BudgetCategory>> {
+        @Override
+        protected List<BudgetCategory> doInBackground(Void... voids) {
+            CategoryDAO categoryDAO = DBConverter.getInstance(context).getCategoryDAO();
+//            categoryDAO.insert(categoryList);
+
+            List<BudgetCategory> categories = categoryDAO.getAllEntity();
+            return categories;
+        }
+
+        @Override
+        protected void onPostExecute(List<BudgetCategory> budgetCategories) {
+            super.onPostExecute(budgetCategories);
+
+            for (BudgetCategory category: budgetCategories) {
+                Log.d("DB", category.getName());
+            }
+        }
     }
 }
