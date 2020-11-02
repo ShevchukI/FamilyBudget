@@ -26,7 +26,7 @@ public interface BudgetItemContract {
 
         void updateItems(List<Item> items);
 
-        void showAddItemDialog();
+        //void showAddItemDialog();
 
         void showEditItemDialog(Item item);
 
@@ -37,7 +37,7 @@ public interface BudgetItemContract {
 
         void start();
 
-        void refresh();
+       // void refresh();
 
         void onAddItemClick();
 

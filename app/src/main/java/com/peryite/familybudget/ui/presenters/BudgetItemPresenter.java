@@ -60,8 +60,7 @@ public class BudgetItemPresenter implements BudgetItemContract.Presenter {
         model.getItems();
     }
 
-    @Override
-    public void refresh() {
+    private void refresh() {
         isRefresh = true;
         model.getItems();
         view.updateBudget();
@@ -69,7 +68,8 @@ public class BudgetItemPresenter implements BudgetItemContract.Presenter {
 
     @Override
     public void onAddItemClick() {
-        view.showAddItemDialog();
+        view.showEditItemDialog(null);
+        //view.showAddItemDialog();
     }
 
     @Override

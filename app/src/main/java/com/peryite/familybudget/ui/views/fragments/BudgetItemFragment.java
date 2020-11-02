@@ -36,7 +36,6 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
 
     private AppCompatTextView tvTitle;
     private RecyclerView recyclerView;
-   // private AppCompatButton btnAddItem;
     private FloatingActionButton btnAddItem;
     private BudgetItemContract.Presenter presenter;
     private BudgetItemRecyclerAdapter adapter;
@@ -51,17 +50,8 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_crud_list, container, false);
-        // Inflate the layout for this fragment
-        //btnAddItem = view.findViewById(R.id.btn_list_add);
-        btnAddItem = view.findViewById(R.id.add_item);
-        btnAddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // presenter.onAddCategoryClick();
-            }
-        });
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             budgetCategory = new BudgetCategory();
             budgetCategory.setId(savedInstanceState.getInt("budgetCategoryId"));
             budgetCategory.setName(savedInstanceState.getString("budgetCategoryName"));
@@ -81,8 +71,6 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         tvTitle.setText("Category/" + budgetCategory.getName());
 
         btnAddItem = view.findViewById(R.id.add_item);
-       // btnAddItem = view.findViewById(R.id.btn_list_add);
-       // btnAddItem.setText(R.string.add_item);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,64 +84,10 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
     }
 
     @Override
-    public void showProgress(ProgressBar progressBar) {
-
-    }
-
-    @Override
-    public void hideProgress(ProgressBar progressBar) {
-
-    }
-
-    @Override
     public void showMessage(String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void disableElements(List<View> elements) {
-
-    }
-
-    @Override
-    public void disableElements() {
-
-    }
-
-    @Override
-    public void enableElements(List<View> elements) {
-
-    }
-
-    @Override
-    public void enableElements() {
-
-    }
-
-    @Override
-    public void enableElements(boolean enabled) {
-
-    }
-
-    @Override
-    public void startActivity(Context packageContext, Class cls) {
-
-    }
-
-    @Override
-    public void closeActivity() {
-
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
 
     @Override
     public void addItemsToAdapter(List<Item> items) {
@@ -203,15 +137,14 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showAddItemDialog() {
-        createEditItemDialog(null, false, false);
-        //createEditCategoryDialog(new BudgetCategory(), false);
-    }
 
     @Override
     public void showEditItemDialog(Item item) {
-        createEditItemDialog(item, true, false);
+        if (item != null) {
+            createEditItemDialog(item, true);
+        } else {
+            createEditItemDialog(null, false);
+        }
     }
 
     @Override
@@ -227,7 +160,7 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         this.budgetCategory = budgetCategory;
     }
 
-    private void createEditItemDialog(final Item item, final boolean edit, final boolean earn) {
+    private void createEditItemDialog(final Item item, final boolean edit) {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
         dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -251,20 +184,12 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
             @Override
             public void onClick(View v) {
                 Item itm;
-                if (earn) {
-                    itm = new Item.Builder()
-                            .asEarned(Double.parseDouble(etItemPrice.getText().toString()))
-                            .withDescription(etItemDescription.getText().toString())
-                            .withCategory(budgetCategory)
-                            .build();
-                } else {
-                    itm = new Item.Builder()
-                            .asSpending(Double.parseDouble(etItemPrice.getText().toString()))
-                            .withName(etItemName.getText().toString())
-                            .withDescription(etItemDescription.getText().toString())
-                            .withCategory(budgetCategory)
-                            .build();
-                }
+                itm = new Item.Builder()
+                        .asSpending(Double.parseDouble(etItemPrice.getText().toString()))
+                        .withName(etItemName.getText().toString())
+                        .withDescription(etItemDescription.getText().toString())
+                        .withCategory(budgetCategory)
+                        .build();
 
                 if (edit) {
                     itm.setId(item.getId());
@@ -287,17 +212,4 @@ public class BudgetItemFragment extends BaseFragment implements BudgetItemContra
         dialogBuilder.show();
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putInt("budgetCategoryId", budgetCategory.getId());
-//        outState.putString("budgetCategoryName", budgetCategory.getName());
-//        outState.putString("budgetCategoryDescription", budgetCategory.getDescription());
-//    }
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        onSaveInstanceState(new Bundle());
-//    }
 }

@@ -19,12 +19,12 @@ import retrofit2.Response;
 public class BudgetItemModel implements BudgetItemContract.Model {
 
     private OnAPIItemRequestListener listener;
-    private Credential credential;
+    //private Credential credential;
     private ItemRepository itemRepository;
     private BudgetCategory budgetCategory;
 
     public BudgetItemModel(Credential credential, BudgetCategory budgetCategory) {
-        this.credential = credential;
+        //this.credential = credential;
         this.budgetCategory = budgetCategory;
         itemRepository = RestClient.getClient(credential).create(ItemRepository.class);
     }
