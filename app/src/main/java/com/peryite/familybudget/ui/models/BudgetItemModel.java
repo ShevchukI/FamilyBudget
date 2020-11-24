@@ -9,6 +9,7 @@ import com.peryite.familybudget.ui.contracts.BudgetItemContract;
 import com.peryite.familybudget.ui.listeners.BaseAPIRequestListener;
 import com.peryite.familybudget.ui.listeners.OnAPIItemRequestListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -19,12 +20,10 @@ import retrofit2.Response;
 public class BudgetItemModel implements BudgetItemContract.Model {
 
     private OnAPIItemRequestListener listener;
-    //private Credential credential;
     private ItemRepository itemRepository;
     private BudgetCategory budgetCategory;
 
     public BudgetItemModel(Credential credential, BudgetCategory budgetCategory) {
-        //this.credential = credential;
         this.budgetCategory = budgetCategory;
         itemRepository = RestClient.getClient(credential).create(ItemRepository.class);
     }
@@ -41,7 +40,14 @@ public class BudgetItemModel implements BudgetItemContract.Model {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.code() == 200) {
-                    listener.setItems(response.body());
+                    List<Item> items = new ArrayList<>();
+                    for (Item item : response.body()) {
+                       if(item.getPrice()<0){
+                           items.add(item);
+                       }
+                    }
+                    listener.setItems(items);
+                    //listener.setItems(response.body());
                 } else {
                     listener.onResponse();
                 }
@@ -100,7 +106,7 @@ public class BudgetItemModel implements BudgetItemContract.Model {
         itemCall.enqueue(new Callback<Item>() {
             @Override
             public void onResponse(Call<Item> call, Response<Item> response) {
-                if(response.body()!=null){
+                if (response.body() != null) {
                     listener.doRefresh();
                 }
             }
